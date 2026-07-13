@@ -1,1 +1,7 @@
 .worktrees/
+
+# Local AI working files
+task_plan.md
+findings.md
+progress.md
+docs/superpowers/

@@ -56,12 +56,22 @@
       overflow: hidden;
     }
 
+    .app.sidebar-collapsed {
+      grid-template-columns: 0 minmax(0, 1fr);
+    }
+
     .sidebar {
       display: flex;
       min-height: 0;
       flex-direction: column;
       background: var(--sidebar);
       border-right: 1px solid var(--line);
+      overflow: hidden;
+    }
+
+    .app.sidebar-collapsed .sidebar {
+      border: 0;
+      visibility: hidden;
     }
 
     .sidebar-header {
@@ -196,9 +206,43 @@
     }
 
     .graph-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
       flex: 0 0 auto;
       padding: 20px 24px 16px;
       border-bottom: 1px solid var(--line);
+    }
+
+    .graph-heading {
+      min-width: 0;
+    }
+
+    .sidebar-toggle {
+      display: grid;
+      width: 34px;
+      height: 34px;
+      flex: 0 0 34px;
+      place-items: center;
+      padding: 0;
+      background: var(--background);
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .sidebar-toggle:hover {
+      background: var(--sidebar);
+    }
+
+    .sidebar-toggle svg {
+      width: 18px;
+      height: 18px;
+      fill: none;
+      stroke: currentColor;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-width: 1.6;
     }
 
     .graph-header h2 {
@@ -337,6 +381,11 @@
         grid-template-rows: 300px minmax(0, 1fr);
       }
 
+      .app.sidebar-collapsed {
+        grid-template-columns: 1fr;
+        grid-template-rows: 0 minmax(0, 1fr);
+      }
+
       .sidebar {
         border-right: 0;
         border-bottom: 1px solid var(--line);
@@ -366,7 +415,7 @@
 </head>
 <body>
   <div class="app">
-    <aside class="sidebar">
+    <aside id="sidebar" class="sidebar">
       <header class="sidebar-header">
         <div>
           <h1>时空异客</h1>
@@ -382,8 +431,16 @@
     </aside>
     <main class="workspace">
       <header class="graph-header">
-        <h2 id="selection-title"></h2>
-        <p id="selection-meta" class="selection-meta"></p>
+        <button id="sidebar-toggle" class="sidebar-toggle" type="button" aria-controls="sidebar" aria-expanded="true">
+          <svg viewBox="0 0 20 20" aria-hidden="true">
+            <rect x="2.5" y="3" width="15" height="14" rx="2"></rect>
+            <path d="M7 3v14"></path>
+          </svg>
+        </button>
+        <div class="graph-heading">
+          <h2 id="selection-title"></h2>
+          <p id="selection-meta" class="selection-meta"></p>
+        </div>
       </header>
       <div id="graph-scroll">
         <div id="graph">
@@ -2066,6 +2123,8 @@
           noResults: "没有匹配的数码兽",
           related: count => `${count} 只相关数码兽`,
           switchLanguage: "Switch to English",
+          showSidebar: "展开侧边栏",
+          hideSidebar: "收起侧边栏",
           stages: ["幼年期 I", "幼年期 II", "成长期", "成熟期", "完全体", "究极体", "超究极体"],
         },
         en: {
@@ -2075,12 +2134,17 @@
           noResults: "No matching Digimon",
           related: count => `${count} related Digimon`,
           switchLanguage: "切换到中文",
+          showSidebar: "Show sidebar",
+          hideSidebar: "Hide sidebar",
           stages: ["In-Training I", "In-Training II", "Rookie", "Champion", "Ultimate", "Mega", "Mega+"],
         },
       };
-      const state = { selectedId: 21, language: "zh", searchQuery: "" };
+      const state = { selectedId: 21, language: "zh", searchQuery: "", sidebarOpen: true };
       const elements = {
+        app: document.querySelector(".app"),
         brand: document.querySelector("h1"),
+        sidebar: document.querySelector("#sidebar"),
+        sidebarToggle: document.querySelector("#sidebar-toggle"),
         count: document.querySelector("#dataset-count"),
         language: document.querySelector("#language"),
         search: document.querySelector("#search"),
@@ -2108,9 +2172,14 @@
         render();
       });
 
+      elements.sidebarToggle.addEventListener("click", () => {
+        state.sidebarOpen = !state.sidebarOpen;
+        renderSidebarState();
+        requestAnimationFrame(drawEdges);
+      });
+
       window.addEventListener("resize", () => {
         drawEdges();
-        centerSelection();
       });
 
       function validateData() {
@@ -2150,8 +2219,17 @@
         elements.searchLabel.textContent = text.search;
         elements.language.textContent = state.language === "zh" ? "EN" : "中文";
         elements.language.setAttribute("aria-label", text.switchLanguage);
+        renderSidebarState();
         renderList();
         renderGraph();
+      }
+
+      function renderSidebarState() {
+        const text = copy[state.language];
+        elements.app.classList.toggle("sidebar-collapsed", !state.sidebarOpen);
+        elements.sidebar.inert = !state.sidebarOpen;
+        elements.sidebarToggle.setAttribute("aria-expanded", String(state.sidebarOpen));
+        elements.sidebarToggle.setAttribute("aria-label", state.sidebarOpen ? text.hideSidebar : text.showSidebar);
       }
 
       function renderList() {

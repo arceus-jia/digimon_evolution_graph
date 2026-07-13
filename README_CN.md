@@ -15,7 +15,7 @@ https://github.com/user-attachments/assets/106a0c01-ebc4-4021-a374-722ab4a08b2d
 
 ### 在线使用
 
-[通过 GitHub Pages 打开](https://USERNAME.github.io/digimon_evolution_graph/time_stranger.html?language=zh)
+[通过 GitHub Pages 打开](https://arceus-jia.github.io/digimon_evolution_graph/time_stranger.html?language=zh)
 
 > 当前 GitHub Pages 地址是占位内容，部署后会更新为正式地址。
 

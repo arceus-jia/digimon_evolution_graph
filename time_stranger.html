@@ -1,0 +1,2257 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Time Stranger 进化图</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --background: #ffffff;
+      --sidebar: #f7f8fa;
+      --text: #18202a;
+      --muted: #697386;
+      --line: #dfe3e8;
+      --accent: #2869d8;
+      --accent-soft: #eaf1ff;
+      --neighbor: #f4f7fc;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      height: 100%;
+      margin: 0;
+    }
+
+    body {
+      background: var(--background);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-size: 14px;
+    }
+
+    button,
+    input {
+      font: inherit;
+    }
+
+    button {
+      color: inherit;
+    }
+
+    button:focus-visible,
+    input:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    .app {
+      display: grid;
+      grid-template-columns: 300px minmax(0, 1fr);
+      height: 100%;
+      overflow: hidden;
+    }
+
+    .sidebar {
+      display: flex;
+      min-height: 0;
+      flex-direction: column;
+      background: var(--sidebar);
+      border-right: 1px solid var(--line);
+    }
+
+    .sidebar-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 22px 20px 16px;
+    }
+
+    h1,
+    h2,
+    p {
+      margin: 0;
+    }
+
+    h1 {
+      font-size: 19px;
+      line-height: 1.25;
+      letter-spacing: -0.01em;
+    }
+
+    .dataset-count {
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .language-button {
+      min-width: 44px;
+      padding: 6px 9px;
+      background: var(--background);
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .search-wrap {
+      padding: 0 16px 14px;
+    }
+
+    .visually-hidden {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    #search {
+      width: 100%;
+      height: 38px;
+      padding: 0 11px;
+      background: var(--background);
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      color: var(--text);
+      font-size: 13px;
+    }
+
+    #digimon-list {
+      min-height: 0;
+      overflow-y: auto;
+      border-top: 1px solid var(--line);
+    }
+
+    .digimon-row {
+      display: grid;
+      grid-template-columns: 42px minmax(0, 1fr);
+      align-items: center;
+      width: 100%;
+      min-height: 43px;
+      padding: 7px 16px;
+      background: transparent;
+      border: 0;
+      border-left: 3px solid transparent;
+      border-bottom: 1px solid #e9ecf0;
+      cursor: pointer;
+      text-align: left;
+    }
+
+    .digimon-row:hover {
+      background: #f0f2f5;
+    }
+
+    .digimon-row.selected {
+      background: var(--accent-soft);
+      border-left-color: var(--accent);
+      color: #164fae;
+      font-weight: 600;
+    }
+
+    .digimon-number {
+      color: var(--muted);
+      font-size: 11px;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .digimon-row.selected .digimon-number {
+      color: #4e6f9f;
+    }
+
+    .no-results {
+      padding: 24px 16px;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    .workspace {
+      display: flex;
+      min-width: 0;
+      min-height: 0;
+      flex-direction: column;
+    }
+
+    .graph-header {
+      flex: 0 0 auto;
+      padding: 20px 24px 16px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .graph-header h2 {
+      font-size: 18px;
+      line-height: 1.35;
+    }
+
+    .selection-meta {
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    #graph-scroll {
+      min-width: 0;
+      min-height: 0;
+      flex: 1;
+      overflow: auto;
+    }
+
+    #graph {
+      position: relative;
+      width: max-content;
+      min-width: 100%;
+      min-height: 100%;
+      padding: 24px 36px 48px;
+    }
+
+    #edge-layer {
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 0;
+      overflow: visible;
+      pointer-events: none;
+    }
+
+    #edge-layer path.edge {
+      fill: none;
+      stroke: #aeb7c4;
+      stroke-width: 1.5;
+    }
+
+    #edge-layer path.edge.direct {
+      stroke: var(--accent);
+      stroke-width: 2;
+    }
+
+    #graph-columns {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      align-items: flex-start;
+      gap: 78px;
+    }
+
+    .stage-column {
+      width: 164px;
+      flex: 0 0 164px;
+    }
+
+    .stage-title {
+      min-height: 29px;
+      margin-bottom: 12px;
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .stage-nodes {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .graph-node {
+      display: block;
+      width: 164px;
+      min-height: 52px;
+      padding: 8px 10px;
+      background: var(--background);
+      border: 1px solid #cfd5dc;
+      border-radius: 7px;
+      cursor: pointer;
+      text-align: left;
+    }
+
+    .graph-node:hover {
+      border-color: #8b98a8;
+    }
+
+    .graph-node.direct {
+      background: var(--neighbor);
+      border-color: #9ab4df;
+    }
+
+    .graph-node.selected {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff;
+    }
+
+    .node-number {
+      display: block;
+      margin-bottom: 3px;
+      color: var(--muted);
+      font-size: 10px;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .graph-node.selected .node-number {
+      color: #dbe7ff;
+    }
+
+    .node-name {
+      display: block;
+      overflow-wrap: anywhere;
+      font-size: 13px;
+      font-weight: 600;
+      line-height: 1.25;
+    }
+
+    @media (max-width: 720px) {
+      .app {
+        grid-template-columns: 1fr;
+        grid-template-rows: 300px minmax(0, 1fr);
+      }
+
+      .sidebar {
+        border-right: 0;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .sidebar-header {
+        padding: 14px 16px 10px;
+      }
+
+      .search-wrap {
+        padding-bottom: 10px;
+      }
+
+      .graph-header {
+        padding: 14px 16px 12px;
+      }
+
+      #graph {
+        padding: 20px 120px 40px 24px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <header class="sidebar-header">
+        <div>
+          <h1>Time Stranger</h1>
+          <p id="dataset-count" class="dataset-count"></p>
+        </div>
+        <button id="language" class="language-button" type="button">EN</button>
+      </header>
+      <div class="search-wrap">
+        <label id="search-label" class="visually-hidden" for="search">搜索数码兽</label>
+        <input id="search" type="search" autocomplete="off">
+      </div>
+      <div id="digimon-list"></div>
+    </aside>
+    <main class="workspace">
+      <header class="graph-header">
+        <h2 id="selection-title"></h2>
+        <p id="selection-meta" class="selection-meta"></p>
+      </header>
+      <div id="graph-scroll">
+        <div id="graph">
+          <svg id="edge-layer" aria-hidden="true">
+            <defs>
+              <marker id="arrow" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto">
+                <path d="M 0 0 L 8 4 L 0 8 z" fill="#aeb7c4"></path>
+              </marker>
+              <marker id="arrow-direct" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto">
+                <path d="M 0 0 L 8 4 L 0 8 z" fill="#2869d8"></path>
+              </marker>
+            </defs>
+          </svg>
+          <div id="graph-columns"></div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Data snapshot: 2026-07-13. Sources: https://game8.co/games/Digimon-Story-Time-Stranger/archives/554944 ; https://www.gamersky.com/handbook/Special/smbbts/ ; https://digimon.fandom.com/zh/wiki/《數碼寶貝物語：時空異客》數碼寶貝列表?variant=zh-hans -->
+  <script id="digimon-data" type="application/json">
+  {
+    "digimon": [
+      {"id":1,"zh":"水母兽","en":"Kuramon","stage":"inTraining1"},
+      {"id":2,"zh":"电鼠兽","en":"Choromon","stage":"inTraining1"},
+      {"id":3,"zh":"多多兽","en":"Dodomon","stage":"inTraining1"},
+      {"id":4,"zh":"泡沫兽","en":"Pabumon","stage":"inTraining1"},
+      {"id":5,"zh":"普尼兽","en":"Punimon","stage":"inTraining1"},
+      {"id":6,"zh":"黑球兽","en":"Botamon","stage":"inTraining1"},
+      {"id":7,"zh":"浮游兽","en":"Poyomon","stage":"inTraining1"},
+      {"id":8,"zh":"加利兽","en":"Kapurimon","stage":"inTraining2"},
+      {"id":9,"zh":"滚球兽","en":"Koromon","stage":"inTraining2"},
+      {"id":10,"zh":"种子兽","en":"Tanemon","stage":"inTraining2"},
+      {"id":11,"zh":"独角兽","en":"Tsunomon","stage":"inTraining2"},
+      {"id":12,"zh":"妖爪兽","en":"Tsumemon","stage":"inTraining2"},
+      {"id":13,"zh":"迪哥兽","en":"Tokomon","stage":"inTraining2"},
+      {"id":14,"zh":"多利兽","en":"Dorimon","stage":"inTraining2"},
+      {"id":15,"zh":"猫猫兽","en":"Nyaromon","stage":"inTraining2"},
+      {"id":16,"zh":"柏古兽","en":"Pagumon","stage":"inTraining2"},
+      {"id":17,"zh":"比高兽","en":"Yokomon","stage":"inTraining2"},
+      {"id":18,"zh":"布加兽","en":"Bukamon","stage":"inTraining2"},
+      {"id":19,"zh":"年糕兽","en":"Motimon","stage":"inTraining2"},
+      {"id":20,"zh":"汪喵兽","en":"Wanyamon","stage":"inTraining2"},
+      {"id":21,"zh":"亚古兽","en":"Agumon","stage":"rookie"},
+      {"id":22,"zh":"管狐兽","en":"Kudamon","stage":"rookie"},
+      {"id":23,"zh":"哥玛兽","en":"Gomamon","stage":"rookie"},
+      {"id":24,"zh":"日冕兽","en":"Coronamon","stage":"rookie"},
+      {"id":25,"zh":"兹巴兽","en":"Zubamon","stage":"rookie"},
+      {"id":26,"zh":"太阳兽","en":"Solarmon","stage":"rookie"},
+      {"id":27,"zh":"大耳兽","en":"Terriermon","stage":"rookie"},
+      {"id":28,"zh":"甲虫兽","en":"Tentomon","stage":"rookie"},
+      {"id":29,"zh":"积木亚古兽","en":"ToyAgumon","stage":"rookie"},
+      {"id":30,"zh":"食梦兽","en":"Tapirmon","stage":"rookie"},
+      {"id":31,"zh":"小鸟兽","en":"Hyokomon","stage":"rookie"},
+      {"id":32,"zh":"比丘兽","en":"Biyomon","stage":"rookie"},
+      {"id":33,"zh":"夜鹰兽","en":"Falcomon","stage":"rookie"},
+      {"id":34,"zh":"小狗兽","en":"Salamon","stage":"rookie"},
+      {"id":35,"zh":"小熊兽","en":"Bearmon","stage":"rookie"},
+      {"id":36,"zh":"企鹅兽","en":"Penmon","stage":"rookie"},
+      {"id":37,"zh":"单角龙兽","en":"Monodramon","stage":"rookie"},
+      {"id":38,"zh":"龙骀兽","en":"Ryudamon","stage":"rookie"},
+      {"id":39,"zh":"光明兽","en":"Lucemon","stage":"rookie"},
+      {"id":40,"zh":"艾力兽","en":"Elecmon","stage":"rookie"},
+      {"id":41,"zh":"迦奥兽","en":"Gaomon","stage":"rookie"},
+      {"id":42,"zh":"螃蟹兽","en":"Crabmon","stage":"rookie"},
+      {"id":43,"zh":"加布兽","en":"Gabumon","stage":"rookie"},
+      {"id":44,"zh":"乌龟兽","en":"Kamemon","stage":"rookie"},
+      {"id":45,"zh":"小古加兽","en":"Kokuwamon","stage":"rookie"},
+      {"id":46,"zh":"矿石兽","en":"Gotsumon","stage":"rookie"},
+      {"id":47,"zh":"剑道兽","en":"Kotemon","stage":"rookie"},
+      {"id":48,"zh":"咆哮兽","en":"Shoutmon","stage":"rookie"},
+      {"id":49,"zh":"龙仔兽","en":"Dracomon","stage":"rookie"},
+      {"id":50,"zh":"多路兽","en":"Dorumon","stage":"rookie"},
+      {"id":51,"zh":"巴达兽","en":"Patamon","stage":"rookie"},
+      {"id":52,"zh":"哈克兽","en":"Huckmon","stage":"rookie"},
+      {"id":53,"zh":"巴鲁兽","en":"Palmon","stage":"rookie"},
+      {"id":54,"zh":"花拉兽","en":"Floramon","stage":"rookie"},
+      {"id":55,"zh":"焰彩兽","en":"Muchomon","stage":"rookie"},
+      {"id":56,"zh":"拉拉兽","en":"Lalamon","stage":"rookie"},
+      {"id":57,"zh":"露娜兽","en":"Lunamon","stage":"rookie"},
+      {"id":58,"zh":"妖狐兽","en":"Renamon","stage":"rookie"},
+      {"id":59,"zh":"黑大耳兽","en":"Lopmon","stage":"rookie"},
+      {"id":60,"zh":"小妖兽","en":"Impmon","stage":"rookie"},
+      {"id":61,"zh":"蝌蚪兽","en":"Otamamon","stage":"rookie"},
+      {"id":62,"zh":"加支兽","en":"Gazimon","stage":"rookie"},
+      {"id":63,"zh":"基刹兽","en":"Gizamon","stage":"rookie"},
+      {"id":64,"zh":"基尔兽","en":"Guilmon","stage":"rookie"},
+      {"id":65,"zh":"野人兽","en":"Goblimon","stage":"rookie"},
+      {"id":66,"zh":"笨蛋兽","en":"Shamamon","stage":"rookie"},
+      {"id":67,"zh":"蝦蛄兽","en":"Syakomon","stage":"rookie"},
+      {"id":68,"zh":"冰雪野人兽","en":"SnowGoblimon","stage":"rookie"},
+      {"id":69,"zh":"芝蒙兽","en":"Chuumon","stage":"rookie"},
+      {"id":70,"zh":"德古兽","en":"Dracmon","stage":"rookie"},
+      {"id":71,"zh":"齿轮兽","en":"Hagurumon","stage":"rookie"},
+      {"id":72,"zh":"小恶魔兽","en":"DemiDevimon","stage":"rookie"},
+      {"id":73,"zh":"幻蜂兽","en":"FunBeemon","stage":"rookie"},
+      {"id":74,"zh":"比特兽","en":"Betamon","stage":"rookie"},
+      {"id":75,"zh":"蘑菇兽","en":"Mushroomon","stage":"rookie"},
+      {"id":76,"zh":"穿山兽","en":"Armadillomon","stage":"rookie"},
+      {"id":77,"zh":"V仔兽","en":"Veemon","stage":"rookie"},
+      {"id":78,"zh":"麻鹰兽","en":"Hawkmon","stage":"rookie"},
+      {"id":79,"zh":"虫虫兽","en":"Wormmon","stage":"rookie"},
+      {"id":80,"zh":"哈哈兽","en":"Keramon","stage":"rookie"},
+      {"id":81,"zh":"埃癸奥兽","en":"Aegiomon","stage":"champion"},
+      {"id":82,"zh":"海狮兽","en":"Ikkakumon","stage":"champion"},
+      {"id":83,"zh":"飞龙兽","en":"Airdramon","stage":"champion"},
+      {"id":84,"zh":"天使兽","en":"Angemon","stage":"champion"},
+      {"id":85,"zh":"比多兽","en":"Kabuterimon","stage":"champion"},
+      {"id":86,"zh":"加鲁哥兽","en":"Gargomon","stage":"champion"},
+      {"id":87,"zh":"加鲁鲁兽","en":"Garurumon","stage":"champion"},
+      {"id":88,"zh":"银龙兽","en":"Ginryumon","stage":"champion"},
+      {"id":89,"zh":"灰熊兽","en":"Grizzlymon","stage":"champion"},
+      {"id":90,"zh":"暴龙兽","en":"Greymon","stage":"champion"},
+      {"id":91,"zh":"核龙兽（蓝）","en":"Coredramon (Blue)","stage":"champion"},
+      {"id":92,"zh":"大地暴龙兽","en":"GeoGreymon","stage":"champion"},
+      {"id":93,"zh":"强袭龙兽","en":"Strikedramon","stage":"champion"},
+      {"id":94,"zh":"螳螂兽","en":"Snimon","stage":"champion"},
+      {"id":95,"zh":"兹巴伊戈兽","en":"ZubaEagermon","stage":"champion"},
+      {"id":96,"zh":"冰巫师兽","en":"Sorcermon","stage":"champion"},
+      {"id":97,"zh":"迪路兽","en":"Gatomon","stage":"champion"},
+      {"id":98,"zh":"杜宾犬兽","en":"Dobermon","stage":"champion"},
+      {"id":99,"zh":"巴多拉兽","en":"Birdramon","stage":"champion"},
+      {"id":100,"zh":"焰狮兽","en":"Firamon","stage":"champion"},
+      {"id":101,"zh":"V龙兽","en":"Veedramon","stage":"champion"},
+      {"id":102,"zh":"无赖兽","en":"Buraimon","stage":"champion"},
+      {"id":103,"zh":"锐啄兽","en":"Peckmon","stage":"champion"},
+      {"id":104,"zh":"毛人兽","en":"Mojyamon","stage":"champion"},
+      {"id":105,"zh":"雪人兽","en":"Frigimon","stage":"champion"},
+      {"id":106,"zh":"独角马兽","en":"Unimon","stage":"champion"},
+      {"id":107,"zh":"猛禽龙兽","en":"Raptordramon","stage":"champion"},
+      {"id":108,"zh":"左轮兽","en":"Deputymon","stage":"champion"},
+      {"id":109,"zh":"狮子兽","en":"Leomon","stage":"champion"},
+      {"id":110,"zh":"镰鼬兽","en":"Reppamon","stage":"champion"},
+      {"id":111,"zh":"冰石兽","en":"Icemon","stage":"champion"},
+      {"id":112,"zh":"巫师兽","en":"Wizardmon","stage":"champion"},
+      {"id":113,"zh":"女巫兽","en":"Witchmon","stage":"champion"},
+      {"id":114,"zh":"迦奥迦兽","en":"Gaogamon","stage":"champion"},
+      {"id":115,"zh":"河童兽","en":"Gawappamon","stage":"champion"},
+      {"id":116,"zh":"奇鸟兽","en":"Kiwimon","stage":"champion"},
+      {"id":117,"zh":"九尾狐兽","en":"Kyubimon","stage":"champion"},
+      {"id":118,"zh":"时钟兽","en":"Clockmon","stage":"champion"},
+      {"id":119,"zh":"人马兽","en":"Centarumon","stage":"champion"},
+      {"id":120,"zh":"向日葵兽","en":"Sunflowmon","stage":"champion"},
+      {"id":121,"zh":"海龙兽","en":"Seadramon","stage":"champion"},
+      {"id":122,"zh":"西拉兽","en":"Coelamon","stage":"champion"},
+      {"id":123,"zh":"贝壳兽","en":"Shellmon","stage":"champion"},
+      {"id":124,"zh":"星星兽","en":"Starmon","stage":"champion"},
+      {"id":125,"zh":"坦克兽","en":"Tankmon","stage":"champion"},
+      {"id":126,"zh":"泥人兽","en":"MudFrigimon","stage":"champion"},
+      {"id":127,"zh":"龙人兽","en":"Dinohyumon","stage":"champion"},
+      {"id":128,"zh":"巨龙兽","en":"Tyrannomon","stage":"champion"},
+      {"id":129,"zh":"兔爷兽","en":"Turuiemon","stage":"champion"},
+      {"id":130,"zh":"仙人掌兽","en":"Togemon","stage":"champion"},
+      {"id":131,"zh":"钻地兽","en":"Drimogemon","stage":"champion"},
+      {"id":132,"zh":"多路加兽","en":"Dorugamon","stage":"champion"},
+      {"id":133,"zh":"刃王哈克兽","en":"BaoHuckmon","stage":"champion"},
+      {"id":134,"zh":"飞船兽","en":"Blimpmon","stage":"champion"},
+      {"id":135,"zh":"火焰兽","en":"Meramon","stage":"champion"},
+      {"id":136,"zh":"角龙兽","en":"Monochromon","stage":"champion"},
+      {"id":137,"zh":"雷克斯兽","en":"Lekismon","stage":"champion"},
+      {"id":138,"zh":"冰恶魔兽","en":"IceDevimon","stage":"champion"},
+      {"id":139,"zh":"云迪兽","en":"Wendigomon","stage":"champion"},
+      {"id":140,"zh":"朽木兽","en":"Woodmon","stage":"champion"},
+      {"id":141,"zh":"奥加兽","en":"Ogremon","stage":"champion"},
+      {"id":142,"zh":"八爪鱼兽","en":"Octomon","stage":"champion"},
+      {"id":143,"zh":"守卫兽","en":"Guardromon","stage":"champion"},
+      {"id":144,"zh":"贝壳鼻涕兽","en":"ShellNumemon","stage":"champion"},
+      {"id":145,"zh":"古拉兽","en":"Growlmon","stage":"champion"},
+      {"id":146,"zh":"古加兽","en":"Kuwagamon","stage":"champion"},
+      {"id":147,"zh":"怪蛙兽","en":"Gekomon","stage":"champion"},
+      {"id":148,"zh":"庸俗兽","en":"Geremon","stage":"champion"},
+      {"id":149,"zh":"核龙兽（绿）","en":"Coredramon (Green)","stage":"champion"},
+      {"id":150,"zh":"黄金鼻涕兽","en":"GoldNumemon","stage":"champion"},
+      {"id":151,"zh":"岩石兽","en":"Golemon","stage":"champion"},
+      {"id":152,"zh":"独眼龙兽","en":"Cyclonemon","stage":"champion"},
+      {"id":153,"zh":"血狼兽","en":"Sangloupmon","stage":"champion"},
+      {"id":154,"zh":"大便兽","en":"Sukamon","stage":"champion"},
+      {"id":155,"zh":"大角兽","en":"Tuskmon","stage":"champion"},
+      {"id":156,"zh":"恶魔兽","en":"Devimon","stage":"champion"},
+      {"id":157,"zh":"三头龙兽","en":"Deltamon","stage":"champion"},
+      {"id":158,"zh":"蜘蛛兽","en":"Dokugumon","stage":"champion"},
+      {"id":159,"zh":"亚伯兽","en":"Nanimon","stage":"champion"},
+      {"id":160,"zh":"鼻涕兽","en":"Numemon","stage":"champion"},
+      {"id":161,"zh":"猛鬼兽","en":"Bakemon","stage":"champion"},
+      {"id":162,"zh":"冰河兽","en":"Hyogamon","stage":"champion"},
+      {"id":163,"zh":"库加兽","en":"Fugamon","stage":"champion"},
+      {"id":164,"zh":"黄蜂兽","en":"Flymon","stage":"champion"},
+      {"id":165,"zh":"白金大便兽","en":"PlatinumSukamon","stage":"champion"},
+      {"id":166,"zh":"暗黑迪路兽","en":"BlackGatomon","stage":"champion"},
+      {"id":167,"zh":"鼻屎兽","en":"Vegiemon","stage":"champion"},
+      {"id":168,"zh":"牛人兽","en":"Minotarumon","stage":"champion"},
+      {"id":169,"zh":"武士兽","en":"Musyamon","stage":"champion"},
+      {"id":170,"zh":"机械装甲兽","en":"Mekanorimon","stage":"champion"},
+      {"id":171,"zh":"烂泥兽","en":"Raremon","stage":"champion"},
+      {"id":172,"zh":"雀蜂兽","en":"Waspmon","stage":"champion"},
+      {"id":173,"zh":"亚古拉兽","en":"Aquilamon","stage":"champion"},
+      {"id":174,"zh":"战甲兽","en":"Ankylomon","stage":"champion"},
+      {"id":175,"zh":"V仔兽EX","en":"ExVeemon","stage":"champion"},
+      {"id":176,"zh":"守卫兽（金）","en":"Guardromon (Gold)","stage":"champion"},
+      {"id":177,"zh":"飞虫兽","en":"Stingmon","stage":"champion"},
+      {"id":178,"zh":"魔蛹兽","en":"Kurisarimon","stage":"champion"},
+      {"id":179,"zh":"潜鲨兽","en":"Submarimon","stage":"champion"},
+      {"id":180,"zh":"忍者兽","en":"Shurimon","stage":"champion"},
+      {"id":181,"zh":"钢钻兽","en":"Digmon","stage":"champion"},
+      {"id":182,"zh":"尼菲迪兽","en":"Nefertimon","stage":"champion"},
+      {"id":183,"zh":"烈焰兽","en":"Flamedramon","stage":"champion"},
+      {"id":184,"zh":"天马兽","en":"Pegasusmon","stage":"champion"},
+      {"id":185,"zh":"铁鹰兽","en":"Halsemon","stage":"champion"},
+      {"id":186,"zh":"雷龙兽","en":"Lighdramon","stage":"champion"},
+      {"id":187,"zh":"火神兽","en":"Agunimon","stage":"champion"},
+      {"id":188,"zh":"野狼兽","en":"Lobomon","stage":"champion"},
+      {"id":189,"zh":"娜娜兽","en":"Lanamon","stage":"champion"},
+      {"id":190,"zh":"炎龙兽","en":"BurningGreymon","stage":"champion"},
+      {"id":191,"zh":"卡玛拉兽","en":"Calmaramon","stage":"champion"},
+      {"id":192,"zh":"银狼兽","en":"KendoGarurumon","stage":"champion"},
+      {"id":193,"zh":"埃癸奥都斯兽","en":"Aegiochusmon","stage":"ultimate"},
+      {"id":194,"zh":"埃癸奥都斯兽：绿","en":"Aegiochusmon Green","stage":"ultimate"},
+      {"id":195,"zh":"埃癸奥都斯兽：暗","en":"Aegiochusmon Dark","stage":"ultimate"},
+      {"id":196,"zh":"埃癸奥都斯兽：蓝","en":"Aegiochusmon Blue","stage":"ultimate"},
+      {"id":197,"zh":"埃癸奥都斯兽：圣","en":"Aegiochusmon Holy","stage":"ultimate"},
+      {"id":198,"zh":"超比多兽","en":"MegaKabuterimon","stage":"ultimate"},
+      {"id":199,"zh":"安杜路兽","en":"Andromon","stage":"ultimate"},
+      {"id":200,"zh":"翔龙兽","en":"Wingdramon","stage":"ultimate"},
+      {"id":201,"zh":"飞行V龙兽","en":"AeroVeedramon","stage":"ultimate"},
+      {"id":202,"zh":"巨龙兽EX","en":"ExTyrannomon","stage":"ultimate"},
+      {"id":203,"zh":"天女兽","en":"Angewomon","stage":"ultimate"},
+      {"id":204,"zh":"伽偻达兽","en":"Garudamon","stage":"ultimate"},
+      {"id":205,"zh":"格斗狮子兽","en":"GrapLeomon","stage":"ultimate"},
+      {"id":206,"zh":"黄金剑士兽","en":"Grademon","stage":"ultimate"},
+      {"id":207,"zh":"大王灰熊兽","en":"GreatGrizzlymon","stage":"ultimate"},
+      {"id":208,"zh":"沙路比兽","en":"Cerberusmon","stage":"ultimate"},
+      {"id":209,"zh":"沙路比兽JM","en":"Cerberusmon WM","stage":"ultimate"},
+      {"id":210,"zh":"电子龙兽","en":"Cyberdramon","stage":"ultimate"},
+      {"id":211,"zh":"宝石虫兽","en":"JewelBeemon","stage":"ultimate"},
+      {"id":212,"zh":"祖顿兽","en":"Zudomon","stage":"ultimate"},
+      {"id":213,"zh":"麒麟兽","en":"Chirinmon","stage":"ultimate"},
+      {"id":214,"zh":"杜兰兽","en":"Duramon","stage":"ultimate"},
+      {"id":215,"zh":"鹦鹉兽","en":"Parrotmon","stage":"ultimate"},
+      {"id":216,"zh":"邦加兽","en":"IceLeomon","stage":"ultimate"},
+      {"id":217,"zh":"飞车龙兽","en":"Hisyaryumon","stage":"ultimate"},
+      {"id":218,"zh":"武天兽","en":"Butenmon","stage":"ultimate"},
+      {"id":219,"zh":"耀狮兽","en":"Flaremon","stage":"ultimate"},
+      {"id":220,"zh":"巨鲸兽","en":"Whamon","stage":"ultimate"},
+      {"id":221,"zh":"神圣天使兽","en":"MagnaAngemon","stage":"ultimate"},
+      {"id":222,"zh":"长毛象兽","en":"Mammothmon","stage":"ultimate"},
+      {"id":223,"zh":"机械暴龙兽","en":"MetalGreymon","stage":"ultimate"},
+      {"id":224,"zh":"熊仔兽","en":"Monzaemon","stage":"ultimate"},
+      {"id":225,"zh":"八咫鸦兽","en":"Crowmon","stage":"ultimate"},
+      {"id":226,"zh":"进昇暴龙兽","en":"RizeGreymon","stage":"ultimate"},
+      {"id":227,"zh":"拉比兽","en":"Rapidmon","stage":"ultimate"},
+      {"id":228,"zh":"装甲狮子兽","en":"LoaderLeomon","stage":"ultimate"},
+      {"id":229,"zh":"兽人加鲁鲁兽","en":"WereGarurumon","stage":"ultimate"},
+      {"id":230,"zh":"亚路加兽","en":"Scorpiomon","stage":"ultimate"},
+      {"id":231,"zh":"魔马兽","en":"Enbarrmon","stage":"ultimate"},
+      {"id":232,"zh":"玉兔兽","en":"Antylamon","stage":"ultimate"},
+      {"id":233,"zh":"陨石兽","en":"Meteormon","stage":"ultimate"},
+      {"id":234,"zh":"奥米加咆哮兽","en":"OmniShoutmon","stage":"ultimate"},
+      {"id":235,"zh":"基米拉兽","en":"Kimeramon","stage":"ultimate"},
+      {"id":236,"zh":"捕捉豆豆兽","en":"CatchMamemon","stage":"ultimate"},
+      {"id":237,"zh":"新月兽","en":"Crescemon","stage":"ultimate"},
+      {"id":238,"zh":"超级流星兽","en":"SuperStarmon","stage":"ultimate"},
+      {"id":239,"zh":"骷髅俾路支兽","en":"SkullBaluchimon","stage":"ultimate"},
+      {"id":240,"zh":"救星哈克兽","en":"SaviorHuckmon","stage":"ultimate"},
+      {"id":241,"zh":"塞壬兽","en":"Sirenmon","stage":"ultimate"},
+      {"id":242,"zh":"祭师兽","en":"Taomon","stage":"ultimate"},
+      {"id":243,"zh":"蛋蛋兽","en":"Digitamamon","stage":"ultimate"},
+      {"id":244,"zh":"死神火焰兽","en":"SkullMeramon","stage":"ultimate"},
+      {"id":245,"zh":"华丽兽","en":"Deramon","stage":"ultimate"},
+      {"id":246,"zh":"三觭龙兽","en":"Triceramon","stage":"ultimate"},
+      {"id":247,"zh":"多路龙兽","en":"DoruGreymon","stage":"ultimate"},
+      {"id":248,"zh":"骑士兽","en":"Knightmon","stage":"ultimate"},
+      {"id":249,"zh":"奇蛙兽","en":"Divermon","stage":"ultimate"},
+      {"id":250,"zh":"熊猫兽","en":"Pandamon","stage":"ultimate"},
+      {"id":251,"zh":"南瓜兽","en":"Pumpkinmon","stage":"ultimate"},
+      {"id":252,"zh":"巨大豆豆兽","en":"BigMamemon","stage":"ultimate"},
+      {"id":253,"zh":"妖精兽","en":"Piximon","stage":"ultimate"},
+      {"id":254,"zh":"仙鹰兽","en":"HippoGryphonmon","stage":"ultimate"},
+      {"id":255,"zh":"腕龙兽","en":"Brachiomon","stage":"ultimate"},
+      {"id":256,"zh":"火山兽","en":"Volcanomon","stage":"ultimate"},
+      {"id":257,"zh":"王者飞船兽","en":"MasterBlimpmon","stage":"ultimate"},
+      {"id":258,"zh":"音速迦奥迦兽","en":"MachGaogamon","stage":"ultimate"},
+      {"id":259,"zh":"豆豆兽","en":"Mamemon","stage":"ultimate"},
+      {"id":260,"zh":"超海龙兽","en":"MegaSeadramon","stage":"ultimate"},
+      {"id":261,"zh":"钢铁豆豆兽","en":"MetalMamemon","stage":"ultimate"},
+      {"id":262,"zh":"丁香兽","en":"Lilamon","stage":"ultimate"},
+      {"id":263,"zh":"花仙兽","en":"Lillymon","stage":"ultimate"},
+      {"id":264,"zh":"火车兽","en":"Locomon","stage":"ultimate"},
+      {"id":265,"zh":"阿斯塔兽","en":"Astamon","stage":"ultimate"},
+      {"id":266,"zh":"亚基利兽","en":"Arukenimon","stage":"ultimate"},
+      {"id":267,"zh":"吸血魔兽","en":"Myotismon","stage":"ultimate"},
+      {"id":268,"zh":"悟空兽","en":"Etemon","stage":"ultimate"},
+      {"id":269,"zh":"大古加兽","en":"Okuwamon","stage":"ultimate"},
+      {"id":270,"zh":"大蛇兽","en":"Orochimon","stage":"ultimate"},
+      {"id":271,"zh":"垃圾桶兽","en":"Garbagemon","stage":"ultimate"},
+      {"id":272,"zh":"千兆龙兽","en":"Gigadramon","stage":"ultimate"},
+      {"id":273,"zh":"炮蜂兽","en":"CannonBeemon","stage":"ultimate"},
+      {"id":274,"zh":"地龙兽","en":"Groundramon","stage":"ultimate"},
+      {"id":275,"zh":"鲨鱼兽","en":"Sharkmon","stage":"ultimate"},
+      {"id":276,"zh":"沙悟净兽","en":"Shaujinmon","stage":"ultimate"},
+      {"id":277,"zh":"祖利兽","en":"Cherrymon","stage":"ultimate"},
+      {"id":278,"zh":"丧尸暴龙兽","en":"SkullGreymon","stage":"ultimate"},
+      {"id":279,"zh":"丧尸撒旦兽","en":"SkullSatamon","stage":"ultimate"},
+      {"id":280,"zh":"丧尸海龙兽","en":"SkullSeadramon","stage":"ultimate"},
+      {"id":281,"zh":"黑暗超级流星兽","en":"DarkSuperStarmon","stage":"ultimate"},
+      {"id":282,"zh":"达高兽","en":"Dragomon","stage":"ultimate"},
+      {"id":283,"zh":"坦克龙兽","en":"Tankdramon","stage":"ultimate"},
+      {"id":284,"zh":"怪蛙皇","en":"ShogunGekomon","stage":"ultimate"},
+      {"id":285,"zh":"分子兽","en":"Datamon","stage":"ultimate"},
+      {"id":286,"zh":"死神兽","en":"Phantomon","stage":"ultimate"},
+      {"id":287,"zh":"黑帝鼻涕兽","en":"BlackKingNumemon","stage":"ultimate"},
+      {"id":288,"zh":"蓝色火焰兽","en":"BlueMeramon","stage":"ultimate"},
+      {"id":289,"zh":"入侵者兽","en":"Vademon","stage":"ultimate"},
+      {"id":290,"zh":"斗牛士兽","en":"Matadormon","stage":"ultimate"},
+      {"id":291,"zh":"木乃伊兽","en":"Mummymon","stage":"ultimate"},
+      {"id":292,"zh":"神秘兽","en":"Mistymon","stage":"ultimate"},
+      {"id":293,"zh":"超蛇龙兽","en":"Megadramon","stage":"ultimate"},
+      {"id":294,"zh":"大古拉兽","en":"WarGrowlmon","stage":"ultimate"},
+      {"id":295,"zh":"钢铁巨龙兽","en":"MetalTyrannomon","stage":"ultimate"},
+      {"id":296,"zh":"光明兽FM","en":"Lucemon CM","stage":"ultimate"},
+      {"id":297,"zh":"淑女恶魔兽","en":"LadyDevimon","stage":"ultimate"},
+      {"id":298,"zh":"贤者兽","en":"Wisemon","stage":"ultimate"},
+      {"id":299,"zh":"恶海龙兽","en":"WaruSeadramon","stage":"ultimate"},
+      {"id":300,"zh":"古神兽","en":"Shakkoumon","stage":"ultimate"},
+      {"id":301,"zh":"人面战鹰兽","en":"Silphymon","stage":"ultimate"},
+      {"id":302,"zh":"恐蜂兽","en":"Dinobeemon","stage":"ultimate"},
+      {"id":303,"zh":"机甲龙兽","en":"Paildramon","stage":"ultimate"},
+      {"id":304,"zh":"地狱使者兽","en":"Infermon","stage":"ultimate"},
+      {"id":305,"zh":"火龙兽","en":"Aldamon","stage":"ultimate"},
+      {"id":306,"zh":"战狼兽","en":"Beowolfmon","stage":"ultimate"},
+      {"id":307,"zh":"阿波罗兽","en":"Apollomon","stage":"mega"},
+      {"id":308,"zh":"阿尔法兽","en":"Alphamon","stage":"mega"},
+      {"id":309,"zh":"究极V龙兽","en":"UlforceVeedramon","stage":"mega"},
+      {"id":310,"zh":"瓦尔德兽","en":"Varodurumon","stage":"mega"},
+      {"id":311,"zh":"维纳斯兽","en":"Venusmon","stage":"mega"},
+      {"id":312,"zh":"战斗暴龙兽","en":"WarGreymon","stage":"mega"},
+      {"id":313,"zh":"王龙兽","en":"Ouryumon","stage":"mega"},
+      {"id":314,"zh":"神圣天女兽","en":"Ophanimon","stage":"mega"},
+      {"id":315,"zh":"钥匙天使兽","en":"ClavisAngemon","stage":"mega"},
+      {"id":316,"zh":"颅骨兽","en":"Craniamon","stage":"mega"},
+      {"id":317,"zh":"十字兽","en":"Eaglemon","stage":"mega"},
+      {"id":318,"zh":"柯罗诺兽","en":"Chronomon HM","stage":"mega"},
+      {"id":319,"zh":"基路比兽（恶）","en":"Cherubimon (Black)","stage":"mega"},
+      {"id":320,"zh":"基路比兽（善）","en":"Cherubimon (Good)","stage":"mega"},
+      {"id":321,"zh":"神龙兽","en":"Goldramon","stage":"mega"},
+      {"id":322,"zh":"闪光暴龙兽","en":"ShineGreymon","stage":"mega"},
+      {"id":323,"zh":"裁决兽","en":"Justimon","stage":"mega"},
+      {"id":324,"zh":"丧尸长毛象兽","en":"SkullMammothmon","stage":"mega"},
+      {"id":325,"zh":"斩击天使兽","en":"SlashAngemon","stage":"mega"},
+      {"id":326,"zh":"八角马兽","en":"Kentaurosmon","stage":"mega"},
+      {"id":327,"zh":"斩龙兽","en":"Slayerdramon","stage":"mega"},
+      {"id":328,"zh":"究极天使兽","en":"Seraphimon","stage":"mega"},
+      {"id":329,"zh":"撒多格杜兽","en":"MegaGargomon","stage":"mega"},
+      {"id":330,"zh":"杜兰达兽","en":"Durandamon","stage":"mega"},
+      {"id":331,"zh":"尼普顿兽","en":"Neptunemon","stage":"mega"},
+      {"id":332,"zh":"高级安杜路兽","en":"HiAndromon","stage":"mega"},
+      {"id":333,"zh":"番长狮子兽","en":"BanchoLeomon","stage":"mega"},
+      {"id":334,"zh":"力神比多兽","en":"HerculesKabuterimon","stage":"mega"},
+      {"id":335,"zh":"凤凰兽","en":"Phoenixmon","stage":"mega"},
+      {"id":336,"zh":"圣龙兽","en":"Magnadramon","stage":"mega"},
+      {"id":337,"zh":"混沌神魔兽","en":"Mastemon","stage":"mega"},
+      {"id":338,"zh":"海天使兽","en":"MarineAngemon","stage":"mega"},
+      {"id":339,"zh":"马尔斯兽","en":"Marsmon","stage":"mega"},
+      {"id":340,"zh":"朱庇特兽","en":"Jupitermon","stage":"mega"},
+      {"id":341,"zh":"鸦神兽","en":"Ravemon","stage":"mega"},
+      {"id":342,"zh":"究极腕龙兽","en":"UltimateBrachiomon","stage":"mega"},
+      {"id":343,"zh":"伏尔坎兽","en":"Vulcanusmon","stage":"mega"},
+      {"id":344,"zh":"顽固兽","en":"Gankoomon","stage":"mega"},
+      {"id":345,"zh":"葛叶兽","en":"Kuzuhamon","stage":"mega"},
+      {"id":346,"zh":"超级火车兽","en":"GroundLocomon","stage":"mega"},
+      {"id":347,"zh":"狮鹫兽","en":"Gryphonmon","stage":"mega"},
+      {"id":348,"zh":"刻瑞斯兽","en":"Ceresmon","stage":"mega"},
+      {"id":349,"zh":"刻瑞斯兽 灵媒","en":"Ceresmon Medium","stage":"mega"},
+      {"id":350,"zh":"黄金剑狮兽","en":"SaberLeomon","stage":"mega"},
+      {"id":351,"zh":"沙古牙兽","en":"Sakuyamon","stage":"mega"},
+      {"id":352,"zh":"杰斯兽","en":"Jesmon","stage":"mega"},
+      {"id":353,"zh":"巨龟兽","en":"JumboGamemon","stage":"mega"},
+      {"id":354,"zh":"狄安娜兽","en":"Dianamon","stage":"mega"},
+      {"id":355,"zh":"杜纳斯兽","en":"Dynasmon","stage":"mega"},
+      {"id":356,"zh":"芳香兽","en":"Leopardmon","stage":"mega"},
+      {"id":357,"zh":"芳香兽LM","en":"Leopardmon LM","stage":"mega"},
+      {"id":358,"zh":"多路战龙兽","en":"Dorugoramon","stage":"mega"},
+      {"id":359,"zh":"摔角火山兽","en":"PileVolcanomon","stage":"mega"},
+      {"id":360,"zh":"王子豆豆兽","en":"PrinceMamemon","stage":"mega"},
+      {"id":361,"zh":"蛇颈龙兽","en":"Plesiomon","stage":"mega"},
+      {"id":362,"zh":"科学怪人兽","en":"Boltmon","stage":"mega"},
+      {"id":363,"zh":"幻影迦奥迦兽","en":"MirageGaogamon","stage":"mega"},
+      {"id":364,"zh":"钢铁加鲁鲁兽","en":"MetalGarurumon","stage":"mega"},
+      {"id":365,"zh":"钢铁海龙兽","en":"MetalSeadramon","stage":"mega"},
+      {"id":366,"zh":"中世纪红莲骑士兽","en":"MedievalGallantmon","stage":"mega"},
+      {"id":367,"zh":"蔷薇兽","en":"Rosemon","stage":"mega"},
+      {"id":368,"zh":"莲花兽","en":"Lotosmon","stage":"mega"},
+      {"id":369,"zh":"复仇基德兽","en":"AvengeKidmon","stage":"mega"},
+      {"id":370,"zh":"外星兽","en":"Ebemon","stage":"mega"},
+      {"id":371,"zh":"究极吸血恶魔兽","en":"VenomMyotismon","stage":"mega"},
+      {"id":372,"zh":"古代贤者兽","en":"AncientWisemon","stage":"mega"},
+      {"id":373,"zh":"凯王兽","en":"Gaiomon","stage":"mega"},
+      {"id":374,"zh":"混沌红莲骑士兽","en":"ChaosGallantmon","stage":"mega"},
+      {"id":375,"zh":"混沌龙兽","en":"Chaosdramon","stage":"mega"},
+      {"id":376,"zh":"卡利斯托兽","en":"Callismon","stage":"mega"},
+      {"id":377,"zh":"枪龙兽","en":"Gundramon","stage":"mega"},
+      {"id":378,"zh":"大王悟空兽","en":"KingEtemon","stage":"mega"},
+      {"id":379,"zh":"大德古兽","en":"GranDracmon","stage":"mega"},
+      {"id":380,"zh":"柯罗诺兽DM","en":"Chronomon DM","stage":"mega"},
+      {"id":381,"zh":"斩伐兽","en":"Zanbamon","stage":"mega"},
+      {"id":382,"zh":"丧尸普陆托兽","en":"ZombiePlutomon","stage":"mega"},
+      {"id":383,"zh":"暗龙兽","en":"Darkdramon","stage":"mega"},
+      {"id":384,"zh":"虎蜂兽","en":"TigerVespamon","stage":"mega"},
+      {"id":385,"zh":"泰坦兽","en":"Titamon","stage":"mega"},
+      {"id":386,"zh":"暴君比多兽","en":"TyrantKabuterimon","stage":"mega"},
+      {"id":387,"zh":"究极魔兽","en":"Creepymon","stage":"mega"},
+      {"id":388,"zh":"红莲骑士兽","en":"Gallantmon","stage":"mega"},
+      {"id":389,"zh":"巴克科斯兽","en":"Bacchusmon","stage":"mega"},
+      {"id":390,"zh":"巴克科斯兽DM","en":"Bacchusmon DM","stage":"mega"},
+      {"id":391,"zh":"巴尔巴兽","en":"Barbamon","stage":"mega"},
+      {"id":392,"zh":"小丑皇","en":"Piedmon","stage":"mega"},
+      {"id":393,"zh":"木偶兽","en":"Puppetmon","stage":"mega"},
+      {"id":394,"zh":"法老兽","en":"Pharaohmon","stage":"mega"},
+      {"id":395,"zh":"河豚兽","en":"Pukumon","stage":"mega"},
+      {"id":396,"zh":"白金鼻涕兽","en":"PlatinumNumemon","stage":"mega"},
+      {"id":397,"zh":"普鲁托兽","en":"Plutomon","stage":"mega"},
+      {"id":398,"zh":"破坏龙兽","en":"Breakdramon","stage":"mega"},
+      {"id":399,"zh":"贝利亚吸血魔兽","en":"MaloMyotismon","stage":"mega"},
+      {"id":400,"zh":"贝尔斯塔兽","en":"BeelStarmon","stage":"mega"},
+      {"id":401,"zh":"堕天地狱兽","en":"Beelzemon","stage":"mega"},
+      {"id":402,"zh":"贝尔菲兽:沉睡型态","en":"Belphemon SM","stage":"mega"},
+      {"id":403,"zh":"玛格纳基德兽","en":"MagnaKidmon","stage":"mega"},
+      {"id":404,"zh":"密涅瓦兽","en":"Minervamon","stage":"mega"},
+      {"id":405,"zh":"千年兽","en":"Millenniummon","stage":"mega"},
+      {"id":406,"zh":"机械邪龙兽","en":"Machinedramon","stage":"mega"},
+      {"id":407,"zh":"破灭魔龙兽","en":"Megidramon","stage":"mega"},
+      {"id":408,"zh":"钢铁雄猿兽","en":"MetalEtemon","stage":"mega"},
+      {"id":409,"zh":"墨丘利兽","en":"Merukimon","stage":"mega"},
+      {"id":410,"zh":"朱诺兽","en":"Junomon","stage":"mega"},
+      {"id":411,"zh":"朱诺兽：癔病型态","en":"Junomon HM","stage":"mega"},
+      {"id":412,"zh":"终极巨龙兽","en":"RustTyrannomon","stage":"mega"},
+      {"id":413,"zh":"利维坦兽","en":"Leviamon","stage":"mega"},
+      {"id":414,"zh":"莉莉丝兽","en":"Lilithmon","stage":"mega"},
+      {"id":415,"zh":"剑皇兽","en":"LordKnightmon","stage":"mega"},
+      {"id":416,"zh":"帝皇龙甲兽：龙型态","en":"Imperialdramon DM","stage":"mega"},
+      {"id":417,"zh":"帝皇龙甲兽：战斗型态","en":"Imperialdramon FM","stage":"mega"},
+      {"id":418,"zh":"维京毛人兽","en":"Vikemon","stage":"mega"},
+      {"id":419,"zh":"女武神兽","en":"Valkyrimon","stage":"mega"},
+      {"id":420,"zh":"究极古加兽","en":"GranKuwagamon","stage":"mega"},
+      {"id":421,"zh":"超恶魔兽","en":"Diaboromon","stage":"mega"},
+      {"id":422,"zh":"黄金拉比兽","en":"Rapidmon (Armor)","stage":"mega"},
+      {"id":423,"zh":"金甲龙兽","en":"Magnamon","stage":"mega"},
+      {"id":424,"zh":"凯萨暴龙兽","en":"EmperorGreymon","stage":"mega"},
+      {"id":425,"zh":"铠甲加鲁鲁兽","en":"MagnaGarurumon","stage":"mega"},
+      {"id":426,"zh":"铠甲加鲁鲁兽(分离)","en":"MagnaGarurumon (Detached)","stage":"mega"},
+      {"id":427,"zh":"阿尔法兽王龙剑","en":"Alphamon Ouryuken","stage":"megaPlus"},
+      {"id":428,"zh":"颅骨兽+魔马兽","en":"Craniamon + Enbarrmon","stage":"megaPlus"},
+      {"id":429,"zh":"帝皇龙甲兽 圣骑士型态","en":"Imperialdramon PM","stage":"megaPlus"},
+      {"id":430,"zh":"奥米加兽","en":"Omnimon","stage":"megaPlus"},
+      {"id":431,"zh":"奥米加兽兹瓦特","en":"Omnimon Zwart","stage":"megaPlus"},
+      {"id":432,"zh":"混沌兽","en":"Chaosmon","stage":"megaPlus"},
+      {"id":433,"zh":"混沌兽:瓦尔德臂","en":"Chaosmon Valdur Arm","stage":"megaPlus"},
+      {"id":434,"zh":"优雅新星兽","en":"GraceNovamon","stage":"megaPlus"},
+      {"id":435,"zh":"闪光暴龙兽：爆裂型态","en":"ShineGreymon BM","stage":"megaPlus"},
+      {"id":436,"zh":"金刚武神兽","en":"Susanomon","stage":"megaPlus"},
+      {"id":437,"zh":"朱庇特兽:雷霆型态","en":"Jupitermon WM","stage":"megaPlus"},
+      {"id":438,"zh":"鸦神兽：爆裂型态","en":"Ravemon BM","stage":"megaPlus"},
+      {"id":439,"zh":"艾克萨兽","en":"Examon","stage":"megaPlus"},
+      {"id":440,"zh":"幻影迦奥迦兽：爆裂模式","en":"MirageGaogamon BM","stage":"megaPlus"},
+      {"id":441,"zh":"蔷薇兽：爆裂型态","en":"Rosemon BM","stage":"megaPlus"},
+      {"id":442,"zh":"泰坦兽+骷髅俾路支兽","en":"Titamon + SkullBaluchimon","stage":"megaPlus"},
+      {"id":443,"zh":"红莲骑士兽：真红莲型态","en":"Gallantmon CM","stage":"megaPlus"},
+      {"id":444,"zh":"堕天地狱兽：爆裂模式","en":"Beelzemon BM","stage":"megaPlus"},
+      {"id":445,"zh":"贝尔菲兽:愤怒型态","en":"Belphemon RM","stage":"megaPlus"},
+      {"id":446,"zh":"梅尔瓦兽","en":"Mervamon","stage":"megaPlus"},
+      {"id":447,"zh":"光明兽:撒旦型态","en":"Lucemon SM","stage":"megaPlus"},
+      {"id":448,"zh":"灭世魔兽","en":"Armageddemon","stage":"megaPlus"},
+      {"id":449,"zh":"亚古兽 -勇气之绊-","en":"Agumon (Bond of Bravery)","stage":"megaPlus"},
+      {"id":450,"zh":"极恶魔王","en":"Apocalymon","stage":"megaPlus"},
+      {"id":451,"zh":"加布兽 -友情之绊-","en":"Gabumon (Bond of Friendship)","stage":"megaPlus"},
+      {"id":452,"zh":"偃月加鲁鲁兽","en":"CresGarurumon","stage":"mega"},
+      {"id":453,"zh":"异界兽","en":"Parallelmon","stage":"mega"},
+      {"id":454,"zh":"电光暴龙兽","en":"BlitzGreymon","stage":"mega"},
+      {"id":455,"zh":"奥米加兽Alter-B","en":"Omnimon Alter-B","stage":"megaPlus"},
+      {"id":456,"zh":"奥米加兽Alter-S","en":"Omnimon Alter-S","stage":"megaPlus"},
+      {"id":457,"zh":"黑奥米加兽 战损","en":"Omnimon Zwart Defeat","stage":"megaPlus"},
+      {"id":458,"zh":"番长豆豆兽","en":"BanchoMamemon","stage":"mega"},
+      {"id":459,"zh":"番长花仙兽","en":"BanchoLillymon","stage":"mega"},
+      {"id":460,"zh":"番长魔像兽","en":"BanchoGolemon","stage":"mega"},
+      {"id":461,"zh":"番长飞虫兽","en":"BanchoStingmon","stage":"mega"},
+      {"id":462,"zh":"奥米加兽:慈悲形态","en":"Omnimon MM (Merciful Mode)","stage":"megaPlus"},
+      {"id":463,"zh":"究极V龙兽X","en":"UlforceVeedramon (X Antibody)","stage":"megaPlus"},
+      {"id":464,"zh":"金甲龙兽X","en":"Magnamon (X Antibody)","stage":"megaPlus"},
+      {"id":465,"zh":"杰斯兽X","en":"Jesmon (X Antibody)","stage":"megaPlus"},
+      {"id":466,"zh":"红莲骑士兽X","en":"Gallantmon (X Antibody)","stage":"megaPlus"},
+      {"id":467,"zh":"奥米加兽X","en":"Omnimon (X Antibody)","stage":"megaPlus"},
+      {"id":468,"zh":"黑亚古兽","en":"Agumon (Black)","stage":"rookie"},
+      {"id":469,"zh":"黑加布兽","en":"Gabumon (Black)","stage":"rookie"},
+      {"id":470,"zh":"黑加鲁鲁兽","en":"Garurumon (Black)","stage":"champion"},
+      {"id":471,"zh":"暴龙兽(蓝)","en":"Greymon (Blue)","stage":"champion"},
+      {"id":472,"zh":"机械暴龙兽(蓝)","en":"MetalGreymon (Blue)","stage":"ultimate"},
+      {"id":473,"zh":"兽人加鲁鲁(黑)","en":"WereGarurumon (Black)","stage":"ultimate"},
+      {"id":474,"zh":"黑暗战斗暴龙兽","en":"BlackWarGreymon","stage":"mega"},
+      {"id":475,"zh":"钢铁加鲁鲁兽(黑)","en":"MetalGarurumon (Black)","stage":"mega"}
+    ],
+    "edges": [
+      [1,12],
+      [1,16],
+      [2,8],
+      [3,14],
+      [3,20],
+      [4,10],
+      [4,17],
+      [4,19],
+      [5,11],
+      [5,15],
+      [6,9],
+      [7,13],
+      [7,18],
+      [8,26],
+      [8,29],
+      [8,45],
+      [8,71],
+      [9,21],
+      [9,47],
+      [9,48],
+      [9,49],
+      [9,64],
+      [9,74],
+      [10,53],
+      [10,54],
+      [10,56],
+      [10,73],
+      [10,75],
+      [11,25],
+      [11,38],
+      [11,40],
+      [11,43],
+      [11,65],
+      [11,77],
+      [12,66],
+      [12,70],
+      [12,80],
+      [12,468],
+      [12,469],
+      [13,24],
+      [13,27],
+      [13,39],
+      [13,51],
+      [13,76],
+      [14,37],
+      [14,50],
+      [14,59],
+      [14,68],
+      [15,22],
+      [15,34],
+      [15,52],
+      [15,57],
+      [16,60],
+      [16,61],
+      [16,62],
+      [16,72],
+      [17,31],
+      [17,32],
+      [17,33],
+      [17,36],
+      [17,55],
+      [17,78],
+      [18,23],
+      [18,42],
+      [18,44],
+      [18,63],
+      [18,67],
+      [19,28],
+      [19,46],
+      [19,69],
+      [19,79],
+      [20,30],
+      [20,35],
+      [20,41],
+      [20,58],
+      [21,90],
+      [21,92],
+      [21,107],
+      [21,149],
+      [21,160],
+      [21,449],
+      [22,83],
+      [22,84],
+      [22,88],
+      [22,96],
+      [22,110],
+      [22,188],
+      [23,82],
+      [23,104],
+      [23,105],
+      [23,138],
+      [23,162],
+      [24,99],
+      [24,100],
+      [24,133],
+      [24,135],
+      [24,145],
+      [24,187],
+      [25,95],
+      [25,102],
+      [25,125],
+      [25,169],
+      [25,174],
+      [25,176],
+      [26,124],
+      [26,135],
+      [26,150],
+      [26,176],
+      [27,86],
+      [27,104],
+      [27,115],
+      [27,137],
+      [27,422],
+      [28,85],
+      [28,94],
+      [28,120],
+      [28,146],
+      [28,172],
+      [29,86],
+      [29,108],
+      [29,125],
+      [29,134],
+      [29,171],
+      [30,87],
+      [30,106],
+      [30,117],
+      [30,135],
+      [30,161],
+      [31,99],
+      [31,102],
+      [31,103],
+      [31,127],
+      [32,99],
+      [32,106],
+      [32,112],
+      [32,173],
+      [33,88],
+      [33,103],
+      [33,116],
+      [34,82],
+      [34,97],
+      [34,98],
+      [34,101],
+      [34,131],
+      [34,153],
+      [35,89],
+      [35,104],
+      [35,109],
+      [35,114],
+      [35,470],
+      [36,102],
+      [36,103],
+      [36,116],
+      [36,173],
+      [37,93],
+      [37,107],
+      [37,152],
+      [37,157],
+      [37,178],
+      [38,88],
+      [38,90],
+      [38,110],
+      [38,122],
+      [38,136],
+      [39,296],
+      [40,81],
+      [40,106],
+      [40,121],
+      [40,146],
+      [40,147],
+      [41,93],
+      [41,109],
+      [41,114],
+      [41,129],
+      [41,159],
+      [42,94],
+      [42,115],
+      [42,122],
+      [42,123],
+      [42,142],
+      [42,171],
+      [43,82],
+      [43,87],
+      [43,117],
+      [43,131],
+      [43,148],
+      [43,451],
+      [44,96],
+      [44,115],
+      [44,123],
+      [44,127],
+      [44,142],
+      [44,144],
+      [45,118],
+      [45,119],
+      [45,146],
+      [45,170],
+      [45,172],
+      [46,111],
+      [46,124],
+      [46,126],
+      [46,136],
+      [46,143],
+      [46,151],
+      [47,91],
+      [47,108],
+      [47,127],
+      [47,129],
+      [47,169],
+      [48,86],
+      [48,95],
+      [48,176],
+      [48,234],
+      [49,91],
+      [49,101],
+      [49,121],
+      [49,128],
+      [49,149],
+      [49,157],
+      [50,83],
+      [50,107],
+      [50,131],
+      [50,132],
+      [50,153],
+      [50,175],
+      [51,84],
+      [51,106],
+      [51,119],
+      [51,184],
+      [52,90],
+      [52,92],
+      [52,97],
+      [52,133],
+      [52,145],
+      [53,104],
+      [53,130],
+      [53,140],
+      [53,165],
+      [53,167],
+      [53,178],
+      [54,116],
+      [54,120],
+      [54,130],
+      [54,140],
+      [54,167],
+      [55,83],
+      [55,99],
+      [55,103],
+      [55,163],
+      [56,108],
+      [56,120],
+      [56,126],
+      [56,129],
+      [56,130],
+      [57,87],
+      [57,96],
+      [57,105],
+      [57,111],
+      [57,137],
+      [57,162],
+      [58,110],
+      [58,117],
+      [58,120],
+      [58,137],
+      [58,470],
+      [59,89],
+      [59,109],
+      [59,126],
+      [59,129],
+      [59,139],
+      [59,168],
+      [60,112],
+      [60,113],
+      [60,118],
+      [60,153],
+      [60,156],
+      [60,161],
+      [61,121],
+      [61,144],
+      [61,147],
+      [61,160],
+      [61,165],
+      [62,98],
+      [62,114],
+      [62,132],
+      [62,133],
+      [62,153],
+      [62,166],
+      [63,95],
+      [63,148],
+      [63,152],
+      [63,164],
+      [63,174],
+      [63,189],
+      [64,92],
+      [64,128],
+      [64,145],
+      [64,175],
+      [64,471],
+      [65,139],
+      [65,141],
+      [65,151],
+      [65,155],
+      [65,157],
+      [66,113],
+      [66,163],
+      [66,168],
+      [66,169],
+      [67,122],
+      [67,123],
+      [67,142],
+      [67,144],
+      [67,171],
+      [68,97],
+      [68,105],
+      [68,111],
+      [68,136],
+      [68,138],
+      [68,162],
+      [69,97],
+      [69,147],
+      [69,148],
+      [69,154],
+      [69,165],
+      [69,166],
+      [70,112],
+      [70,124],
+      [70,153],
+      [70,154],
+      [71,118],
+      [71,125],
+      [71,134],
+      [71,143],
+      [71,170],
+      [72,138],
+      [72,141],
+      [72,156],
+      [72,161],
+      [72,471],
+      [73,85],
+      [73,150],
+      [73,158],
+      [73,164],
+      [73,172],
+      [73,177],
+      [74,121],
+      [74,122],
+      [74,155],
+      [74,156],
+      [74,160],
+      [74,167],
+      [75,140],
+      [75,154],
+      [75,159],
+      [75,164],
+      [76,151],
+      [76,174],
+      [76,179],
+      [76,181],
+      [77,101],
+      [77,175],
+      [77,183],
+      [77,186],
+      [77,423],
+      [78,100],
+      [78,173],
+      [78,180],
+      [78,185],
+      [79,94],
+      [79,158],
+      [79,177],
+      [80,139],
+      [80,142],
+      [80,158],
+      [80,170],
+      [80,178],
+      [81,193],
+      [81,194],
+      [81,195],
+      [81,196],
+      [81,197],
+      [82,212],
+      [82,220],
+      [82,260],
+      [82,280],
+      [83,201],
+      [83,217],
+      [83,272],
+      [83,293],
+      [84,221],
+      [84,241],
+      [84,254],
+      [84,300],
+      [85,198],
+      [85,235],
+      [85,262],
+      [85,273],
+      [86,227],
+      [86,236],
+      [86,258],
+      [87,229],
+      [87,235],
+      [87,242],
+      [87,288],
+      [88,217],
+      [88,218],
+      [88,278],
+      [89,205],
+      [89,207],
+      [89,229],
+      [90,223],
+      [90,235],
+      [90,278],
+      [90,293],
+      [91,200],
+      [91,201],
+      [91,272],
+      [92,210],
+      [92,226],
+      [92,295],
+      [93,210],
+      [93,240],
+      [93,264],
+      [94,211],
+      [94,266],
+      [94,269],
+      [94,286],
+      [95,206],
+      [95,214],
+      [95,248],
+      [95,294],
+      [96,221],
+      [96,253],
+      [96,298],
+      [97,182],
+      [97,203],
+      [97,301],
+      [98,208],
+      [98,281],
+      [98,290],
+      [98,291],
+      [99,204],
+      [99,215],
+      [99,219],
+      [99,244],
+      [100,219],
+      [100,240],
+      [100,292],
+      [101,200],
+      [101,201],
+      [101,210],
+      [101,472],
+      [102,204],
+      [102,214],
+      [102,218],
+      [103,213],
+      [103,225],
+      [103,267],
+      [104,212],
+      [104,222],
+      [104,253],
+      [104,292],
+      [105,203],
+      [105,216],
+      [105,222],
+      [105,233],
+      [105,237],
+      [106,213],
+      [106,221],
+      [106,254],
+      [107,206],
+      [107,272],
+      [107,283],
+      [108,238],
+      [108,250],
+      [108,298],
+      [109,205],
+      [109,216],
+      [109,219],
+      [109,228],
+      [110,203],
+      [110,213],
+      [110,247],
+      [110,260],
+      [111,216],
+      [111,233],
+      [111,237],
+      [112,285],
+      [112,292],
+      [112,298],
+      [113,203],
+      [113,263],
+      [113,297],
+      [114,240],
+      [114,258],
+      [114,281],
+      [115,249],
+      [115,276],
+      [115,284],
+      [116,241],
+      [116,245],
+      [116,262],
+      [116,277],
+      [117,208],
+      [117,231],
+      [117,242],
+      [117,288],
+      [118,199],
+      [118,202],
+      [118,212],
+      [118,248],
+      [119,199],
+      [119,227],
+      [119,285],
+      [120,245],
+      [120,251],
+      [120,262],
+      [120,263],
+      [121,217],
+      [121,220],
+      [121,260],
+      [121,275],
+      [121,280],
+      [121,299],
+      [122,230],
+      [122,249],
+      [122,280],
+      [122,295],
+      [122,299],
+      [123,220],
+      [123,230],
+      [123,253],
+      [124,238],
+      [124,256],
+      [124,259],
+      [124,281],
+      [125,252],
+      [125,264],
+      [125,283],
+      [126,232],
+      [126,245],
+      [126,271],
+      [127,206],
+      [127,248],
+      [127,276],
+      [128,202],
+      [128,223],
+      [128,274],
+      [128,295],
+      [129,232],
+      [129,258],
+      [129,290],
+      [130,251],
+      [130,263],
+      [130,277],
+      [131,228],
+      [131,246],
+      [131,255],
+      [132,207],
+      [132,226],
+      [132,247],
+      [132,472],
+      [133,226],
+      [133,228],
+      [133,240],
+      [134,257],
+      [134,261],
+      [134,264],
+      [135,244],
+      [135,252],
+      [135,288],
+      [136,208],
+      [136,222],
+      [136,246],
+      [137,205],
+      [137,229],
+      [137,237],
+      [138,216],
+      [138,231],
+      [138,237],
+      [138,297],
+      [139,232],
+      [139,244],
+      [139,266],
+      [140,242],
+      [140,251],
+      [140,277],
+      [141,243],
+      [141,279],
+      [141,291],
+      [142,243],
+      [142,249],
+      [142,282],
+      [143,199],
+      [143,236],
+      [143,264],
+      [144,250],
+      [144,270],
+      [144,287],
+      [144,299],
+      [145,247],
+      [145,274],
+      [145,294],
+      [146,230],
+      [146,235],
+      [146,269],
+      [146,277],
+      [147,241],
+      [147,249],
+      [147,284],
+      [148,224],
+      [148,236],
+      [148,238],
+      [149,274],
+      [149,278],
+      [149,294],
+      [150,287],
+      [150,289],
+      [150,299],
+      [151,222],
+      [151,233],
+      [151,256],
+      [151,460],
+      [152,206],
+      [152,210],
+      [152,255],
+      [153,265],
+      [153,267],
+      [153,290],
+      [153,473],
+      [154,224],
+      [154,259],
+      [154,268],
+      [154,271],
+      [155,243],
+      [155,246],
+      [155,274],
+      [156,265],
+      [156,267],
+      [156,279],
+      [156,297],
+      [156,304],
+      [157,223],
+      [157,235],
+      [157,239],
+      [157,270],
+      [157,275],
+      [158,198],
+      [158,266],
+      [158,291],
+      [158,304],
+      [159,238],
+      [159,256],
+      [159,259],
+      [159,268],
+      [160,224],
+      [160,268],
+      [160,281],
+      [161,231],
+      [161,267],
+      [161,286],
+      [161,288],
+      [162,212],
+      [162,216],
+      [162,286],
+      [163,204],
+      [163,256],
+      [163,279],
+      [164,198],
+      [164,211],
+      [164,269],
+      [164,293],
+      [165,259],
+      [165,261],
+      [165,289],
+      [166,239],
+      [166,250],
+      [166,297],
+      [166,473],
+      [167,271],
+      [167,284],
+      [167,289],
+      [168,205],
+      [168,246],
+      [168,268],
+      [169,206],
+      [169,217],
+      [169,218],
+      [170,252],
+      [170,285],
+      [170,293],
+      [171,202],
+      [171,239],
+      [171,282],
+      [171,284],
+      [171,287],
+      [172,227],
+      [172,273],
+      [172,283],
+      [173,204],
+      [173,215],
+      [173,225],
+      [173,301],
+      [174,233],
+      [174,255],
+      [174,300],
+      [175,226],
+      [175,302],
+      [175,303],
+      [176,214],
+      [176,257],
+      [176,273],
+      [177,211],
+      [177,269],
+      [177,302],
+      [177,303],
+      [178,266],
+      [178,270],
+      [178,282],
+      [178,304],
+      [187,190],
+      [187,305],
+      [188,192],
+      [188,306],
+      [189,191],
+      [190,187],
+      [190,305],
+      [191,189],
+      [192,188],
+      [192,306],
+      [193,340],
+      [194,340],
+      [195,380],
+      [196,340],
+      [197,340],
+      [198,334],
+      [198,386],
+      [199,316],
+      [199,332],
+      [199,362],
+      [200,310],
+      [200,322],
+      [200,327],
+      [201,309],
+      [201,321],
+      [201,327],
+      [202,320],
+      [202,402],
+      [202,412],
+      [203,314],
+      [203,336],
+      [203,337],
+      [203,410],
+      [204,335],
+      [204,347],
+      [204,352],
+      [205,333],
+      [205,339],
+      [205,350],
+      [205,356],
+      [206,308],
+      [206,330],
+      [206,355],
+      [207,319],
+      [207,376],
+      [208,209],
+      [208,350],
+      [208,397],
+      [208,475],
+      [209,208],
+      [209,350],
+      [209,397],
+      [209,475],
+      [210,309],
+      [210,323],
+      [211,334],
+      [211,384],
+      [211,461],
+      [212,361],
+      [212,418],
+      [213,317],
+      [213,326],
+      [213,419],
+      [214,312],
+      [214,330],
+      [214,388],
+      [215,317],
+      [215,335],
+      [216,350],
+      [216,363],
+      [217,313],
+      [217,373],
+      [218,318],
+      [218,347],
+      [218,373],
+      [218,380],
+      [219,307],
+      [219,328],
+      [219,474],
+      [220,331],
+      [220,338],
+      [220,361],
+      [220,413],
+      [221,315],
+      [221,321],
+      [221,325],
+      [221,328],
+      [222,324],
+      [222,418],
+      [223,312],
+      [223,373],
+      [223,454],
+      [224,376],
+      [224,378],
+      [225,310],
+      [225,341],
+      [225,345],
+      [226,322],
+      [226,326],
+      [226,403],
+      [227,329],
+      [227,332],
+      [228,333],
+      [228,364],
+      [228,375],
+      [229,364],
+      [229,409],
+      [229,452],
+      [230,343],
+      [230,395],
+      [231,324],
+      [231,326],
+      [231,428],
+      [232,319],
+      [232,320],
+      [232,354],
+      [233,362],
+      [233,408],
+      [234,330],
+      [234,359],
+      [234,403],
+      [235,379],
+      [235,405],
+      [235,406],
+      [236,360],
+      [236,396],
+      [236,475],
+      [237,320],
+      [237,354],
+      [237,415],
+      [238,321],
+      [238,323],
+      [238,360],
+      [239,324],
+      [239,442],
+      [240,344],
+      [240,352],
+      [240,384],
+      [241,338],
+      [241,348],
+      [242,311],
+      [242,345],
+      [242,351],
+      [243,385],
+      [243,389],
+      [244,362],
+      [244,369],
+      [244,401],
+      [245,310],
+      [245,348],
+      [245,396],
+      [246,342],
+      [246,398],
+      [247,308],
+      [247,358],
+      [248,325],
+      [248,356],
+      [248,381],
+      [248,415],
+      [249,331],
+      [249,361],
+      [250,323],
+      [250,363],
+      [250,409],
+      [251,367],
+      [251,368],
+      [252,346],
+      [252,360],
+      [252,396],
+      [253,311],
+      [253,314],
+      [253,315],
+      [254,317],
+      [254,347],
+      [254,355],
+      [255,313],
+      [255,342],
+      [255,412],
+      [256,307],
+      [256,333],
+      [256,344],
+      [256,359],
+      [257,346],
+      [257,377],
+      [258,329],
+      [258,363],
+      [259,360],
+      [259,395],
+      [259,458],
+      [260,313],
+      [260,353],
+      [260,365],
+      [261,364],
+      [261,403],
+      [262,367],
+      [262,393],
+      [262,414],
+      [263,348],
+      [263,367],
+      [263,459],
+      [264,332],
+      [264,346],
+      [265,371],
+      [265,397],
+      [265,401],
+      [265,402],
+      [266,368],
+      [266,386],
+      [266,414],
+      [267,371],
+      [267,387],
+      [267,399],
+      [268,359],
+      [268,378],
+      [268,408],
+      [269,334],
+      [269,386],
+      [269,420],
+      [270,377],
+      [270,389],
+      [270,404],
+      [271,353],
+      [271,408],
+      [272,375],
+      [272,377],
+      [273,329],
+      [273,384],
+      [274,398],
+      [274,407],
+      [275,331],
+      [275,365],
+      [276,353],
+      [276,391],
+      [276,393],
+      [277,367],
+      [277,393],
+      [277,420],
+      [278,324],
+      [278,385],
+      [279,370],
+      [279,391],
+      [279,392],
+      [280,365],
+      [280,413],
+      [281,341],
+      [281,385],
+      [281,400],
+      [282,343],
+      [282,370],
+      [282,453],
+      [283,377],
+      [283,383],
+      [284,378],
+      [284,389],
+      [284,395],
+      [285,394],
+      [285,421],
+      [286,341],
+      [286,351],
+      [286,392],
+      [286,402],
+      [287,396],
+      [287,408],
+      [288,339],
+      [288,394],
+      [289,369],
+      [289,370],
+      [290,325],
+      [290,345],
+      [290,379],
+      [291,332],
+      [291,369],
+      [291,394],
+      [292,355],
+      [292,366],
+      [292,374],
+      [292,381],
+      [293,406],
+      [293,407],
+      [294,374],
+      [294,375],
+      [294,388],
+      [294,407],
+      [295,342],
+      [295,406],
+      [295,412],
+      [296,447],
+      [297,337],
+      [297,400],
+      [297,414],
+      [298,372],
+      [298,374],
+      [298,387],
+      [299,365],
+      [299,407],
+      [299,413],
+      [300,321],
+      [300,336],
+      [300,410],
+      [300,418],
+      [301,400],
+      [301,404],
+      [301,419],
+      [302,384],
+      [302,420],
+      [303,358],
+      [303,383],
+      [303,416],
+      [304,319],
+      [304,399],
+      [304,421],
+      [304,453],
+      [305,424],
+      [306,425],
+      [307,434],
+      [308,427],
+      [309,463],
+      [310,433],
+      [312,430],
+      [313,427],
+      [316,428],
+      [322,435],
+      [327,439],
+      [333,432],
+      [333,433],
+      [340,437],
+      [341,438],
+      [348,349],
+      [349,348],
+      [352,465],
+      [354,434],
+      [356,357],
+      [357,356],
+      [363,440],
+      [364,430],
+      [367,441],
+      [383,432],
+      [385,442],
+      [388,443],
+      [388,466],
+      [389,390],
+      [390,389],
+      [392,450],
+      [397,382],
+      [398,439],
+      [401,444],
+      [402,445],
+      [404,446],
+      [406,405],
+      [410,411],
+      [411,410],
+      [416,417],
+      [416,429],
+      [417,416],
+      [417,429],
+      [421,448],
+      [423,464],
+      [424,436],
+      [425,426],
+      [425,436],
+      [426,425],
+      [430,431],
+      [430,462],
+      [430,467],
+      [431,430],
+      [431,457],
+      [452,456],
+      [454,456],
+      [455,456],
+      [456,455],
+      [457,455],
+      [463,309],
+      [464,423],
+      [465,352],
+      [466,388],
+      [467,430],
+      [468,91],
+      [468,93],
+      [468,155],
+      [468,156],
+      [468,471],
+      [469,98],
+      [469,132],
+      [469,163],
+      [469,166],
+      [469,168],
+      [469,470],
+      [470,250],
+      [470,279],
+      [470,473],
+      [471,200],
+      [471,239],
+      [471,472],
+      [472,319],
+      [472,383],
+      [472,474],
+      [473,359],
+      [473,475],
+      [474,431],
+      [475,431]
+    ]
+  }
+  </script>
+
+  <script id="app">
+  (() => {
+    "use strict";
+
+    function buildIndexes({ digimon, edges }) {
+      const byId = new Map(digimon.map(item => [item.id, item]));
+      const next = new Map(digimon.map(item => [item.id, []]));
+      const previous = new Map(digimon.map(item => [item.id, []]));
+
+      for (const [from, to] of edges) {
+        next.get(from).push(to);
+        previous.get(to).push(from);
+      }
+
+      return { byId, next, previous };
+    }
+
+    function walk(start, adjacency, found) {
+      const pending = [...adjacency.get(start)];
+      while (pending.length) {
+        const id = pending.pop();
+        if (found.has(id)) continue;
+        found.add(id);
+        pending.push(...adjacency.get(id));
+      }
+    }
+
+    function collectRelated(selectedId, { next, previous }) {
+      const ancestors = new Set([selectedId]);
+      const descendants = new Set([selectedId]);
+      walk(selectedId, previous, ancestors);
+      walk(selectedId, next, descendants);
+      return new Set([...ancestors, ...descendants]);
+    }
+
+    function matchesQuery(digimon, query) {
+      const value = query.trim().toLocaleLowerCase();
+      if (!value) return true;
+      const number = String(digimon.id).padStart(3, "0");
+      return number.includes(value)
+        || digimon.zh.includes(value)
+        || digimon.en.toLocaleLowerCase().includes(value);
+    }
+
+    globalThis.TimeStranger = { buildIndexes, collectRelated, matchesQuery };
+
+    if (typeof document !== "undefined") {
+      const data = JSON.parse(document.querySelector("#digimon-data").textContent);
+      const indexes = buildIndexes(data);
+      const stageOrder = ["inTraining1", "inTraining2", "rookie", "champion", "ultimate", "mega", "megaPlus"];
+      const copy = {
+        zh: {
+          count: "475 只数码兽",
+          search: "搜索名称或编号",
+          noResults: "没有匹配的数码兽",
+          related: count => `${count} 只相关数码兽`,
+          switchLanguage: "Switch to English",
+          stages: ["幼年期 I", "幼年期 II", "成长期", "成熟期", "完全体", "究极体", "超究极体"],
+        },
+        en: {
+          count: "475 Digimon",
+          search: "Search name or number",
+          noResults: "No matching Digimon",
+          related: count => `${count} related Digimon`,
+          switchLanguage: "切换到中文",
+          stages: ["In-Training I", "In-Training II", "Rookie", "Champion", "Ultimate", "Mega", "Mega+"],
+        },
+      };
+      const state = { selectedId: 21, language: "zh", searchQuery: "" };
+      const elements = {
+        count: document.querySelector("#dataset-count"),
+        language: document.querySelector("#language"),
+        search: document.querySelector("#search"),
+        searchLabel: document.querySelector("#search-label"),
+        list: document.querySelector("#digimon-list"),
+        title: document.querySelector("#selection-title"),
+        meta: document.querySelector("#selection-meta"),
+        graph: document.querySelector("#graph"),
+        graphScroll: document.querySelector("#graph-scroll"),
+        columns: document.querySelector("#graph-columns"),
+        edges: document.querySelector("#edge-layer"),
+      };
+
+      validateData();
+      render();
+
+      elements.search.addEventListener("input", event => {
+        state.searchQuery = event.target.value;
+        renderList();
+      });
+
+      elements.language.addEventListener("click", () => {
+        state.language = state.language === "zh" ? "en" : "zh";
+        document.documentElement.lang = state.language === "zh" ? "zh-CN" : "en";
+        render();
+      });
+
+      window.addEventListener("resize", () => {
+        drawEdges();
+        centerSelection();
+      });
+
+      function validateData() {
+        const ids = new Set(data.digimon.map(item => item.id));
+        const edgeKeys = new Set(data.edges.map(edge => edge.join(":")));
+        if (data.digimon.length !== 475 || ids.size !== 475) throw new Error("Invalid Digimon records");
+        if (edgeKeys.size !== data.edges.length) throw new Error("Duplicate evolution relation");
+        for (const [from, to] of data.edges) {
+          if (!ids.has(from) || !ids.has(to) || from === to) throw new Error(`Invalid evolution relation: ${from} -> ${to}`);
+        }
+      }
+
+      function nameOf(digimon) {
+        return digimon[state.language];
+      }
+
+      function numberOf(id) {
+        return String(id).padStart(3, "0");
+      }
+
+      function render() {
+        const text = copy[state.language];
+        elements.count.textContent = text.count;
+        elements.search.placeholder = text.search;
+        elements.searchLabel.textContent = text.search;
+        elements.language.textContent = state.language === "zh" ? "EN" : "中文";
+        elements.language.setAttribute("aria-label", text.switchLanguage);
+        renderList();
+        renderGraph();
+      }
+
+      function renderList() {
+        const visible = data.digimon.filter(item => matchesQuery(item, state.searchQuery));
+        elements.list.replaceChildren();
+
+        if (!visible.length) {
+          const message = document.createElement("p");
+          message.className = "no-results";
+          message.textContent = copy[state.language].noResults;
+          elements.list.append(message);
+          return;
+        }
+
+        const fragment = document.createDocumentFragment();
+        for (const digimon of visible) {
+          const button = document.createElement("button");
+          button.type = "button";
+          button.className = "digimon-row" + (digimon.id === state.selectedId ? " selected" : "");
+          button.innerHTML = `<span class="digimon-number">${numberOf(digimon.id)}</span><span>${nameOf(digimon)}</span>`;
+          button.addEventListener("click", () => selectDigimon(digimon.id));
+          fragment.append(button);
+        }
+        elements.list.append(fragment);
+      }
+
+      function selectDigimon(id) {
+        state.selectedId = id;
+        renderList();
+        renderGraph();
+        const selectedRow = elements.list.querySelector(".selected");
+        if (selectedRow) selectedRow.scrollIntoView({ block: "nearest" });
+      }
+
+      function renderGraph() {
+        const selected = indexes.byId.get(state.selectedId);
+        const related = collectRelated(state.selectedId, indexes);
+        const direct = new Set([...indexes.previous.get(state.selectedId), ...indexes.next.get(state.selectedId)]);
+        const groups = new Map(stageOrder.map(stage => [stage, []]));
+
+        for (const id of related) groups.get(indexes.byId.get(id).stage).push(indexes.byId.get(id));
+        for (const group of groups.values()) group.sort((a, b) => a.id - b.id);
+
+        elements.title.textContent = `${numberOf(selected.id)}  ${nameOf(selected)}`;
+        elements.meta.textContent = copy[state.language].related(related.size);
+        elements.columns.replaceChildren();
+
+        const fragment = document.createDocumentFragment();
+        stageOrder.forEach((stage, stageIndex) => {
+          const digimon = groups.get(stage);
+          if (!digimon.length) return;
+
+          const column = document.createElement("section");
+          column.className = "stage-column";
+          const title = document.createElement("h3");
+          title.className = "stage-title";
+          title.textContent = copy[state.language].stages[stageIndex];
+          const nodes = document.createElement("div");
+          nodes.className = "stage-nodes";
+
+          for (const item of digimon) {
+            const button = document.createElement("button");
+            button.type = "button";
+            button.dataset.id = item.id;
+            button.className = "graph-node";
+            if (direct.has(item.id)) button.classList.add("direct");
+            if (item.id === state.selectedId) button.classList.add("selected");
+            button.innerHTML = `<span class="node-number">${numberOf(item.id)}</span><span class="node-name">${nameOf(item)}</span>`;
+            button.addEventListener("click", () => selectDigimon(item.id));
+            nodes.append(button);
+          }
+
+          column.append(title, nodes);
+          fragment.append(column);
+        });
+
+        elements.columns.append(fragment);
+        requestAnimationFrame(() => {
+          drawEdges();
+          centerSelection();
+        });
+      }
+
+      function drawEdges() {
+        const nodes = new Map([...elements.columns.querySelectorAll(".graph-node")].map(node => [Number(node.dataset.id), node]));
+        const graphRect = elements.graph.getBoundingClientRect();
+        const oldPaths = elements.edges.querySelectorAll("path.edge");
+        oldPaths.forEach(path => path.remove());
+        elements.edges.setAttribute("width", elements.graph.scrollWidth);
+        elements.edges.setAttribute("height", elements.graph.scrollHeight);
+
+        for (const [from, to] of data.edges) {
+          const source = nodes.get(from);
+          const target = nodes.get(to);
+          if (!source || !target) continue;
+          const sourceRect = source.getBoundingClientRect();
+          const targetRect = target.getBoundingClientRect();
+          const sameColumn = Math.abs(sourceRect.left - targetRect.left) < 10;
+          let startX, startY, endX, endY, pathData;
+
+          startY = sourceRect.top + sourceRect.height / 2 - graphRect.top;
+          endY = targetRect.top + targetRect.height / 2 - graphRect.top;
+
+          if (sameColumn) {
+            startX = sourceRect.right - graphRect.left;
+            endX = targetRect.right - graphRect.left;
+            const bend = Math.max(startX, endX) + 34;
+            pathData = `M ${startX} ${startY} C ${bend} ${startY}, ${bend} ${endY}, ${endX} ${endY}`;
+          } else if (sourceRect.left < targetRect.left) {
+            startX = sourceRect.right - graphRect.left;
+            endX = targetRect.left - graphRect.left;
+            const middle = (startX + endX) / 2;
+            pathData = `M ${startX} ${startY} C ${middle} ${startY}, ${middle} ${endY}, ${endX} ${endY}`;
+          } else {
+            startX = sourceRect.left - graphRect.left;
+            endX = targetRect.right - graphRect.left;
+            const middle = (startX + endX) / 2;
+            pathData = `M ${startX} ${startY} C ${middle} ${startY}, ${middle} ${endY}, ${endX} ${endY}`;
+          }
+
+          const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+          const isDirect = from === state.selectedId || to === state.selectedId;
+          path.setAttribute("class", "edge" + (isDirect ? " direct" : ""));
+          path.setAttribute("d", pathData);
+          path.setAttribute("marker-end", isDirect ? "url(#arrow-direct)" : "url(#arrow)");
+          elements.edges.append(path);
+        }
+      }
+
+      function centerSelection() {
+        const selected = elements.columns.querySelector(".graph-node.selected");
+        if (!selected) return;
+        const selectedRect = selected.getBoundingClientRect();
+        const scrollRect = elements.graphScroll.getBoundingClientRect();
+        elements.graphScroll.scrollLeft += selectedRect.left - scrollRect.left - elements.graphScroll.clientWidth / 2 + selectedRect.width / 2;
+        elements.graphScroll.scrollTop += selectedRect.top - scrollRect.top - elements.graphScroll.clientHeight / 2 + selectedRect.height / 2;
+      }
+    }
+  })();
+  </script>
+</body>
+</html>

@@ -18,13 +18,14 @@ Design and, after user approval, build a dependency-free single-HTML Digimon evo
 - [x] Write and self-review the approved design spec -> no placeholders, contradictions, scope leaks, or unresolved ambiguity.
 - [x] Write implementation plan after spec approval -> saved an inline, TDD-oriented four-task plan.
 - [x] Implement, verify, and merge the single HTML app -> commit `34d020e` is on `main`.
+- [x] Correct title, compact tall graph layout, and add optional remote portraits -> verified on `main`.
 
 ## Constraints and assumptions
 - No framework, package manager, server, or runtime dependency in the delivered app.
 - All essential names and edges are embedded in the HTML.
 - Portrait URLs may fail and must never block graph use.
 - Current repository contains only `.gitignore` and Git metadata.
-- First release omits evolution requirements, collection features, and remote portraits.
+- First release omits evolution requirements and collection features; portraits are optional remote enhancements with a text-only fallback.
 
 ## Errors encountered
 - `skills/references/codex-tools.md` was not found at the initially inferred path; resolved at `skills/using-superpowers/references/codex-tools.md`.
@@ -33,3 +34,4 @@ Design and, after user approval, build a dependency-free single-HTML Digimon evo
 - The in-app browser backend reported no available instances; browser QA uses the cached Playwright CLI package with installed Google Chrome instead.
 - First browser QA run used an arbitrary expectation of more than 100 visible Agumon edges; the focused graph legitimately contains fewer. Corrected the QA assertion to require at least one rendered edge while preserving exact interaction checks.
 - A final planning-file patch used stale context and was rejected without changing files; re-read the three files and applied a narrower patch.
+- First node-count diagnostic had a shell/JavaScript quote syntax error; rerun with fixed literal script selectors instead of the mixed-quote regular expression.

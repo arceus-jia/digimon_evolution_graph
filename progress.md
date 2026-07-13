@@ -32,3 +32,7 @@
 - Feature committed as `34d020e feat: add Time Stranger evolution graph` on `feat/time-stranger-graph`; waiting for integration choice.
 - Fast-forward merged `feat/time-stranger-graph` into local `main`, reran all Node and browser checks against the merged file, then removed the temporary worktree and branch.
 - User preference for this personal-tool repository: future changes may be developed directly on `main`.
+- Follow-up TDD: title assertion failed on `Time Stranger`, then passed after localizing the brand by active language.
+- Follow-up layout regression failed on excessive desktop scroll height, then passed after changing each stage to a bounded row grid (`818/818` scroll/client height for Agumon).
+- Follow-up avatar regression failed with 0/475 list images, then passed with 475 embedded HTTPS portrait URLs and graph portraits.
+- Verified selected/direct-neighbor portraits use eager loading while all other portraits stay lazy; online selected portrait loads with nonzero natural width and offline text fallback remains functional.

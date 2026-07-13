@@ -31,7 +31,7 @@ test("contains a complete bilingual field guide", () => {
 
   assert.equal(data.digimon.length, 475);
   assert.deepEqual(ids, Array.from({ length: 475 }, (_, index) => index + 1));
-  assert.ok(data.digimon.every(({ zh, en, stage }) => zh && en && stage));
+  assert.ok(data.digimon.every(({ zh, en, stage, image }) => zh && en && stage && image.startsWith("https://")));
 });
 
 test("contains only unique valid directed edges", () => {

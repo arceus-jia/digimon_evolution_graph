@@ -42,3 +42,9 @@
 - Palette: true white graph canvas, pale neutral sidebar, dark text, thin gray separators, and one blue selection/direct-edge accent; no gradients or decorative imagery.
 - Container model: flat list and open graph canvas; no card grid or nested dashboard panels.
 - Responsive behavior: at 390 x 844 the app width equals the viewport, the selected node is centered at x=113..277, and graph overflow remains scrollable.
+
+## Follow-up fixes
+- The long graph scrollbar came from `.stage-nodes` stacking every node in one vertical flex column. Agumon's tallest stage had 31 nodes; Tsunomon's had 110.
+- Stage nodes now use a column-flow grid: at most 10 rows per stage on desktop and 6 on mobile, then continue horizontally. Agumon's desktop graph height is now exactly the 818 px viewport height instead of extending thousands of pixels.
+- Game8's chart exposes 475 unique portrait URLs. The app embeds these URLs, lazily loads list and distant graph portraits, and eagerly loads only the selected node and its direct neighbors.
+- Portrait elements have empty alt text because the adjacent localized name already labels the same Digimon. Failed/offline images hide without removing the number or name.

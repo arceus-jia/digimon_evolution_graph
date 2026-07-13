@@ -21,7 +21,7 @@ https://github.com/user-attachments/assets/106a0c01-ebc4-4021-a374-722ab4a08b2d
 
 ### 离线使用
 
-1. 下载 [time_stranger.html](https://raw.githubusercontent.com/arceus-jia/digimon_evolution_graph/refs/heads/main/time_stranger.html)。
+1. 下载 [time_stranger.html](https://github.com/arceus-jia/digimon_evolution_graph/releases/latest/download/time_stranger.html)。
 2. 使用现代浏览器直接打开下载后的文件。
 
 不需要安装依赖，也不需要启动本地服务器。名称和进化关系可以离线查询；联网时会额外加载数码兽头像。

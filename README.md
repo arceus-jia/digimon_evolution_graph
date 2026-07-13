@@ -22,7 +22,7 @@ https://github.com/user-attachments/assets/c7c15a84-e939-44c6-a41d-cc9155a53af3
 
 ### Use Offline
 
-1. Download [time_stranger.html](https://raw.githubusercontent.com/arceus-jia/digimon_evolution_graph/refs/heads/main/time_stranger.html).
+1. Download [time_stranger.html](https://github.com/arceus-jia/digimon_evolution_graph/releases/latest/download/time_stranger.html).
 2. Open the downloaded file in a modern browser.
 
 No installation or local server is required. Names and evolution relationships work offline. Portraits are loaded from the internet when available.

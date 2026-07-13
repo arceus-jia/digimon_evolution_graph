@@ -6,7 +6,11 @@ A lightweight, single-file evolution reference for *Digimon Story: Time Stranger
 
 ## Demo
 
-[Watch the demo video (coming soon)](#)
+
+
+https://github.com/user-attachments/assets/c7c15a84-e939-44c6-a41d-cc9155a53af3
+
+
 
 ## Use It
 

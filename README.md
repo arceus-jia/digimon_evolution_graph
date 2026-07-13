@@ -16,7 +16,7 @@ https://github.com/user-attachments/assets/c7c15a84-e939-44c6-a41d-cc9155a53af3
 
 ### Open Online
 
-[Launch on GitHub Pages](https://USERNAME.github.io/digimon_evolution_graph/time_stranger.html?language=en)
+[Launch on GitHub Pages](https://arceus-jia.github.io/digimon_evolution_graph/time_stranger.html?language=en)
 
 > The GitHub Pages address is a placeholder and will be updated after deployment.
 

@@ -2139,7 +2139,13 @@
           stages: ["In-Training I", "In-Training II", "Rookie", "Champion", "Ultimate", "Mega", "Mega+"],
         },
       };
-      const state = { selectedId: 21, language: "zh", searchQuery: "", sidebarOpen: true };
+      const requestedLanguage = new URLSearchParams(window.location.search).get("language");
+      const state = {
+        selectedId: 21,
+        language: requestedLanguage === "en" ? "en" : "zh",
+        searchQuery: "",
+        sidebarOpen: true,
+      };
       const elements = {
         app: document.querySelector(".app"),
         brand: document.querySelector("h1"),
@@ -2168,7 +2174,7 @@
 
       elements.language.addEventListener("click", () => {
         state.language = state.language === "zh" ? "en" : "zh";
-        document.documentElement.lang = state.language === "zh" ? "zh-CN" : "en";
+        updateLanguageUrl();
         render();
       });
 
@@ -2213,6 +2219,7 @@
 
       function render() {
         const text = copy[state.language];
+        document.documentElement.lang = state.language === "zh" ? "zh-CN" : "en";
         elements.brand.textContent = text.brand;
         elements.count.textContent = text.count;
         elements.search.placeholder = text.search;
@@ -2222,6 +2229,12 @@
         renderSidebarState();
         renderList();
         renderGraph();
+      }
+
+      function updateLanguageUrl() {
+        const url = new URL(window.location.href);
+        url.searchParams.set("language", state.language);
+        window.history.replaceState(null, "", url.href);
       }
 
       function renderSidebarState() {

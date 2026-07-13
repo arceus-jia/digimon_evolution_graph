@@ -1,0 +1,34 @@
+# Progress
+
+## 2026-07-13
+- Read the required planning and brainstorming instructions.
+- Checked session recovery, repository status, recent commit, and file inventory.
+- Confirmed this is a greenfield repository.
+- Created the three planning files before research or implementation.
+- No application code has been written; design approval gate remains active.
+- Searched current public sources for roster and evolution coverage.
+- Identified a scope ambiguity between the 451-entry base roster and 475 entries including DLC/updates.
+- Inspected Game8, Raider King, GameFAQs, and a community compendium description.
+- Confirmed that factual roster IDs and complete relation data are available enough to build a self-contained dataset, subject to source/version documentation and bilingual-name curation.
+- Completed discovery; moved to one-at-a-time scope clarification.
+- User approved implementation and chose the filename `time_stranger.html`.
+- Wrote the design specification with scope, alternatives, data model, UI, data flow, failure states, and verification criteria.
+- Self-reviewed the specification for placeholders, contradictions, excessive scope, and ambiguous requirements; no correction was required.
+- User approved implementation after confirming the sparse edge-list and derived adjacency-map tradeoff.
+- Wrote the implementation plan covering the data contract, full dataset, graph/list behavior, and browser/offline verification.
+- Created ignored worktree `.worktrees/time-stranger` on branch `feat/time-stranger-graph`; Node 22.21.0 is available and no dependency setup is needed.
+- TDD red 1: the release-file existence test failed with `time_stranger.html should exist`.
+- Added only the semantic HTML shell, empty JSON contract, and pure index/traversal/search functions.
+- TDD red 2: the harness now loads correctly and fails on the intended completeness assertion `0 !== 475`.
+- Added failing acceptance tests for Agumon ancestry/descendants and bilingual/number search; both fail because the dataset is still empty.
+- First dataset build aborted safely on missing GamerSky ID 349, leaving `time_stranger.html` unchanged.
+- Confirmed GamerSky's 301-350 article omits Ceresmon Medium (ID 349); used the structured Fandom name for that one record.
+- Generated 475 bilingual records and 1,120 unique directed relations; all six Node tests pass.
+- Implemented the list, language switch, focused stage columns, direct-neighbor highlighting, and SVG arrow rendering.
+- Browser QA fallback used cached Playwright 1.61.1 with installed Google Chrome because the in-app browser had no available instance.
+- Verified English/Chinese/number search, list and graph selection, language switching, empty results, 1440 x 900 desktop, 390 x 844 mobile, file URL offline reload, and zero console/page errors.
+- Inspected desktop and mobile screenshots with `view_image`; fixed mobile resize recentering after a red browser assertion showed the selected node at x=266..430.
+- Final verification: 6/6 Node tests passed, desktop Agumon graph rendered 86 visible edges, mobile selected node measured x=113..277 within a 390 px viewport, and `git diff --check` was clean.
+- Feature committed as `34d020e feat: add Time Stranger evolution graph` on `feat/time-stranger-graph`; waiting for integration choice.
+- Fast-forward merged `feat/time-stranger-graph` into local `main`, reran all Node and browser checks against the merged file, then removed the temporary worktree and branch.
+- User preference for this personal-tool repository: future changes may be developed directly on `main`.

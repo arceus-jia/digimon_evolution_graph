@@ -6,7 +6,10 @@
 
 ## 演示
 
-[查看演示视频（即将上线）](#)
+
+https://github.com/user-attachments/assets/106a0c01-ebc4-4021-a374-722ab4a08b2d
+
+
 
 ## 使用方式
 

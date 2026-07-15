@@ -207,7 +207,7 @@
 
     .graph-header {
       display: flex;
-      align-items: center;
+      align-items: flex-start;
       gap: 10px;
       flex: 0 0 auto;
       padding: 20px 24px 16px;
@@ -215,6 +215,7 @@
     }
 
     .graph-heading {
+      flex: 1;
       min-width: 0;
     }
 
@@ -254,6 +255,39 @@
       margin-top: 4px;
       color: var(--muted);
       font-size: 12px;
+    }
+
+    .selected-requirements {
+      margin-top: 10px;
+    }
+
+    .requirement-heading {
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .requirement-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px 14px;
+      margin: 4px 0 0;
+      padding: 0;
+      list-style: none;
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
+    .requirement-list li::before {
+      content: "•";
+      margin-right: 5px;
+      color: var(--accent);
+    }
+
+    .requirement-note {
+      margin-top: 5px;
+      color: var(--muted);
+      font-size: 11px;
     }
 
     #graph-scroll {
@@ -323,6 +357,7 @@
     }
 
     .graph-node {
+      position: relative;
       display: grid;
       grid-template-columns: 34px minmax(0, 1fr);
       align-items: center;
@@ -373,6 +408,40 @@
       font-size: 13px;
       font-weight: 600;
       line-height: 1.25;
+    }
+
+    .condition-tooltip {
+      position: fixed;
+      z-index: 20;
+      width: 250px;
+      padding: 10px 12px;
+      background: #18202a;
+      border-radius: 7px;
+      box-shadow: 0 6px 24px rgb(24 32 42 / 24%);
+      color: #fff;
+      font-size: 12px;
+      line-height: 1.45;
+      pointer-events: none;
+    }
+
+    .condition-tooltip[hidden] {
+      display: none;
+    }
+
+    .condition-tooltip-title,
+    .condition-tooltip-line {
+      display: block;
+    }
+
+    .condition-tooltip-title {
+      margin-bottom: 5px;
+      color: #aebed3;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .condition-tooltip-line + .condition-tooltip-line {
+      margin-top: 3px;
     }
 
     @media (max-width: 720px) {
@@ -440,6 +509,7 @@
         <div class="graph-heading">
           <h2 id="selection-title"></h2>
           <p id="selection-meta" class="selection-meta"></p>
+          <div id="selected-requirements" class="selected-requirements"></div>
         </div>
       </header>
       <div id="graph-scroll">
@@ -460,7 +530,7 @@
     </main>
   </div>
 
-  <!-- Data snapshot: 2026-07-15. English names, portraits and relations: https://game8.co/games/Digimon-Story-Time-Stranger/archives/554944 ; Simplified Chinese names: https://www.gamersky.com/handbook/202510/2023382.shtml ; https://github.com/laigus/DigimonStory-TimeStranger-Tools ; DLC 452-467: https://www.bilibili.com/video/BV1EjxgzkExA/ ; cross-check: https://digimon.net/reference_zh-CHS/ -->
+  <!-- Data snapshot: 2026-07-15. Evolution requirements base: https://docs.google.com/spreadsheets/d/1-b388v_MSzKgXYYnGsSDEacuov3cfjaX4dtOwKXIS_A/ ; requirements and relations cross-check: https://game8.co/games/Digimon-Story-Time-Stranger/archives/554944 ; Simplified Chinese names: https://www.gamersky.com/handbook/202510/2023382.shtml ; https://github.com/laigus/DigimonStory-TimeStranger-Tools ; DLC 452-467: https://www.bilibili.com/video/BV1EjxgzkExA/ ; name cross-check: https://digimon.net/reference_zh-CHS/ -->
   <script id="digimon-data" type="application/json">
   {
     "digimon": [
@@ -939,6 +1009,483 @@
       {"id":473,"zh":"狼人加鲁鲁兽黑","en":"WereGarurumon (Black)","stage":"ultimate","image":"https://img.game8.co/4371936/2231ce9165261873857e049285eef164.png/show"},
       {"id":474,"zh":"黑暗战斗暴龙兽","en":"BlackWarGreymon","stage":"mega","image":"https://j-img.game8.co/11835910/a367b811c073a0d1623d3eb73fa21382.webp/show"},
       {"id":475,"zh":"钢铁加鲁鲁兽黑","en":"MetalGarurumon (Black)","stage":"mega","image":"https://j-img.game8.co/11835895/d3f6f8583156de73d3c6a4e66fcc29fa.webp/show"}
+    ],
+    "requirements": [
+      {"id":1},
+      {"id":2},
+      {"id":3},
+      {"id":4},
+      {"id":5},
+      {"id":6},
+      {"id":7},
+      {"id":8,"rank":1,"stats":{"spi":140}},
+      {"id":9,"rank":1,"stats":{"hp":350,"atk":150}},
+      {"id":10,"rank":1,"stats":{"hp":370,"int":140}},
+      {"id":11,"rank":1,"stats":{"atk":200}},
+      {"id":12,"rank":1,"stats":{"sp":260,"atk":170}},
+      {"id":13,"rank":1,"stats":{"sp":400,"spd":150}},
+      {"id":14,"rank":1,"stats":{"hp":350,"atk":180}},
+      {"id":15,"rank":1,"stats":{"sp":160,"spd":150}},
+      {"id":16,"rank":1,"stats":{"sp":280}},
+      {"id":17,"rank":1,"stats":{"int":160}},
+      {"id":18,"rank":1,"stats":{"sp":360,"int":180}},
+      {"id":19,"rank":1,"stats":{"hp":400}},
+      {"id":20,"rank":1,"stats":{"sp":250}},
+      {"id":21,"rank":1,"stats":{"hp":530}},
+      {"id":22,"rank":1,"stats":{"sp":480,"int":250}},
+      {"id":23,"rank":1,"stats":{"hp":750}},
+      {"id":24,"rank":1,"stats":{"atk":220,"def":190}},
+      {"id":25,"rank":1,"stats":{"atk":280,"def":200}},
+      {"id":26,"rank":1,"stats":{"sp":290,"spi":200}},
+      {"id":27,"rank":1,"stats":{"hp":380,"atk":180}},
+      {"id":28,"rank":1,"stats":{"def":170,"int":250}},
+      {"id":29,"rank":1,"stats":{"hp":460}},
+      {"id":30,"rank":1,"stats":{"sp":360,"int":220}},
+      {"id":31,"rank":1,"stats":{"atk":200,"spd":170}},
+      {"id":32,"rank":1,"stats":{"sp":270,"int":240}},
+      {"id":33,"rank":1,"stats":{"int":230,"spd":180}},
+      {"id":34,"rank":1,"stats":{"int":280}},
+      {"id":35,"rank":1,"stats":{"atk":220}},
+      {"id":36,"rank":1,"stats":{"int":260}},
+      {"id":37,"rank":1,"stats":{"hp":530,"atk":240}},
+      {"id":38,"rank":1,"stats":{"hp":520,"atk":250}},
+      {"id":39,"rank":5,"stats":{"int":430},"talent":30},
+      {"id":40,"rank":1,"stats":{"sp":200,"int":160}},
+      {"id":41,"rank":1,"stats":{"atk":210,"spd":210}},
+      {"id":42,"rank":1,"stats":{"atk":150,"def":160}},
+      {"id":43,"rank":1,"stats":{"sp":230,"atk":250}},
+      {"id":44,"rank":1,"stats":{"hp":400,"def":180}},
+      {"id":45,"rank":1,"stats":{"hp":420,"atk":160}},
+      {"id":46,"rank":1,"stats":{"def":170,"spi":190}},
+      {"id":47,"rank":1,"stats":{"def":220,"spi":140}},
+      {"id":48,"rank":1,"stats":{"hp":500,"atk":270}},
+      {"id":49,"rank":1,"stats":{"atk":270,"spd":170}},
+      {"id":50,"rank":1,"stats":{"atk":260}},
+      {"id":51,"rank":1,"stats":{"sp":600,"int":360}},
+      {"id":52,"rank":1,"stats":{"hp":420}},
+      {"id":53,"rank":1,"stats":{"atk":220,"int":220}},
+      {"id":54,"rank":1,"stats":{"sp":280,"int":200}},
+      {"id":55,"rank":1,"stats":{"hp":500,"sp":270}},
+      {"id":56,"rank":1,"stats":{"hp":500,"spi":160}},
+      {"id":57,"rank":1,"stats":{"spi":240}},
+      {"id":58,"rank":1,"stats":{"sp":380,"int":230}},
+      {"id":59,"rank":1,"stats":{"sp":280,"def":170}},
+      {"id":60,"rank":1,"stats":{"sp":400,"int":270}},
+      {"id":61,"rank":1,"stats":{"atk":150,"def":140}},
+      {"id":62,"rank":1,"stats":{"hp":400,"spd":230}},
+      {"id":63,"rank":1,"stats":{"sp":400,"spi":210}},
+      {"id":64,"rank":1,"stats":{"atk":280}},
+      {"id":65,"rank":1,"stats":{"hp":500,"def":200}},
+      {"id":66,"rank":1,"stats":{"sp":230,"spd":230}},
+      {"id":67,"rank":1,"stats":{"hp":440,"def":180}},
+      {"id":68,"rank":1,"stats":{"sp":300}},
+      {"id":69,"rank":1,"stats":{"sp":280,"spd":180}},
+      {"id":70,"rank":1,"stats":{"sp":230,"atk":270}},
+      {"id":71,"rank":1,"stats":{"def":200}},
+      {"id":72,"rank":1,"stats":{"atk":230,"int":350}},
+      {"id":73,"rank":1,"stats":{"int":200,"spd":170}},
+      {"id":74,"rank":1,"stats":{"sp":200}},
+      {"id":75,"rank":1,"stats":{"def":200}},
+      {"id":76,"rank":1,"stats":{"sp":400,"spd":250}},
+      {"id":77,"rank":1,"stats":{"atk":280,"spd":170}},
+      {"id":78,"rank":1,"stats":{"atk":180,"spd":180}},
+      {"id":79,"rank":1,"stats":{"atk":190,"spi":190}},
+      {"id":80,"rank":1,"stats":{"hp":530,"sp":260}},
+      {"id":81,"rank":9,"stats":{"sp":470},"agentSkills":{"valor":46}},
+      {"id":82,"rank":3,"stats":{"hp":1120,"atk":440}},
+      {"id":83,"rank":3,"stats":{"spd":380}},
+      {"id":84,"rank":3,"stats":{"sp":730,"int":540}},
+      {"id":85,"rank":3,"stats":{"sp":380}},
+      {"id":86,"rank":3,"stats":{"sp":530}},
+      {"id":87,"rank":3,"stats":{"def":300,"spd":400}},
+      {"id":88,"rank":3,"stats":{"def":460}},
+      {"id":89,"rank":3,"stats":{"def":460}},
+      {"id":90,"rank":3,"stats":{"hp":1120}},
+      {"id":91,"rank":3,"stats":{"hp":1060}},
+      {"id":92,"rank":3,"stats":{"hp":1100}},
+      {"id":93,"rank":3,"stats":{"hp":1090}},
+      {"id":94,"rank":3,"stats":{"spd":530}},
+      {"id":95,"rank":3,"stats":{"atk":540}},
+      {"id":96,"rank":3,"stats":{"int":640,"spi":480}},
+      {"id":97,"rank":3,"stats":{"hp":820,"spi":540}},
+      {"id":98,"rank":3,"stats":{"spd":620}},
+      {"id":99,"rank":3,"stats":{"sp":540,"int":540}},
+      {"id":100,"rank":3,"stats":{"atk":700}},
+      {"id":101,"rank":3,"stats":{"sp":380,"atk":480,"spi":390}},
+      {"id":102,"rank":3,"stats":{"sp":400,"atk":530}},
+      {"id":103,"rank":3,"stats":{"spd":540}},
+      {"id":104,"rank":3,"stats":{"hp":1200}},
+      {"id":105,"rank":3,"stats":{"hp":960,"spi":300}},
+      {"id":106,"rank":3,"stats":{"spi":250,"spd":300}},
+      {"id":107,"rank":3,"stats":{"hp":1090}},
+      {"id":108,"rank":3,"stats":{"spi":560}},
+      {"id":109,"rank":3,"stats":{"atk":510}},
+      {"id":110,"rank":3,"stats":{"hp":820,"spi":540}},
+      {"id":111,"rank":3,"stats":{"atk":460,"spi":620}},
+      {"id":112,"rank":3,"stats":{"sp":500,"int":630}},
+      {"id":113,"rank":3,"stats":{"int":500,"spi":490}},
+      {"id":114,"rank":3,"stats":{"spi":470}},
+      {"id":115,"rank":3,"stats":{"hp":940,"spi":450}},
+      {"id":116,"rank":3,"stats":{"sp":510}},
+      {"id":117,"rank":3,"stats":{"int":730}},
+      {"id":118,"rank":3,"stats":{"sp":450}},
+      {"id":119,"rank":3,"stats":{"atk":550,"spd":330}},
+      {"id":120,"rank":3,"stats":{"sp":360,"int":630,"spi":480}},
+      {"id":121,"rank":3,"stats":{"hp":890,"int":420}},
+      {"id":122,"rank":3,"stats":{"hp":1060}},
+      {"id":123,"rank":3,"stats":{"sp":460,"def":430}},
+      {"id":124,"rank":3,"stats":{"sp":420}},
+      {"id":125,"rank":3,"stats":{"def":430,"spi":300}},
+      {"id":126,"rank":3,"stats":{"sp":380}},
+      {"id":127,"rank":3,"stats":{"hp":1740,"atk":530}},
+      {"id":128,"rank":3,"stats":{"atk":840}},
+      {"id":129,"rank":3,"stats":{"hp":820,"sp":380,"atk":530}},
+      {"id":130,"rank":3,"stats":{"hp":840,"def":410}},
+      {"id":131,"rank":3,"stats":{"sp":450,"def":300}},
+      {"id":132,"rank":3,"stats":{"hp":1060}},
+      {"id":133,"rank":3,"stats":{"atk":700,"spi":540}},
+      {"id":134,"rank":3,"stats":{"hp":1000}},
+      {"id":135,"rank":3,"stats":{"atk":530,"spi":450}},
+      {"id":136,"rank":3,"stats":{"atk":510}},
+      {"id":137,"rank":3,"stats":{"sp":470,"spd":640}},
+      {"id":138,"rank":3,"stats":{"atk":400,"spi":300}},
+      {"id":139,"rank":3,"stats":{"spd":610}},
+      {"id":140,"rank":3,"stats":{"hp":1100}},
+      {"id":141,"rank":3,"stats":{"atk":440,"def":290}},
+      {"id":142,"rank":3,"stats":{"hp":1010,"def":430}},
+      {"id":143,"rank":3,"stats":{"def":440}},
+      {"id":144,"rank":3,"stats":{"sp":390,"def":300}},
+      {"id":145,"rank":3,"stats":{"hp":1100}},
+      {"id":146,"rank":3,"stats":{"atk":550}},
+      {"id":147,"rank":3,"stats":{"int":490}},
+      {"id":148,"rank":3,"stats":{"hp":750}},
+      {"id":149,"rank":3,"stats":{"atk":830}},
+      {"id":150,"rank":3,"stats":{"int":300,"spi":300}},
+      {"id":151,"rank":3,"stats":{"def":480}},
+      {"id":152,"rank":3,"stats":{"hp":1020,"spi":460}},
+      {"id":153,"rank":3,"stats":{"spd":620}},
+      {"id":154,"rank":3,"stats":{"def":300}},
+      {"id":155,"rank":3,"stats":{"atk":540}},
+      {"id":156,"rank":3,"stats":{"sp":640,"spd":430}},
+      {"id":157,"rank":3,"stats":{"hp":1100}},
+      {"id":158,"rank":3,"stats":{"sp":460,"atk":380}},
+      {"id":159,"rank":3,"stats":{"hp":840,"def":280}},
+      {"id":160,"rank":3,"stats":{"sp":330}},
+      {"id":161,"rank":3,"stats":{"spi":400}},
+      {"id":162,"rank":3,"stats":{"hp":1010,"atk":380}},
+      {"id":163,"rank":3,"stats":{"sp":380,"atk":640}},
+      {"id":164,"rank":3,"stats":{"atk":620}},
+      {"id":165,"rank":3,"stats":{"def":550}},
+      {"id":166,"rank":3,"stats":{"spi":530}},
+      {"id":167,"rank":3,"stats":{"hp":800}},
+      {"id":168,"rank":3,"stats":{"atk":660}},
+      {"id":169,"rank":3,"stats":{"spi":560}},
+      {"id":170,"rank":3,"stats":{"hp":870,"def":430}},
+      {"id":171,"rank":3,"stats":{"hp":900}},
+      {"id":172,"rank":3,"stats":{"hp":800,"atk":520}},
+      {"id":173,"rank":3,"stats":{"def":300,"spd":470}},
+      {"id":174,"rank":3,"stats":{"def":450,"spi":420}},
+      {"id":175,"rank":3,"stats":{"spd":610}},
+      {"id":176,"rank":3,"stats":{"def":500,"spi":380}},
+      {"id":177,"rank":3,"stats":{"atk":500,"spi":590}},
+      {"id":178,"rank":3,"stats":{"hp":1170}},
+      {"id":179,"rank":3,"items":["reliabilityArmor"]},
+      {"id":180,"rank":3,"items":["sincerityArmor"]},
+      {"id":181,"rank":3,"items":["knowledgeArmor"]},
+      {"id":182,"rank":3,"items":["lightArmor"]},
+      {"id":183,"rank":3,"items":["courageArmor"]},
+      {"id":184,"rank":3,"items":["hopeArmor"]},
+      {"id":185,"rank":3,"items":["loveArmor"]},
+      {"id":186,"rank":3,"items":["friendshipArmor"]},
+      {"id":187,"rank":3,"items":["humanFire"],"modeFrom":[190]},
+      {"id":188,"rank":3,"items":["humanLight"],"modeFrom":[192]},
+      {"id":189,"rank":3,"stats":{"sp":1580,"int":1130},"modeFrom":[191]},
+      {"id":190,"items":["beastFire"],"modeFrom":[187]},
+      {"id":191,"modeFrom":[189]},
+      {"id":192,"items":["beastLight"],"modeFrom":[188]},
+      {"id":193,"rank":9,"stats":{"atk":1100,"spd":1090},"agentSkills":{"valor":46,"philanthropy":46}},
+      {"id":194,"rank":9,"stats":{"hp":4620,"spd":2910},"agentSkills":{"valor":46,"wisdom":46}},
+      {"id":195,"rank":9,"stats":{"atk":3070,"int":2980},"agentSkills":{"valor":46,"amicability":46,"wisdom":46}},
+      {"id":196,"rank":9,"stats":{"sp":1820,"atk":3070},"agentSkills":{"valor":46,"amicability":46}},
+      {"id":197,"rank":9,"stats":{"int":2980,"spi":2890},"agentSkills":{"valor":46,"philanthropy":46,"amicability":46}},
+      {"id":198,"rank":5,"stats":{"sp":620,"def":1020}},
+      {"id":199,"rank":5,"stats":{"def":810,"spi":1040}},
+      {"id":200,"rank":5,"stats":{"hp":1760,"spd":1020}},
+      {"id":201,"rank":5,"stats":{"hp":1580,"atk":1130,"spd":1020}},
+      {"id":202,"rank":5,"stats":{"hp":1610,"spi":1010}},
+      {"id":203,"rank":5,"stats":{"int":970,"spi":910}},
+      {"id":204,"rank":5,"stats":{"int":1060,"spd":980}},
+      {"id":205,"rank":5,"stats":{"hp":1080,"atk":940}},
+      {"id":206,"rank":5,"stats":{"atk":960,"spd":960}},
+      {"id":207,"rank":5,"stats":{"def":1050,"spi":970}},
+      {"id":208,"rank":5,"stats":{"sp":620,"atk":940,"spd":890},"modeFrom":[209]},
+      {"id":209,"modeFrom":[208]},
+      {"id":210,"rank":5,"stats":{"sp":510,"atk":960,"def":790}},
+      {"id":211,"rank":5,"stats":{"hp":1200,"atk":1020}},
+      {"id":212,"rank":5,"stats":{"hp":1730,"atk":930,"def":940}},
+      {"id":213,"rank":5,"stats":{"atk":900,"int":900,"spd":1100}},
+      {"id":214,"rank":5,"stats":{"hp":1900,"atk":1060,"def":960}},
+      {"id":215,"rank":5,"stats":{"int":980,"spd":1060}},
+      {"id":216,"rank":5,"stats":{"sp":540,"spi":940,"spd":890}},
+      {"id":217,"rank":5,"stats":{"atk":900,"def":960}},
+      {"id":218,"rank":5,"stats":{"spi":960,"spd":1040}},
+      {"id":219,"rank":5,"stats":{"hp":1860,"atk":980,"def":890}},
+      {"id":220,"rank":5,"stats":{"hp":1800,"int":990,"spi":960}},
+      {"id":221,"rank":5,"stats":{"sp":910,"int":1270}},
+      {"id":222,"rank":5,"stats":{"hp":1940,"atk":820}},
+      {"id":223,"rank":5,"stats":{"hp":1480,"atk":1300}},
+      {"id":224,"rank":5,"stats":{"hp":2080,"spi":1140}},
+      {"id":225,"rank":5,"stats":{"int":1020,"spd":1050}},
+      {"id":226,"rank":5,"stats":{"atk":940,"spd":980}},
+      {"id":227,"rank":5,"stats":{"sp":1150,"spd":1020}},
+      {"id":228,"rank":5,"stats":{"atk":840,"spd":1010}},
+      {"id":229,"rank":5,"stats":{"hp":1840,"atk":990,"spd":1090}},
+      {"id":230,"rank":5,"stats":{"sp":920,"def":1060}},
+      {"id":231,"rank":5,"stats":{"hp":1140,"def":820,"spd":840}},
+      {"id":232,"rank":5,"stats":{"sp":920,"spd":990}},
+      {"id":233,"rank":5,"stats":{"def":980,"spi":970}},
+      {"id":234,"rank":5,"stats":{"hp":1070,"sp":320}},
+      {"id":235,"rank":5,"stats":{"hp":2030,"atk":1350}},
+      {"id":236,"rank":5,"stats":{"sp":620,"def":940}},
+      {"id":237,"rank":5,"stats":{"hp":1530,"spi":1000,"spd":890}},
+      {"id":238,"rank":5,"stats":{"atk":980,"def":1020,"spi":980}},
+      {"id":239,"rank":5,"stats":{"def":1100,"spd":740}},
+      {"id":240,"rank":5,"stats":{"atk":1020,"spi":890,"spd":1060}},
+      {"id":241,"rank":5,"stats":{"hp":1530,"spi":1020,"spd":910}},
+      {"id":242,"rank":5,"stats":{"sp":860,"int":1020}},
+      {"id":243,"rank":5,"stats":{"def":1100,"spi":870}},
+      {"id":244,"rank":5,"stats":{"hp":1720,"atk":1020,"def":820}},
+      {"id":245,"rank":5,"stats":{"hp":1700,"sp":650}},
+      {"id":246,"rank":5,"stats":{"atk":970,"def":1060}},
+      {"id":247,"rank":5,"stats":{"hp":1370,"atk":850}},
+      {"id":248,"rank":5,"stats":{"def":1040,"spi":950}},
+      {"id":249,"rank":5,"stats":{"hp":1610,"atk":860,"spd":830}},
+      {"id":250,"rank":5,"stats":{"def":860,"int":850,"spi":900}},
+      {"id":251,"rank":5,"stats":{"hp":1610,"int":1060}},
+      {"id":252,"rank":5,"stats":{"hp":1650,"def":940}},
+      {"id":253,"rank":5,"stats":{"hp":1600,"int":980,"spi":930}},
+      {"id":254,"rank":5,"stats":{"int":1050,"spd":1020}},
+      {"id":255,"rank":5,"stats":{"hp":1650,"spi":1010}},
+      {"id":256,"rank":5,"stats":{"hp":2080,"atk":980}},
+      {"id":257,"rank":5,"stats":{"hp":2000,"spi":920}},
+      {"id":258,"rank":5,"stats":{"hp":1800,"spd":1060}},
+      {"id":259,"rank":5,"stats":{"hp":1720,"sp":580,"def":1020}},
+      {"id":260,"rank":5,"stats":{"sp":900,"int":1040}},
+      {"id":261,"rank":5,"stats":{"atk":820,"int":630}},
+      {"id":262,"rank":5,"stats":{"atk":880,"int":1260}},
+      {"id":263,"rank":5,"stats":{"sp":960,"spi":830}},
+      {"id":264,"rank":5,"stats":{"hp":1650,"def":980}},
+      {"id":265,"rank":5,"stats":{"atk":1070,"int":1030,"spi":940}},
+      {"id":266,"rank":5,"stats":{"atk":1110,"spd":1060}},
+      {"id":267,"rank":5,"stats":{"hp":1650,"int":950}},
+      {"id":268,"rank":5,"stats":{"hp":1730,"spi":940,"spd":860}},
+      {"id":269,"rank":5,"stats":{"atk":1170,"def":1020}},
+      {"id":270,"rank":5,"stats":{"hp":1960,"atk":780}},
+      {"id":271,"rank":5,"stats":{"hp":1880,"sp":1020}},
+      {"id":272,"rank":5,"stats":{"atk":1130,"def":990,"spi":860}},
+      {"id":273,"rank":5,"stats":{"sp":540,"atk":1060}},
+      {"id":274,"rank":5,"stats":{"hp":2120,"atk":740,"def":870}},
+      {"id":275,"rank":5,"stats":{"hp":1690,"sp":960,"atk":1100}},
+      {"id":276,"rank":5,"stats":{"hp":1630,"spd":980}},
+      {"id":277,"rank":5,"stats":{"sp":980,"def":950}},
+      {"id":278,"rank":5,"stats":{"atk":1250,"def":1060}},
+      {"id":279,"rank":5,"stats":{"int":870,"spi":960}},
+      {"id":280,"rank":5,"stats":{"sp":900,"int":1100}},
+      {"id":281,"rank":5,"stats":{"sp":970,"atk":900}},
+      {"id":282,"rank":5,"stats":{"sp":820,"int":930,"spi":940}},
+      {"id":283,"rank":5,"stats":{"atk":1150,"def":900}},
+      {"id":284,"rank":5,"stats":{"hp":1630,"def":940,"spi":940}},
+      {"id":285,"rank":5,"stats":{"hp":1530,"int":1020}},
+      {"id":286,"rank":5,"stats":{"hp":1530,"spi":940,"spd":1010}},
+      {"id":287,"rank":5,"stats":{"hp":1720,"def":900}},
+      {"id":288,"rank":5,"stats":{"hp":1370,"sp":1020}},
+      {"id":289,"rank":5,"stats":{"sp":580,"int":860,"spi":700}},
+      {"id":290,"rank":5,"stats":{"spi":890,"spd":1100}},
+      {"id":291,"rank":5,"stats":{"sp":530,"def":920,"spi":870}},
+      {"id":292,"rank":5,"stats":{"sp":550,"int":900,"spi":890}},
+      {"id":293,"rank":5,"stats":{"atk":1050,"spi":940}},
+      {"id":294,"rank":5,"stats":{"hp":1730,"def":1060}},
+      {"id":295,"rank":5,"stats":{"atk":740,"def":1060,"spi":820}},
+      {"id":296,"rank":7,"stats":{"sp":920,"int":1820}},
+      {"id":297,"rank":5,"stats":{"hp":1290,"int":770,"spd":830}},
+      {"id":298,"rank":5,"stats":{"sp":1100,"int":1650}},
+      {"id":299,"rank":5,"stats":{"hp":1680,"int":1200}},
+      {"id":300,"rank":5,"dna":[{"id":174,"personality":"overprotective"},{"id":84,"personality":"enlightened"}]},
+      {"id":301,"rank":5,"dna":[{"id":173,"personality":"sociable"},{"id":97,"personality":"tolerant"}]},
+      {"id":302,"rank":5,"dna":[{"id":177,"personality":"tolerant"},{"id":175,"personality":"zealous"}]},
+      {"id":303,"rank":5,"dna":[{"id":175,"personality":"zealous"},{"id":177,"personality":"tolerant"}]},
+      {"id":304,"rank":5,"stats":{"sp":660,"atk":1110,"spd":930}},
+      {"id":305,"rank":5,"items":["beastFire"]},
+      {"id":306,"rank":5,"items":["beastLight"]},
+      {"id":307,"rank":7,"stats":{"atk":2220,"spi":1810}},
+      {"id":308,"rank":7,"stats":{"hp":2200,"def":1580,"spi":1580}},
+      {"id":309,"rank":7,"stats":{"hp":2960,"spd":1980},"modeFrom":[463]},
+      {"id":310,"rank":7,"stats":{"int":1800,"spi":1750,"spd":1640}},
+      {"id":311,"rank":7,"stats":{"sp":1170,"spi":2040}},
+      {"id":312,"rank":7,"stats":{"hp":2350,"atk":2430}},
+      {"id":313,"rank":7,"stats":{"hp":1850,"atk":2150,"def":1860}},
+      {"id":314,"rank":7,"stats":{"int":2450,"spi":2010}},
+      {"id":315,"rank":7,"stats":{"sp":1540,"int":2450}},
+      {"id":316,"rank":7,"stats":{"hp":2380,"def":1850,"spi":1540}},
+      {"id":317,"rank":7,"stats":{"hp":2260,"def":1720,"spi":2060}},
+      {"id":318,"rank":10,"agentSkills":{"valor":46,"philanthropy":46,"amicability":46,"wisdom":46}},
+      {"id":319,"rank":7,"stats":{"sp":960,"int":2280,"spi":1600}},
+      {"id":320,"rank":7,"stats":{"sp":1260,"int":2140,"spi":1600}},
+      {"id":321,"rank":7,"stats":{"hp":2690,"int":1660,"spi":1380}},
+      {"id":322,"rank":7,"stats":{"hp":2300,"atk":2360}},
+      {"id":323,"rank":7,"stats":{"def":2060,"spi":1960}},
+      {"id":324,"rank":7,"stats":{"hp":2570,"atk":1580,"def":1650}},
+      {"id":325,"rank":7,"stats":{"atk":2050,"spd":1060}},
+      {"id":326,"rank":7,"stats":{"def":1730,"int":1800,"spd":2060}},
+      {"id":327,"rank":7,"stats":{"atk":2280,"spd":2280}},
+      {"id":328,"rank":7,"stats":{"sp":1380,"int":1990,"spi":1730}},
+      {"id":329,"rank":7,"stats":{"hp":2500,"sp":1070,"atk":1780}},
+      {"id":330,"rank":7,"stats":{"hp":2360,"atk":1580,"def":1740}},
+      {"id":331,"rank":7,"stats":{"sp":1190,"atk":1940,"spi":1710}},
+      {"id":332,"rank":7,"stats":{"hp":2500,"spi":1780}},
+      {"id":333,"rank":7,"stats":{"hp":2620,"atk":2290}},
+      {"id":334,"rank":7,"stats":{"def":2280,"int":1570}},
+      {"id":335,"rank":7,"stats":{"sp":1260,"int":2350}},
+      {"id":336,"rank":7,"stats":{"hp":2740,"sp":1100,"int":1370}},
+      {"id":337,"rank":7,"dna":[{"id":203,"personality":"tolerant"},{"id":297,"personality":"enlightened"}]},
+      {"id":338,"rank":7,"stats":{"int":1800,"spi":2040}},
+      {"id":339,"rank":7,"stats":{"sp":960,"atk":2220}},
+      {"id":340,"rank":9,"agentSkills":{"valor":46,"philanthropy":46,"amicability":46,"wisdom":46}},
+      {"id":341,"rank":7,"stats":{"sp":1640,"spd":1820}},
+      {"id":342,"rank":7,"stats":{"hp":2900,"def":2130,"spi":1570}},
+      {"id":343,"rank":7,"stats":{"def":1700,"spi":1820}},
+      {"id":344,"rank":7,"stats":{"def":1860,"spi":1720}},
+      {"id":345,"rank":7,"stats":{"sp":1290,"int":1860,"spi":1290}},
+      {"id":346,"rank":7,"stats":{"def":2250,"spi":1850}},
+      {"id":347,"rank":7,"stats":{"sp":1160,"spd":1750}},
+      {"id":348,"rank":7,"stats":{"hp":2470,"spi":2190},"modeFrom":[349]},
+      {"id":349,"modeFrom":[348]},
+      {"id":350,"rank":7,"stats":{"hp":2400,"atk":1930,"spd":1860}},
+      {"id":351,"rank":7,"stats":{"int":2710,"spd":1990}},
+      {"id":352,"rank":7,"stats":{"atk":1730,"def":1730,"spd":1650},"modeFrom":[465]},
+      {"id":353,"rank":7,"stats":{"hp":2010,"def":1740,"spi":1870}},
+      {"id":354,"rank":7,"stats":{"def":1670,"int":2100}},
+      {"id":355,"rank":7,"stats":{"hp":2500,"atk":1940,"spd":1660}},
+      {"id":356,"rank":7,"stats":{"hp":2570,"int":2130,"spd":1890},"modeFrom":[357]},
+      {"id":357,"modeFrom":[356]},
+      {"id":358,"rank":7,"stats":{"hp":2700,"atk":2220}},
+      {"id":359,"rank":7,"stats":{"atk":1430,"def":1790,"spi":1730}},
+      {"id":360,"rank":7,"stats":{"hp":2140,"def":1530}},
+      {"id":361,"rank":7,"stats":{"hp":2680,"int":1830,"spi":1660}},
+      {"id":362,"rank":7,"stats":{"hp":2380,"atk":1570,"def":2010}},
+      {"id":363,"rank":7,"stats":{"hp":2470,"spd":1790}},
+      {"id":364,"rank":7,"stats":{"sp":1700,"atk":960,"spd":1850}},
+      {"id":365,"rank":7,"stats":{"sp":1430,"int":1530}},
+      {"id":366,"rank":7,"stats":{"int":2050,"spi":1790}},
+      {"id":367,"rank":7,"stats":{"sp":2350,"atk":1290,"int":1500}},
+      {"id":368,"rank":7,"stats":{"hp":2380,"sp":1100,"int":1980}},
+      {"id":369,"rank":7,"stats":{"hp":2500,"atk":1940}},
+      {"id":370,"rank":7,"stats":{"sp":1500,"int":2420,"spi":1570}},
+      {"id":371,"rank":7,"stats":{"hp":2080,"atk":2140}},
+      {"id":372,"rank":7,"stats":{"int":3100,"spi":2090}},
+      {"id":373,"rank":7,"stats":{"hp":2820,"atk":2430}},
+      {"id":374,"rank":7,"stats":{"atk":1870,"int":1430}},
+      {"id":375,"rank":7,"stats":{"hp":2100,"atk":2130,"def":1700}},
+      {"id":376,"rank":7,"stats":{"hp":2820,"atk":1930,"spd":1540}},
+      {"id":377,"rank":7,"stats":{"sp":1300,"atk":2130}},
+      {"id":378,"rank":7,"stats":{"atk":1640,"def":1790}},
+      {"id":379,"rank":7,"stats":{"sp":1140,"atk":1300,"int":1590}},
+      {"id":380,"rank":10,"agentSkills":{"valor":46,"philanthropy":46,"amicability":46,"wisdom":46}},
+      {"id":381,"rank":7,"stats":{"hp":2380,"atk":1960,"spd":1060}},
+      {"id":382,"rank":7,"stats":{"atk":2350,"int":1810}},
+      {"id":383,"rank":7,"stats":{"hp":2400,"atk":2220}},
+      {"id":384,"rank":7,"stats":{"hp":2820,"atk":1900,"spd":1600}},
+      {"id":385,"rank":7,"stats":{"hp":3220,"atk":1680}},
+      {"id":386,"rank":7,"stats":{"hp":2500,"atk":1490,"spd":1620}},
+      {"id":387,"rank":7,"stats":{"hp":2000,"atk":1970,"int":1900}},
+      {"id":388,"rank":7,"stats":{"atk":1800,"spi":2240},"modeFrom":[466]},
+      {"id":389,"rank":7,"stats":{"hp":2880,"atk":1790,"int":1510},"modeFrom":[390]},
+      {"id":390,"modeFrom":[389]},
+      {"id":391,"rank":7,"stats":{"sp":1060,"int":2290}},
+      {"id":392,"rank":7,"stats":{"sp":1190,"int":1860}},
+      {"id":393,"rank":7,"stats":{"def":1430,"spi":1430}},
+      {"id":394,"rank":7,"stats":{"hp":2460,"int":1360,"spi":1820}},
+      {"id":395,"rank":7,"stats":{"hp":2690,"atk":1790}},
+      {"id":396,"rank":7,"stats":{"def":2220}},
+      {"id":397,"rank":7,"stats":{"hp":2010,"atk":2220,"int":1700}},
+      {"id":398,"rank":7,"stats":{"hp":1920,"atk":1920,"def":1570}},
+      {"id":399,"rank":7,"stats":{"hp":2200,"atk":2140,"int":2770}},
+      {"id":400,"rank":7,"stats":{"hp":2200,"sp":1380,"atk":1600}},
+      {"id":401,"rank":7,"stats":{"hp":2500,"atk":2340,"spd":1330}},
+      {"id":402,"rank":7,"stats":{"sp":1180,"int":1740,"spi":1540}},
+      {"id":403,"rank":7,"stats":{"sp":1200,"atk":1940}},
+      {"id":404,"rank":7,"stats":{"hp":2360,"atk":1940}},
+      {"id":405,"rank":7,"dna":[{"id":406,"personality":"reckless"},{"id":235,"personality":"friendly"}]},
+      {"id":406,"rank":7,"stats":{"atk":1700,"def":2140}},
+      {"id":407,"rank":7,"stats":{"hp":2960,"atk":2290}},
+      {"id":408,"rank":7,"stats":{"hp":2470,"def":2010}},
+      {"id":409,"rank":7,"stats":{"atk":1150,"spd":2100}},
+      {"id":410,"rank":7,"stats":{"sp":1100,"int":1370},"modeFrom":[411]},
+      {"id":411,"modeFrom":[410]},
+      {"id":412,"rank":7,"stats":{"hp":2830,"atk":1860,"def":2050}},
+      {"id":413,"rank":7,"stats":{"hp":2860,"atk":2000,"def":1430}},
+      {"id":414,"rank":7,"stats":{"sp":1300,"int":2180,"spd":1860}},
+      {"id":415,"rank":7,"stats":{"sp":1120,"spi":2020,"spd":2060}},
+      {"id":416,"rank":7,"stats":{"hp":2890,"sp":1180,"spi":1180},"modeFrom":[417]},
+      {"id":417,"modeFrom":[416]},
+      {"id":418,"rank":7,"stats":{"hp":3180,"atk":1930}},
+      {"id":419,"rank":7,"stats":{"sp":1930,"spd":1650}},
+      {"id":420,"rank":7,"stats":{"hp":2770,"def":2290}},
+      {"id":421,"rank":7,"stats":{"hp":2690,"atk":2250}},
+      {"id":422,"rank":7,"items":["destinyArmor"]},
+      {"id":423,"rank":7,"items":["miraclesArmor"],"modeFrom":[464]},
+      {"id":424,"rank":7},
+      {"id":425,"rank":7,"modeFrom":[426]},
+      {"id":426,"modeFrom":[425]},
+      {"id":427,"rank":8,"dna":[{"id":308,"personality":"friendly"},{"id":313,"personality":"zealous"}]},
+      {"id":428,"rank":8,"dna":[{"id":316,"personality":"devoted"},{"id":231,"personality":"sly"}]},
+      {"id":429,"rank":8,"stats":{"hp":4680,"spd":2740},"items":["omniBlade"]},
+      {"id":430,"rank":8,"dna":[{"id":312,"personality":"daring"},{"id":364,"personality":"friendly"}],"modeFrom":[431,467]},
+      {"id":431,"rank":8,"dna":[{"id":474,"personality":"reckless"},{"id":475,"personality":"friendly"}],"modeFrom":[430]},
+      {"id":432,"rank":8,"dna":[{"id":383,"personality":"zealous"},{"id":333,"personality":"daring"}]},
+      {"id":433,"rank":8,"dna":[{"id":333,"personality":"daring"},{"id":310,"personality":"sociable"}]},
+      {"id":434,"rank":8,"dna":[{"id":307,"personality":"daring"},{"id":354,"personality":"enlightened"}]},
+      {"id":435,"rank":8,"stats":{"hp":4900,"spd":2810}},
+      {"id":436,"rank":8,"dna":[{"id":424,"personality":"zealous"},{"id":425,"personality":"friendly"}]},
+      {"id":437,"rank":9,"stats":{"hp":4020,"atk":3200}},
+      {"id":438,"rank":8,"stats":{"sp":1710,"spd":3390}},
+      {"id":439,"rank":8,"dna":[{"id":327,"personality":"daring"},{"id":398,"personality":"reckless"}]},
+      {"id":440,"rank":8,"stats":{"atk":3100,"spd":3100}},
+      {"id":441,"rank":8,"stats":{"int":3170,"spi":2700}},
+      {"id":442,"rank":8,"dna":[{"id":385,"personality":"reckless"},{"id":239,"personality":"sociable"}]},
+      {"id":443,"rank":8,"stats":{"atk":2810,"int":3170}},
+      {"id":444,"rank":8,"stats":{"atk":3760,"spd":2960}},
+      {"id":445,"rank":8,"stats":{"hp":4680,"atk":2070}},
+      {"id":446,"rank":8,"stats":{"atk":3470,"spd":2960}},
+      {"id":447,"rank":8,"stats":{"hp":2350,"int":3090,"spd":1880}},
+      {"id":448,"rank":8,"stats":{"hp":4450,"atk":3980}},
+      {"id":449,"rank":8,"stats":{"atk":3630},"agentSkills":{"valor":46}},
+      {"id":450,"rank":8,"stats":{"atk":2660,"int":3100}},
+      {"id":451,"rank":8,"stats":{"def":2260},"agentSkills":{"amicability":46}},
+      {"id":452,"rank":7,"stats":{"sp":1020,"spi":1810,"spd":1960}},
+      {"id":453,"rank":8,"stats":{"hp":4840,"atk":2420,"spi":1800},"talent":40},
+      {"id":454,"rank":7,"stats":{"atk":2280,"int":1670}},
+      {"id":455,"rank":8,"stats":{"atk":2280,"int":2190,"spd":1730},"modeFrom":[456]},
+      {"id":456,"rank":8,"stats":{"hp":2620,"atk":2620,"spd":1650},"dna":[{"id":454,"personality":"zealous"},{"id":452,"personality":"zealous"}],"modeFrom":[455]},
+      {"id":457,"rank":8,"stats":{"sp":2300,"spi":2720,"spd":1900}},
+      {"id":458,"rank":7,"stats":{"atk":1870,"def":1340,"spd":1060}},
+      {"id":459,"rank":7,"stats":{"def":1660,"spi":2060,"spd":1280}},
+      {"id":460,"rank":7,"stats":{"hp":2640,"atk":2010,"def":1800}},
+      {"id":461,"rank":7,"stats":{"hp":2470,"def":1670,"spd":1170}},
+      {"id":462,"rank":8,"stats":{"atk":2970,"spd":2680}},
+      {"id":463,"rank":7,"modeFrom":[309]},
+      {"id":464,"rank":7,"items":["miraclesArmor"],"modeFrom":[423]},
+      {"id":465,"rank":7,"modeFrom":[352]},
+      {"id":466,"rank":7,"modeFrom":[388]},
+      {"id":467,"rank":8,"modeFrom":[430]},
+      {"id":468,"rank":1,"stats":{"atk":490}},
+      {"id":469,"rank":1,"stats":{"atk":360}},
+      {"id":470,"rank":3,"stats":{"atk":660,"spi":420,"spd":540}},
+      {"id":471,"rank":3,"stats":{"spd":580}},
+      {"id":472,"rank":5,"stats":{"atk":1220,"int":740}},
+      {"id":473,"rank":5,"stats":{"sp":620,"atk":980,"spi":920,"spd":1020}},
+      {"id":474,"rank":7,"stats":{"atk":2420,"def":2060}},
+      {"id":475,"rank":7,"stats":{"hp":2760,"spi":1680,"spd":1720}}
     ],
     "edges": [
       [1,12],
@@ -2069,17 +2616,18 @@
   (() => {
     "use strict";
 
-    function buildIndexes({ digimon, edges }) {
+    function buildIndexes({ digimon, edges, requirements = [] }) {
       const byId = new Map(digimon.map(item => [item.id, item]));
       const next = new Map(digimon.map(item => [item.id, []]));
       const previous = new Map(digimon.map(item => [item.id, []]));
+      const requirementsById = new Map(requirements.map(item => [item.id, item]));
 
       for (const [from, to] of edges) {
         next.get(from).push(to);
         previous.get(to).push(from);
       }
 
-      return { byId, next, previous };
+      return { byId, next, previous, requirementsById };
     }
 
     function walk(start, adjacency, found) {
@@ -2109,7 +2657,85 @@
         || digimon.en.toLocaleLowerCase().includes(value);
     }
 
-    globalThis.TimeStranger = { buildIndexes, collectRelated, matchesQuery };
+    const requirementCopy = {
+      zh: {
+        none: "无法通过进化获得",
+        rank: value => `探员阶级 ${value} 以上`,
+        talent: value => `才能 ${value} 以上`,
+        item: value => `需要道具：${value}`,
+        dna: value => `DNA进化：${value}`,
+        mode: value => `形态转换：${value}`,
+        agentSkill: (name, value) => `${name}系探员技能 ${value} 个以上`,
+        stats: { hp: "最大 HP", sp: "最大 SP", atk: "攻击力", def: "守备力", int: "智力", spi: "精神", spd: "速度" },
+        items: {
+          reliabilityArmor: "诚实装甲", sincerityArmor: "纯真装甲", knowledgeArmor: "知识装甲",
+          lightArmor: "光明装甲", courageArmor: "勇气装甲", hopeArmor: "希望装甲",
+          loveArmor: "爱情装甲", friendshipArmor: "友情装甲", destinyArmor: "命运装甲",
+          miraclesArmor: "奇迹装甲", humanFire: "火之人型斗士精神", humanLight: "光之人型斗士精神",
+          beastFire: "火之兽型斗士精神", beastLight: "光之兽型斗士精神", omniBlade: "奥米加之剑",
+        },
+        personalities: {
+          adoring: "崇拜", devoted: "忠诚", tolerant: "宽容", overprotective: "过度保护",
+          zealous: "热忱", brave: "勇敢", reckless: "鲁莽", daring: "大胆",
+          enlightened: "开明", sly: "狡猾", astute: "机敏", strategic: "策略",
+          opportunistic: "机会主义", friendly: "友善", sociable: "社交", compassionate: "富有同情心",
+        },
+        agentSkills: { valor: "勇猛", philanthropy: "博爱", amicability: "友好", wisdom: "知启" },
+      },
+      en: {
+        none: "Cannot be obtained by Digivolution",
+        rank: value => `Agent Rank ${value} or higher`,
+        talent: value => `Talent ${value} or higher`,
+        item: value => `Item required: ${value}`,
+        dna: value => `DNA Digivolution: ${value}`,
+        mode: value => `Mode Change: ${value}`,
+        agentSkill: (name, value) => `${name} Agent Skills ${value} or more`,
+        stats: { hp: "Max HP", sp: "Max SP", atk: "ATK", def: "DEF", int: "INT", spi: "SPI", spd: "SPD" },
+        items: {
+          reliabilityArmor: "Digi-Egg of Reliability", sincerityArmor: "Digi-Egg of Sincerity",
+          knowledgeArmor: "Digi-Egg of Knowledge", lightArmor: "Digi-Egg of Light",
+          courageArmor: "Digi-Egg of Courage", hopeArmor: "Digi-Egg of Hope", loveArmor: "Digi-Egg of Love",
+          friendshipArmor: "Digi-Egg of Friendship", destinyArmor: "Digi-Egg of Destiny",
+          miraclesArmor: "Digi-Egg of Miracles", humanFire: "Human Spirit of Flame",
+          humanLight: "Human Spirit of Light", beastFire: "Beast Spirit of Flame",
+          beastLight: "Beast Spirit of Light", omniBlade: "Omni Blade",
+        },
+        personalities: {
+          adoring: "Adoring", devoted: "Devoted", tolerant: "Tolerant", overprotective: "Overprotective",
+          zealous: "Zealous", brave: "Brave", reckless: "Reckless", daring: "Daring",
+          enlightened: "Enlightened", sly: "Sly", astute: "Astute", strategic: "Strategic",
+          opportunistic: "Opportunistic", friendly: "Friendly", sociable: "Sociable", compassionate: "Compassionate",
+        },
+        agentSkills: {
+          valor: "Bonds of Valor", philanthropy: "Bonds of Philanthropy",
+          amicability: "Bonds of Amicability", wisdom: "Bonds of Wisdom",
+        },
+      },
+    };
+
+    function formatRequirements(requirement, language, byId) {
+      const text = requirementCopy[language === "en" ? "en" : "zh"];
+      const lines = [];
+      const name = id => byId.get(id)?.[language === "en" ? "en" : "zh"] || `#${id}`;
+
+      if (requirement.rank) lines.push(text.rank(requirement.rank));
+      for (const key of ["hp", "sp", "atk", "def", "int", "spi", "spd"]) {
+        if (requirement.stats?.[key]) lines.push(`${text.stats[key]} ${requirement.stats[key]} ${language === "en" ? "or higher" : "以上"}`);
+      }
+      if (requirement.talent) lines.push(text.talent(requirement.talent));
+      if (requirement.items?.length) lines.push(text.item(requirement.items.map(key => text.items[key] || key).join(language === "en" ? " + " : "＋")));
+      if (requirement.dna?.length) {
+        const parts = requirement.dna.map(item => `${name(item.id)}${language === "en" ? ` (${text.personalities[item.personality]})` : `（${text.personalities[item.personality]}）`}`);
+        lines.push(text.dna(parts.join(language === "en" ? " + " : "＋")));
+      }
+      for (const key of ["valor", "philanthropy", "amicability", "wisdom"]) {
+        if (requirement.agentSkills?.[key]) lines.push(text.agentSkill(text.agentSkills[key], requirement.agentSkills[key]));
+      }
+      if (requirement.modeFrom?.length) lines.push(text.mode(requirement.modeFrom.map(name).join(language === "en" ? " / " : "／")));
+      return lines.length ? lines : [text.none];
+    }
+
+    globalThis.TimeStranger = { buildIndexes, collectRelated, matchesQuery, formatRequirements };
 
     if (typeof document !== "undefined") {
       const data = JSON.parse(document.querySelector("#digimon-data").textContent);
@@ -2122,6 +2748,8 @@
           search: "搜索名称或编号",
           noResults: "没有匹配的数码兽",
           related: count => `${count} 只相关数码兽`,
+          requirements: "进化条件",
+          requirementNote: "显示基础条件；匹配个性的探员技能可能降低属性要求。",
           switchLanguage: "Switch to English",
           showSidebar: "展开侧边栏",
           hideSidebar: "收起侧边栏",
@@ -2133,6 +2761,8 @@
           search: "Search name or number",
           noResults: "No matching Digimon",
           related: count => `${count} related Digimon`,
+          requirements: "Digivolution requirements",
+          requirementNote: "Base requirements; matching Personality Agent Skills may reduce stat thresholds.",
           switchLanguage: "切换到中文",
           showSidebar: "Show sidebar",
           hideSidebar: "Hide sidebar",
@@ -2158,11 +2788,18 @@
         list: document.querySelector("#digimon-list"),
         title: document.querySelector("#selection-title"),
         meta: document.querySelector("#selection-meta"),
+        requirements: document.querySelector("#selected-requirements"),
         graph: document.querySelector("#graph"),
         graphScroll: document.querySelector("#graph-scroll"),
         columns: document.querySelector("#graph-columns"),
         edges: document.querySelector("#edge-layer"),
       };
+      const conditionTooltip = document.createElement("div");
+      conditionTooltip.id = "condition-tooltip";
+      conditionTooltip.className = "condition-tooltip";
+      conditionTooltip.setAttribute("role", "tooltip");
+      conditionTooltip.hidden = true;
+      document.body.append(conditionTooltip);
 
       validateData();
       render();
@@ -2191,10 +2828,21 @@
       function validateData() {
         const ids = new Set(data.digimon.map(item => item.id));
         const edgeKeys = new Set(data.edges.map(edge => edge.join(":")));
+        const requirementIds = new Set(data.requirements.map(item => item.id));
         if (data.digimon.length !== 475 || ids.size !== 475) throw new Error("Invalid Digimon records");
+        if (data.requirements.length !== 475 || requirementIds.size !== 475) throw new Error("Invalid requirement records");
         if (edgeKeys.size !== data.edges.length) throw new Error("Duplicate evolution relation");
         for (const [from, to] of data.edges) {
           if (!ids.has(from) || !ids.has(to) || from === to) throw new Error(`Invalid evolution relation: ${from} -> ${to}`);
+        }
+        for (const requirement of data.requirements) {
+          if (!ids.has(requirement.id)) throw new Error(`Invalid requirement target: ${requirement.id}`);
+          for (const item of requirement.dna || []) {
+            if (!ids.has(item.id)) throw new Error(`Invalid DNA requirement: ${item.id}`);
+          }
+          for (const id of requirement.modeFrom || []) {
+            if (!ids.has(id)) throw new Error(`Invalid Mode Change requirement: ${id}`);
+          }
         }
       }
 
@@ -2215,6 +2863,60 @@
         image.decoding = "async";
         image.addEventListener("error", () => { image.hidden = true; });
         return image;
+      }
+
+      function requirementLines(id) {
+        return formatRequirements(indexes.requirementsById.get(id), state.language, indexes.byId);
+      }
+
+      function renderSelectedRequirements(id) {
+        const text = copy[state.language];
+        const requirement = indexes.requirementsById.get(id);
+        const heading = document.createElement("p");
+        heading.className = "requirement-heading";
+        heading.textContent = text.requirements;
+        const list = document.createElement("ul");
+        list.className = "requirement-list";
+        for (const line of requirementLines(id)) {
+          const item = document.createElement("li");
+          item.textContent = line;
+          list.append(item);
+        }
+        elements.requirements.replaceChildren(heading, list);
+
+        if (requirement.stats) {
+          const note = document.createElement("p");
+          note.className = "requirement-note";
+          note.textContent = text.requirementNote;
+          elements.requirements.append(note);
+        }
+      }
+
+      function showConditionTooltip(button, id) {
+        conditionTooltip.replaceChildren();
+        const title = document.createElement("span");
+        title.className = "condition-tooltip-title";
+        title.textContent = copy[state.language].requirements;
+        conditionTooltip.append(title);
+        for (const line of requirementLines(id)) {
+          const item = document.createElement("span");
+          item.className = "condition-tooltip-line";
+          item.textContent = line;
+          conditionTooltip.append(item);
+        }
+        conditionTooltip.hidden = false;
+
+        const node = button.getBoundingClientRect();
+        const tooltip = conditionTooltip.getBoundingClientRect();
+        let left = node.right + 10;
+        if (left + tooltip.width > window.innerWidth - 12) left = node.left - tooltip.width - 10;
+        const top = Math.max(12, Math.min(node.top + node.height / 2 - tooltip.height / 2, window.innerHeight - tooltip.height - 12));
+        conditionTooltip.style.left = `${Math.max(12, left)}px`;
+        conditionTooltip.style.top = `${top}px`;
+      }
+
+      function hideConditionTooltip() {
+        conditionTooltip.hidden = true;
       }
 
       function render() {
@@ -2283,6 +2985,7 @@
       }
 
       function renderGraph() {
+        hideConditionTooltip();
         const selected = indexes.byId.get(state.selectedId);
         const related = collectRelated(state.selectedId, indexes);
         const direct = new Set([...indexes.previous.get(state.selectedId), ...indexes.next.get(state.selectedId)]);
@@ -2293,6 +2996,7 @@
 
         elements.title.textContent = `${numberOf(selected.id)}  ${nameOf(selected)}`;
         elements.meta.textContent = copy[state.language].related(related.size);
+        renderSelectedRequirements(selected.id);
         elements.columns.replaceChildren();
 
         const fragment = document.createDocumentFragment();
@@ -2313,12 +3017,18 @@
             button.type = "button";
             button.dataset.id = item.id;
             button.className = "graph-node";
+            button.setAttribute("aria-label", `${numberOf(item.id)} ${nameOf(item)}`);
+            button.setAttribute("aria-describedby", conditionTooltip.id);
             if (direct.has(item.id)) button.classList.add("direct");
             if (item.id === state.selectedId) button.classList.add("selected");
             const nodeCopy = document.createElement("span");
             nodeCopy.className = "node-copy";
             nodeCopy.innerHTML = `<span class="node-number">${numberOf(item.id)}</span><span class="node-name">${nameOf(item)}</span>`;
             button.append(createPortrait(item, "", item.id === state.selectedId || direct.has(item.id)), nodeCopy);
+            button.addEventListener("mouseenter", () => showConditionTooltip(button, item.id));
+            button.addEventListener("mouseleave", hideConditionTooltip);
+            button.addEventListener("focus", () => showConditionTooltip(button, item.id));
+            button.addEventListener("blur", hideConditionTooltip);
             button.addEventListener("click", () => selectDigimon(item.id));
             nodes.append(button);
           }

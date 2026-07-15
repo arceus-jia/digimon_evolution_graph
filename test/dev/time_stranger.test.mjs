@@ -95,6 +95,72 @@ test("contains only unique valid directed edges", () => {
   assert.ok(data.edges.every(([from, to]) => ids.has(from) && ids.has(to) && from !== to));
 });
 
+test("contains one structured requirement record for every Digimon", () => {
+  const { data } = loadApp();
+  assert.ok(Array.isArray(data.requirements), "requirements should be an array");
+
+  const ids = data.requirements.map(({ id }) => id).sort((a, b) => a - b);
+  assert.equal(data.requirements.length, 475);
+  assert.deepEqual(ids, Array.from({ length: 475 }, (_, index) => index + 1));
+
+  const byId = new Map(data.requirements.map(item => [item.id, item]));
+  assert.deepEqual(byId.get(1), { id: 1 });
+  assert.deepEqual(byId.get(84), { id: 84, rank: 3, stats: { sp: 730, int: 540 } });
+  assert.deepEqual(byId.get(300), {
+    id: 300,
+    rank: 5,
+    dna: [
+      { id: 174, personality: "overprotective" },
+      { id: 84, personality: "enlightened" },
+    ],
+  });
+  assert.deepEqual(byId.get(190), { id: 190, items: ["beastFire"], modeFrom: [187] });
+  assert.deepEqual(byId.get(305), { id: 305, rank: 5, items: ["beastFire"] });
+  assert.deepEqual(byId.get(463), { id: 463, rank: 7, modeFrom: [309] });
+});
+
+test("formats normal and special requirements in Chinese and English", () => {
+  const { data, api } = loadApp();
+  const digimonById = new Map(data.digimon.map(item => [item.id, item]));
+  const requirements = new Map(data.requirements.map(item => [item.id, item]));
+
+  assert.deepEqual(
+    [...api.formatRequirements(requirements.get(1), "zh", digimonById)],
+    ["无法通过进化获得"],
+  );
+  assert.deepEqual(
+    [...api.formatRequirements(requirements.get(84), "zh", digimonById)],
+    ["探员阶级 3 以上", "最大 SP 730 以上", "智力 540 以上"],
+  );
+  assert.deepEqual(
+    [...api.formatRequirements(requirements.get(84), "en", digimonById)],
+    ["Agent Rank 3 or higher", "Max SP 730 or higher", "INT 540 or higher"],
+  );
+  assert.deepEqual(
+    [...api.formatRequirements(requirements.get(300), "zh", digimonById)],
+    ["探员阶级 5 以上", "DNA进化：甲龙兽（过度保护）＋天使兽（开明）"],
+  );
+  assert.deepEqual(
+    [...api.formatRequirements(requirements.get(463), "en", digimonById)],
+    ["Agent Rank 7 or higher", "Mode Change: UlforceVeedramon"],
+  );
+  assert.deepEqual(
+    [...api.formatRequirements(requirements.get(464), "zh", digimonById)],
+    ["探员阶级 7 以上", "需要道具：奇迹装甲", "形态转换：金甲龙兽"],
+  );
+  assert.deepEqual(
+    [...api.formatRequirements(requirements.get(449), "en", digimonById)],
+    ["Agent Rank 8 or higher", "ATK 3630 or higher", "Bonds of Valor Agent Skills 46 or more"],
+  );
+});
+
+test("exposes requirement details for hover, focus, and click", () => {
+  const html = readFileSync(htmlUrl, "utf8");
+  assert.match(html, /id="selected-requirements"/);
+  assert.match(html, /className = "condition-tooltip"/);
+  assert.match(html, /aria-describedby/);
+});
+
 test("Agumon includes its baby ancestry and evolution descendants", () => {
   const { data, api } = loadApp();
   const indexes = api.buildIndexes(data);

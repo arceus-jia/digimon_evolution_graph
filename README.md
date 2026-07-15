@@ -18,8 +18,6 @@ https://github.com/user-attachments/assets/c7c15a84-e939-44c6-a41d-cc9155a53af3
 
 [Launch on GitHub Pages](https://arceus-jia.github.io/digimon_evolution_graph/time_stranger.html?language=en)
 
-> The GitHub Pages address is a placeholder and will be updated after deployment.
-
 ### Use Offline
 
 1. Download [time_stranger.html](https://github.com/arceus-jia/digimon_evolution_graph/releases/latest/download/time_stranger.html).

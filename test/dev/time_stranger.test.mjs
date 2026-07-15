@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { createHash } from "node:crypto";
 import { existsSync, readFileSync } from "node:fs";
 import test from "node:test";
 import vm from "node:vm";
@@ -32,6 +33,56 @@ test("contains a complete bilingual field guide", () => {
   assert.equal(data.digimon.length, 475);
   assert.deepEqual(ids, Array.from({ length: 475 }, (_, index) => index + 1));
   assert.ok(data.digimon.every(({ zh, en, stage, image }) => zh && en && stage && image.startsWith("https://")));
+});
+
+test("uses the Simplified Chinese names from Time Stranger", () => {
+  const { data } = loadApp();
+  const names = new Map(data.digimon.map(({ id, zh }) => [id, zh]));
+  const expected = new Map([
+    [2, "巧洛兽"],
+    [4, "泡泡兽"],
+    [5, "布尼兽"],
+    [8, "卡普利兽"],
+    [11, "犄角兽"],
+    [15, "喵喵兽"],
+    [26, "日轮兽"],
+    [27, "梗犬兽"],
+    [29, "玩具亚古兽"],
+    [30, "梦貘兽"],
+    [31, "雏鸡兽"],
+    [33, "猎鹰兽"],
+    [38, "龙蛇兽"],
+    [41, "加奥兽"],
+    [45, "小锹形虫兽"],
+    [48, "高吼兽"],
+    [54, "佛洛拉兽"],
+    [451, "加布兽友情纽带"],
+  ]);
+
+  for (const [id, name] of expected) assert.equal(names.get(id), name, `unexpected Chinese name for ID ${id}`);
+});
+
+test("matches the complete verified Chinese name snapshot", () => {
+  const { data } = loadApp();
+  const corpus = data.digimon
+    .map(({ id, zh }) => `${id}:${zh}\n`)
+    .join("");
+  const digest = createHash("sha256").update(corpus).digest("hex");
+
+  assert.equal(digest, "3a56349edd9c358f4489a86652786d60186916a3ce9349ac7ba278ed1ad6c810");
+});
+
+test("uses the DLC names shown in the Simplified Chinese field guide", () => {
+  const { data } = loadApp();
+  const names = new Map(data.digimon.map(({ id, zh }) => [id, zh]));
+  const expected = [
+    "偃月加鲁鲁兽", "异次元兽", "电光暴龙兽", "奥米加兽Alter-B",
+    "奥米加兽Alter-S", "奥米加兽兹瓦特:战损", "番长豆豆兽", "番长花仙兽",
+    "番长魔像兽", "番长飞虫兽", "奥米加兽MM", "究极V龙兽（X抗体）",
+    "金甲龙兽（X抗体）", "杰斯兽（X抗体）", "公爵兽（X抗体）", "奥米加兽（X抗体）",
+  ];
+
+  expected.forEach((name, index) => assert.equal(names.get(452 + index), name));
 });
 
 test("contains only unique valid directed edges", () => {

@@ -32,7 +32,34 @@ test("contains a complete bilingual field guide", () => {
 
   assert.equal(data.digimon.length, 475);
   assert.deepEqual(ids, Array.from({ length: 475 }, (_, index) => index + 1));
-  assert.ok(data.digimon.every(({ zh, en, stage, image }) => zh && en && stage && image.startsWith("https://")));
+  assert.ok(data.digimon.every(({ zh, en, stage, image, attribute, type }) => (
+    zh && en && stage && attribute && type && image.startsWith("https://")
+  )));
+});
+
+test("contains the verified attributes and species types", () => {
+  const { data } = loadApp();
+  const byId = new Map(data.digimon.map(item => [item.id, item]));
+
+  assert.equal(byId.get(1).attribute, "noData");
+  assert.equal(byId.get(1).type, "unidentified");
+  assert.equal(byId.get(21).attribute, "vaccine");
+  assert.equal(byId.get(21).type, "reptile");
+  assert.equal(byId.get(300).attribute, "free");
+  assert.equal(byId.get(300).type, "mutant");
+  assert.equal(byId.get(463).attribute, "vaccine");
+  assert.equal(byId.get(463).type, "holyKnight");
+  assert.equal(byId.get(466).attribute, "virus");
+  assert.equal(byId.get(466).type, "holyKnight");
+});
+
+test("formats field guide metadata in Chinese and English", () => {
+  const { api } = loadApp();
+
+  assert.equal(api.formatProfile({ attribute: "vaccine", type: "bird" }, "zh"), "疫苗种 · 鸟型");
+  assert.equal(api.formatProfile({ attribute: "vaccine", type: "bird" }, "en"), "Vaccine · Bird");
+  assert.equal(api.formatProfile({ attribute: "noData", type: "holyKnight" }, "zh"), "无数据种 · 圣骑士型");
+  assert.equal(api.formatProfile({ attribute: "noData", type: "holyKnight" }, "en"), "No Data · Holy Knight");
 });
 
 test("uses the Simplified Chinese names from Time Stranger", () => {
@@ -158,7 +185,17 @@ test("exposes requirement details for hover, focus, and click", () => {
   const html = readFileSync(htmlUrl, "utf8");
   assert.match(html, /id="selected-requirements"/);
   assert.match(html, /className = "condition-tooltip"/);
+  assert.match(html, /className = "profile-meta"/);
   assert.match(html, /aria-describedby/);
+});
+
+test("uses a responsive boundary arrow for the sidebar", () => {
+  const html = readFileSync(htmlUrl, "utf8");
+
+  assert.match(html, /<\/aside>\s*<button id="sidebar-toggle"/);
+  assert.match(html, /class="sidebar-toggle-arrow"/);
+  assert.match(html, /\.app\.sidebar-collapsed \.sidebar-toggle/);
+  assert.match(html, /@media \(max-width: 720px\)[\s\S]*\.sidebar-toggle-arrow/);
 });
 
 test("Agumon includes its baby ancestry and evolution descendants", () => {

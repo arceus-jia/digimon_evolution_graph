@@ -34,6 +34,12 @@ No installation or local server is required. Names and evolution relationships w
 - Collapsible sidebar and responsive mobile layout
 - Dependency-free single HTML file
 
+## Changelog
+
+### v1.0.1
+
+- Updated the Simplified Chinese Digimon names.
+
 ## Disclaimer
 
 This is an unofficial fan-made reference tool. Digimon and related names and images belong to their respective owners.

@@ -39,6 +39,10 @@ No installation or local server is required. Names and evolution relationships w
 
 ## Changelog
 
+### v1.0.5
+
+- Fixed incorrect Digivolution requirements for seven Digimon, including Greymon (Blue) and Garurumon (Black).
+
 ### v1.0.4
 
 - Added Special Skill details.

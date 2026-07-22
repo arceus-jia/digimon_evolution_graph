@@ -256,6 +256,19 @@ test("contains one structured requirement record for every Digimon", () => {
   assert.deepEqual(byId.get(463), { id: 463, rank: 7, modeFrom: [309] });
 });
 
+test("matches the audited numeric Digivolution requirements", () => {
+  const { data } = loadApp();
+  const byId = new Map(data.requirements.map(item => [item.id, item]));
+
+  assert.deepEqual(byId.get(262), { id: 262, rank: 5, stats: { sp: 880, int: 1260 } });
+  assert.deepEqual(byId.get(280), { id: 280, rank: 5, stats: { sp: 1350, int: 1230 } });
+  assert.deepEqual(byId.get(382), { id: 382, rank: 7, stats: { atk: 2500, int: 1900 } });
+  assert.deepEqual(byId.get(397), { id: 397, rank: 7, stats: { hp: 2460, atk: 2500, int: 1700 } });
+  assert.deepEqual(byId.get(450), { id: 450, rank: 8, stats: { sp: 2660, int: 3100 } });
+  assert.deepEqual(byId.get(470), { id: 470, rank: 3, stats: { spd: 580 } });
+  assert.deepEqual(byId.get(471), { id: 471, rank: 3, stats: { atk: 660, spi: 420, spd: 540 } });
+});
+
 test("formats normal and special requirements in Chinese and English", () => {
   const { data, api } = loadApp();
   const digimonById = new Map(data.digimon.map(item => [item.id, item]));

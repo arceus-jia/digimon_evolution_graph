@@ -72,6 +72,16 @@ test("formats attribute and element compatibility", () => {
   assert.deepEqual([...api.getAttributeMatchups("free")], []);
   assert.deepEqual({ ...api.formatEffectiveness(2) }, { symbol: "◎", multiplier: "2×" });
   assert.deepEqual({ ...api.formatEffectiveness(4) }, { symbol: "×", multiplier: "0×" });
+
+  assert.deepEqual(
+    [...api.getElementMatchups([0, 1, 0, 3, 4, 0, 2, 0, 0, 0, 0])].map(item => ({ ...item })),
+    [
+      { element: "fire", code: 1 },
+      { element: "grass", code: 3 },
+      { element: "ice", code: 4 },
+      { element: "ground", code: 2 },
+    ],
+  );
 });
 
 test("formats localized skills and explicit English fallbacks", () => {
@@ -100,6 +110,20 @@ test("formats localized skills and explicit English fallbacks", () => {
   assert.equal(localized.effect, "示例效果。");
   assert.equal(localized.fallback, false);
   assert.deepEqual([...localized.meta], ["光", "SP 20"]);
+
+  const embedded = api.formatSkill({
+    name: "小型火焰",
+    element: "火",
+    sp: 65,
+    kind: "物理",
+    power: "45",
+    target: "敌方单体",
+    effect: "",
+  }, "zh");
+  assert.equal(embedded.name, "小型火焰");
+  assert.equal(embedded.effect, "");
+  assert.equal(embedded.fallback, false);
+  assert.deepEqual([...embedded.meta], ["火", "SP 65", "物理", "威力 45", "敌方单体"]);
 });
 
 test("uses the Simplified Chinese names from Time Stranger", () => {
@@ -176,6 +200,23 @@ test("contains complete combat records and valid skill references", () => {
     && skills.length >= 1
     && skills.every(skillId => data.skills[skillId]?.name?.en && data.skills[skillId]?.effect?.en)
   )));
+});
+
+test("contains embedded Chinese special skills for the non-DLC roster", () => {
+  const { data } = loadApp();
+  const coveredIds = new Set([
+    ...Array.from({ length: 451 }, (_, index) => index + 1),
+    ...Array.from({ length: 8 }, (_, index) => index + 468),
+  ]);
+  const coveredCombat = data.combat.filter(({ id }) => coveredIds.has(id));
+  const localizedSkills = coveredCombat.flatMap(({ skillsZh }) => skillsZh || []);
+
+  assert.equal(coveredCombat.length, 459);
+  assert.equal(localizedSkills.length, 596);
+  assert.ok(coveredCombat.every(({ skills, skillsZh }) => skillsZh?.length === skills.length));
+  assert.ok(localizedSkills.every(({ name }) => name));
+  assert.ok(localizedSkills.every(skill => Object.hasOwn(skill, "effect")));
+  assert.equal(data.combat.find(({ id }) => id === 21).skillsZh[0].name, "小型火焰");
 });
 
 test("matches verified Agumon and DLC3 combat samples", () => {
@@ -268,6 +309,32 @@ test("renders compatibility and skills only in the selected information panel", 
   const tooltipBody = html.match(/function showConditionTooltip[\s\S]*?\n      }\n\n      function hideConditionTooltip/)?.[0];
   assert.ok(tooltipBody);
   assert.doesNotMatch(tooltipBody, /renderSelectedCompatibility|renderSelectedSkills|selected-skills/);
+
+  const compatibilityBody = html.match(/function renderSelectedCompatibility[\s\S]*?\n      }\n\n      function renderSelectedRequirements/)?.[0];
+  assert.ok(compatibilityBody);
+  assert.match(compatibilityBody, /getElementMatchups/);
+  assert.doesNotMatch(compatibilityBody, /getAttributeMatchups/);
+});
+
+test("keeps the selected information panel compact", () => {
+  const html = readFileSync(htmlUrl, "utf8");
+  const style = html.split("<style>")[1].split("</style>")[0];
+  const compatibilityGroups = style.match(/\.compatibility-groups\s*\{([^}]*)\}/)?.[1] || "";
+  const compatibilityGroup = style.match(/\.compatibility-group\s*\{([^}]*)\}/)?.[1] || "";
+
+  assert.ok(/<h2><span id="selection-title"><\/span><small id="selection-meta"/.test(html));
+  assert.ok(/\.graph-header\s*\{[^}]*max-height:\s*min\(26vh, 240px\)/.test(style));
+  assert.ok(/@media \(max-width: 720px\)[\s\S]*?\.graph-header\s*\{[^}]*max-height:\s*32vh/.test(style));
+  assert.match(compatibilityGroups, /display:\s*flex/);
+  assert.match(compatibilityGroups, /flex-wrap:\s*wrap/);
+  assert.match(compatibilityGroup, /display:\s*flex/);
+  assert.match(compatibilityGroup, /align-items:\s*center/);
+
+  const compatibilityBody = html.match(/function renderSelectedCompatibility[\s\S]*?\n      }\n\n      function renderSelectedRequirements/)?.[0];
+  const requirementsBody = html.match(/function renderSelectedRequirements[\s\S]*?\n      }\n\n      function renderSelectedSkills/)?.[0];
+  assert.doesNotMatch(compatibilityBody, /detail-heading|text\.compatibility/);
+  assert.doesNotMatch(compatibilityBody, /compatibilityNote/);
+  assert.doesNotMatch(requirementsBody, /requirementNote/);
 });
 
 test("uses a responsive boundary arrow for the sidebar", () => {

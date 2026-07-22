@@ -32,11 +32,17 @@ No installation or local server is required. Names and evolution relationships w
 - Search by Field Guide number, Chinese name, or English name
 - Complete ancestor and descendant evolution graph for the selected Digimon
 - Bilingual Attribute and species Type details for every Digimon
+- Special Skill details and non-neutral elemental weaknesses and resistances
 - Bilingual Digivolution requirements on hover, keyboard focus, or selection
 - Collapsible sidebar with a clear directional control and responsive mobile layout
 - Dependency-free single HTML file
 
 ## Changelog
+
+### v1.0.4
+
+- Added Special Skill details.
+- Added elemental weakness and resistance information.
 
 ### v1.0.3
 

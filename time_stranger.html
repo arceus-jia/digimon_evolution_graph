@@ -211,8 +211,8 @@
       align-items: flex-start;
       gap: 10px;
       flex: 0 0 auto;
-      max-height: 48vh;
-      padding: 20px 24px 16px;
+      max-height: min(22vh, 220px);
+      padding: 14px 20px 12px;
       border-bottom: 1px solid var(--line);
       overflow-x: hidden;
       overflow-y: auto;
@@ -274,19 +274,22 @@
     }
 
     .selection-meta {
-      margin-top: 4px;
+      display: inline-block;
+      margin-left: 8px;
       color: var(--muted);
-      font-size: 12px;
+      font-size: 11px;
+      font-weight: 400;
+      white-space: nowrap;
     }
 
     .selection-profile {
-      margin-top: 10px;
+      margin-top: 6px;
       margin-bottom: 0;
     }
 
     .selected-section {
-      margin-top: 12px;
-      padding-top: 10px;
+      margin-top: 8px;
+      padding-top: 7px;
       border-top: 1px solid #edf0f3;
     }
 
@@ -338,36 +341,38 @@
     }
 
     .compatibility-groups {
-      display: grid;
-      gap: 7px;
-      margin-top: 7px;
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 4px 14px;
+      margin-top: 4px;
     }
 
     .compatibility-group {
-      display: grid;
-      grid-template-columns: 58px minmax(0, 1fr);
-      align-items: start;
-      gap: 8px;
+      display: flex;
+      align-items: center;
+      max-width: 100%;
+      gap: 5px;
     }
 
     .compatibility-label {
-      padding-top: 4px;
       color: var(--muted);
       font-size: 11px;
       font-weight: 600;
+      white-space: nowrap;
     }
 
     .compatibility-row {
       display: flex;
       flex-wrap: wrap;
-      gap: 5px;
+      gap: 3px;
     }
 
     .compatibility-chip {
       display: inline-flex;
       align-items: center;
       gap: 4px;
-      padding: 3px 6px;
+      padding: 2px 5px;
       background: #f7f8fa;
       border: 1px solid #dfe3e8;
       border-radius: 5px;
@@ -663,12 +668,12 @@
       }
 
       .graph-header {
-        max-height: 52vh;
-        padding: 14px 16px 12px;
+        max-height: 28vh;
+        padding: 10px 12px 8px;
       }
 
-      .compatibility-group {
-        grid-template-columns: 48px minmax(0, 1fr);
+      .compatibility-groups {
+        gap: 4px 10px;
       }
 
       .skill-list {
@@ -709,8 +714,7 @@
     <main class="workspace">
       <header class="graph-header">
         <div class="graph-heading">
-          <h2 id="selection-title"></h2>
-          <p id="selection-meta" class="selection-meta"></p>
+          <h2><span id="selection-title"></span><small id="selection-meta" class="selection-meta"></small></h2>
           <p id="selection-profile" class="profile-meta selection-profile"></p>
           <div id="selected-compatibility" class="selected-section"></div>
           <div id="selected-requirements" class="selected-section"></div>
@@ -735,7 +739,7 @@
     </main>
   </div>
 
-  <!-- Data snapshot: 2026-07-22. Combat base: https://www.tshadowknight.com/pathfinder%204.0/game_data_TS/unpacked/digi_data.json ; DLC3 combat cross-check: https://game8.co/games/Digimon-Story-Time-Stranger/archives/586113 through 586117 ; Evolution requirements and attributes base: https://docs.google.com/spreadsheets/d/1-b388v_MSzKgXYYnGsSDEacuov3cfjaX4dtOwKXIS_A/ ; requirements, relations, and DLC3 profile cross-check: https://game8.co/games/Digimon-Story-Time-Stranger/archives/554944 ; species types: https://gamefaqs.gamespot.com/ps5/513530-digimon-story-time-stranger/faqs/82355/field-guide-basics ; Simplified Chinese names: https://www.gamersky.com/handbook/202510/2023382.shtml ; https://github.com/laigus/DigimonStory-TimeStranger-Tools ; DLC 452-467: https://www.bilibili.com/video/BV1EjxgzkExA/ ; Chinese terminology cross-check: https://digimon.net/reference_zh-CHS/ -->
+  <!-- Data snapshot: 2026-07-22. Combat base: https://www.tshadowknight.com/pathfinder%204.0/game_data_TS/unpacked/digi_data.json ; Simplified Chinese special skills: https://www.dmevo.top/ ; DLC3 combat cross-check: https://game8.co/games/Digimon-Story-Time-Stranger/archives/586113 through 586117 ; Evolution requirements and attributes base: https://docs.google.com/spreadsheets/d/1-b388v_MSzKgXYYnGsSDEacuov3cfjaX4dtOwKXIS_A/ ; requirements, relations, and DLC3 profile cross-check: https://game8.co/games/Digimon-Story-Time-Stranger/archives/554944 ; species types: https://gamefaqs.gamespot.com/ps5/513530-digimon-story-time-stranger/faqs/82355/field-guide-basics ; Simplified Chinese names: https://www.gamersky.com/handbook/202510/2023382.shtml ; https://github.com/laigus/DigimonStory-TimeStranger-Tools ; DLC 452-467: https://www.bilibili.com/video/BV1EjxgzkExA/ ; Chinese terminology cross-check: https://digimon.net/reference_zh-CHS/ -->
   <script id="digimon-data" type="application/json">
   {
     "digimon": [
@@ -1216,457 +1220,457 @@
       {"id":475,"zh":"钢铁加鲁鲁兽黑","en":"MetalGarurumon (Black)","stage":"mega","image":"https://j-img.game8.co/11835895/d3f6f8583156de73d3c6a4e66fcc29fa.webp/show","attribute":"virus","type":"android"}
     ],
     "combat": [
-      {"id":1,"resistances":[1,0,3,0,1,1,1,3,0,0,3],"skills":["26291"]},
-      {"id":2,"resistances":[0,0,1,3,1,3,1,0,0,0,3],"skills":["22411"]},
-      {"id":3,"resistances":[1,0,3,3,3,1,0,0,1,0,0],"skills":["23161"]},
-      {"id":4,"resistances":[1,1,3,0,0,0,3,0,0,3,1],"skills":["23871"]},
-      {"id":5,"resistances":[0,3,0,0,1,1,0,0,3,1,3],"skills":["24371"]},
-      {"id":6,"resistances":[3,3,0,0,1,3,0,0,1,0,1],"skills":["23171"]},
-      {"id":7,"resistances":[1,1,3,3,0,1,0,3,0,0,0],"skills":["23201"]},
-      {"id":8,"resistances":[1,1,0,0,0,3,1,3,3,0,0],"skills":["22421"]},
-      {"id":9,"resistances":[1,0,3,0,3,0,0,0,1,1,3],"skills":["23221"]},
-      {"id":10,"resistances":[0,1,0,3,1,0,3,1,0,3,0],"skills":["25121"]},
-      {"id":11,"resistances":[3,1,1,1,0,0,3,3,0,0,0],"skills":["24381"]},
-      {"id":12,"resistances":[3,3,1,0,1,0,0,1,0,0,3],"skills":["26311"]},
-      {"id":13,"resistances":[0,3,3,1,0,1,0,3,1,0,0],"skills":["23251"]},
-      {"id":14,"resistances":[0,3,0,1,0,3,1,3,1,0,0],"skills":["24661"]},
-      {"id":15,"resistances":[0,1,1,3,0,0,0,0,3,1,3],"skills":["25151"]},
-      {"id":16,"resistances":[0,1,3,1,3,1,3,0,0,0,0],"skills":["25671"]},
-      {"id":17,"resistances":[0,1,0,0,1,0,3,1,0,3,0],"skills":["25101"]},
-      {"id":18,"resistances":[0,1,3,0,3,1,3,1,0,0,0],"skills":["25141"]},
-      {"id":19,"resistances":[0,1,3,3,1,0,0,3,1,0,0],"skills":["23881"]},
-      {"id":20,"resistances":[0,1,1,3,0,0,0,0,3,1,3],"skills":["23211"]},
-      {"id":21,"resistances":[0,3,0,0,1,1,3,0,0,0,0],"skills":["20501"]},
-      {"id":22,"resistances":[0,0,0,0,0,0,0,1,3,3,1],"skills":["20531"]},
-      {"id":23,"resistances":[0,1,3,0,3,1,0,0,0,0,0],"skills":["23431"]},
-      {"id":24,"resistances":[0,4,1,0,1,0,0,0,0,3,0],"skills":["21361"]},
-      {"id":25,"resistances":[1,3,0,0,1,0,0,4,0,0,0],"skills":["26971"]},
-      {"id":26,"resistances":[0,3,1,0,1,3,0,0,0,0,0],"skills":["27281"]},
-      {"id":27,"resistances":[0,3,0,1,0,0,0,1,3,0,0],"skills":["27011"]},
-      {"id":28,"resistances":[0,1,0,3,0,0,3,0,1,0,0],"skills":["23031"]},
-      {"id":29,"resistances":[1,0,3,0,3,0,0,0,1,0,0],"skills":["27081"]},
-      {"id":30,"resistances":[0,1,0,0,0,3,0,0,1,3,0],"skills":["22311"]},
-      {"id":31,"resistances":[0,0,3,1,3,0,1,0,0,0,0],"skills":["25731"]},
-      {"id":32,"resistances":[0,3,0,3,0,0,1,0,1,0,0],"skills":["23071"]},
-      {"id":33,"resistances":[0,0,0,0,1,0,3,1,3,0,0],"skills":["27051"]},
-      {"id":34,"resistances":[0,1,0,0,0,0,3,0,0,3,1],"skills":["23611"]},
-      {"id":35,"resistances":[0,1,0,3,1,0,3,0,0,0,0],"skills":["22341"]},
-      {"id":36,"resistances":[0,1,3,0,3,0,0,1,0,0,0],"skills":["26221"]},
-      {"id":37,"resistances":[0,0,0,3,1,3,1,0,0,0,0],"skills":["24581"]},
-      {"id":38,"resistances":[3,0,0,1,0,0,1,3,0,0,0],"skills":["21901"]},
-      {"id":39,"resistances":[0,0,0,0,0,0,0,0,0,3,1],"skills":["23901"]},
-      {"id":40,"resistances":[0,0,1,0,1,3,0,0,3,0,0],"skills":["25641"]},
-      {"id":41,"resistances":[0,0,0,1,3,0,1,0,3,0,0],"skills":["20551"]},
-      {"id":42,"resistances":[0,0,3,1,0,1,0,3,0,0,0],"skills":["21031"]},
-      {"id":43,"resistances":[0,3,0,1,3,0,0,0,1,0,0],"skills":["21511"]},
-      {"id":44,"resistances":[3,0,0,0,1,1,0,3,0,0,0],"skills":["20521"]},
-      {"id":45,"resistances":[0,0,1,0,1,3,0,0,3,0,0],"skills":["26091"]},
-      {"id":46,"resistances":[0,0,3,1,0,0,4,0,1,0,0],"skills":["25951"]},
-      {"id":47,"resistances":[0,3,1,0,0,3,1,0,0,0,0],"skills":["22191"]},
-      {"id":48,"resistances":[0,3,1,0,1,0,0,3,0,0,0],"skills":["26821"]},
-      {"id":49,"resistances":[0,3,1,1,0,3,0,0,0,0,0],"skills":["22081"]},
-      {"id":50,"resistances":[3,0,0,0,0,1,0,3,1,0,0],"skills":["21121"]},
-      {"id":51,"resistances":[0,1,0,0,0,0,0,0,3,3,1],"skills":["20961"]},
-      {"id":52,"resistances":[0,3,0,1,0,1,0,3,0,0,0],"skills":["26871"]},
-      {"id":53,"resistances":[0,1,0,3,1,0,3,0,0,0,0],"skills":["23481"]},
-      {"id":54,"resistances":[0,1,0,3,0,0,3,1,0,0,0],"skills":["26111"]},
-      {"id":55,"resistances":[0,0,1,3,1,0,3,0,0,0,0],"skills":["26231"]},
-      {"id":56,"resistances":[0,1,0,3,1,0,3,0,0,0,0],"skills":["20561"]},
-      {"id":57,"resistances":[0,1,0,0,3,1,3,0,0,0,3],"skills":["20021"]},
-      {"id":58,"resistances":[0,1,0,3,0,0,0,1,3,0,0],"skills":["23911"]},
-      {"id":59,"resistances":[0,0,0,1,3,0,1,0,3,0,0],"skills":["27501"]},
-      {"id":60,"resistances":[0,3,0,0,1,3,0,0,0,1,0],"skills":["20811"]},
-      {"id":61,"resistances":[0,1,3,3,0,1,0,0,0,0,0],"skills":["25821"]},
-      {"id":62,"resistances":[0,1,0,0,3,0,1,0,3,0,0],"skills":["25691"]},
-      {"id":63,"resistances":[0,0,3,0,0,1,1,0,3,0,0],"skills":["25941"]},
-      {"id":64,"resistances":[0,3,1,0,1,0,3,0,0,0,0],"skills":["20901"]},
-      {"id":65,"resistances":[0,3,0,1,3,0,1,0,0,0,0],"skills":["21111"]},
-      {"id":66,"resistances":[0,1,0,3,0,1,1,0,3,0,0],"skills":["25771"]},
-      {"id":67,"resistances":[0,1,3,0,0,1,0,3,0,0,0],"skills":["27091"]},
-      {"id":68,"resistances":[0,2,3,0,3,1,0,0,0,0,0],"skills":["25781"]},
-      {"id":69,"resistances":[0,1,0,3,0,0,3,0,0,1,0],"skills":["20201"]},
-      {"id":70,"resistances":[0,0,0,0,0,0,3,0,1,1,3],"skills":["24571"]},
-      {"id":71,"resistances":[0,3,1,0,0,1,0,3,0,0,0],"skills":["20091"]},
-      {"id":72,"resistances":[0,1,3,0,0,0,0,0,0,1,3],"skills":["20971"]},
-      {"id":73,"resistances":[0,1,0,3,0,0,1,0,3,0,0],"skills":["20421"]},
-      {"id":74,"resistances":[0,1,3,0,0,3,0,1,0,0,0],"skills":["23891"]},
-      {"id":75,"resistances":[0,1,0,3,0,0,3,0,1,0,0],"skills":["26071"]},
-      {"id":76,"resistances":[1,0,1,3,1,3,3,3,1,0,0],"skills":["27071"]},
-      {"id":77,"resistances":[3,1,0,0,3,1,3,1,1,3,0],"skills":["21141"]},
-      {"id":78,"resistances":[3,1,0,3,1,1,3,1,3,0,0],"skills":["27061"]},
-      {"id":79,"resistances":[1,1,3,3,0,1,3,0,1,0,3],"skills":["23921"]},
-      {"id":80,"resistances":[2,1,3,0,0,3,0,1,0,0,3],"skills":["26261"]},
-      {"id":81,"resistances":[0,0,1,1,0,3,0,0,0,0,0],"skills":["21831","21832"]},
-      {"id":82,"resistances":[0,1,3,0,3,1,0,0,0,0,0],"skills":["23441"]},
-      {"id":83,"resistances":[0,0,0,0,1,0,3,1,3,0,0],"skills":["20111"]},
-      {"id":84,"resistances":[0,0,3,0,0,0,1,0,0,3,1],"skills":["20871"]},
-      {"id":85,"resistances":[0,0,0,0,3,1,1,3,0,0,0],"skills":["23041"]},
-      {"id":86,"resistances":[0,0,3,1,3,0,0,0,1,0,0],"skills":["27101"]},
-      {"id":87,"resistances":[0,3,0,0,3,1,0,0,1,0,0],"skills":["20121"]},
-      {"id":88,"resistances":[3,0,0,1,0,0,1,3,0,0,0],"skills":["21911"]},
-      {"id":89,"resistances":[0,1,0,3,1,0,3,0,0,0,0],"skills":["22353"]},
-      {"id":90,"resistances":[0,3,1,0,1,0,3,0,0,0,0],"skills":["23261"]},
-      {"id":91,"resistances":[0,3,0,0,3,0,0,1,1,0,0],"skills":["22181"]},
-      {"id":92,"resistances":[0,3,1,1,1,0,4,0,0,0,0],"skills":["20541"]},
-      {"id":93,"resistances":[0,3,1,3,0,0,0,0,0,0,1],"skills":["20161"]},
-      {"id":94,"resistances":[0,1,0,3,0,0,0,3,1,0,0],"skills":["25971"]},
-      {"id":95,"resistances":[1,3,0,0,1,0,0,4,0,0,0],"skills":["26981"]},
-      {"id":96,"resistances":[0,1,0,0,3,0,0,0,0,3,1],"skills":["27551"]},
-      {"id":97,"resistances":[0,0,0,1,0,0,0,0,3,3,1],"skills":["20921"]},
-      {"id":98,"resistances":[0,1,0,0,0,0,3,1,3,0,0],"skills":["22221"]},
-      {"id":99,"resistances":[0,3,1,0,1,0,0,0,3,0,0],"skills":["23081"]},
-      {"id":100,"resistances":[0,4,1,0,1,3,0,0,0,0,0],"skills":["21371"]},
-      {"id":101,"resistances":[0,3,1,0,0,3,1,0,3,0,0],"skills":["23971"]},
-      {"id":102,"resistances":[0,0,0,0,3,1,3,0,1,0,0],"skills":["25741"]},
-      {"id":103,"resistances":[0,1,0,3,0,1,3,0,0,0,0],"skills":["27021"]},
-      {"id":104,"resistances":[0,1,3,0,3,1,0,0,0,0,0],"skills":["23711"]},
-      {"id":105,"resistances":[0,2,0,0,4,1,0,0,3,0,0],"skills":["23701"]},
-      {"id":106,"resistances":[0,0,0,0,0,0,1,0,3,3,1],"skills":["25481"]},
-      {"id":107,"resistances":[1,0,0,0,0,1,0,3,3,0,0],"skills":["20251"]},
-      {"id":108,"resistances":[1,0,0,1,3,0,0,3,0,0,0],"skills":["24561"]},
-      {"id":109,"resistances":[0,1,0,0,0,1,3,0,3,0,0],"skills":["20721"]},
-      {"id":110,"resistances":[0,1,0,1,0,0,0,3,3,0,0],"skills":["20771"]},
-      {"id":111,"resistances":[0,1,3,0,4,1,0,0,0,0,0],"skills":["27581"]},
-      {"id":112,"resistances":[0,3,0,0,1,3,0,1,0,0,0],"skills":["23771"]},
-      {"id":113,"resistances":[0,0,3,1,0,0,1,0,3,0,0],"skills":["26011"]},
-      {"id":114,"resistances":[0,0,0,1,3,0,1,0,3,0,0],"skills":["20681"]},
-      {"id":115,"resistances":[0,1,3,3,0,2,0,0,0,0,0],"skills":["20511"]},
-      {"id":116,"resistances":[0,1,0,3,0,0,3,1,0,0,0],"skills":["26101"]},
-      {"id":117,"resistances":[0,3,0,0,0,0,1,1,3,0,0],"skills":["23951"]},
-      {"id":118,"resistances":[0,0,1,0,0,1,3,3,0,0,0],"skills":["23981"]},
-      {"id":119,"resistances":[0,0,0,0,0,3,1,1,3,0,0],"skills":["23721"]},
-      {"id":120,"resistances":[0,1,0,3,0,0,0,0,0,3,1],"skills":["20581"]},
-      {"id":121,"resistances":[0,0,3,0,3,1,1,0,0,0,0],"skills":["23471"]},
-      {"id":122,"resistances":[1,0,0,3,1,0,0,3,0,0,0],"skills":["21301"]},
-      {"id":123,"resistances":[1,0,3,0,0,1,3,0,0,0,0],"skills":["23681"]},
-      {"id":124,"resistances":[0,0,0,1,0,3,1,3,0,0,0],"skills":["20141"]},
-      {"id":125,"resistances":[0,3,0,1,0,0,3,0,1,0,0],"skills":["26211"]},
-      {"id":126,"resistances":[0,3,1,1,0,0,3,0,0,0,0],"skills":["27591"]},
-      {"id":127,"resistances":[0,0,3,0,3,1,1,0,0,0,0],"skills":["24741"]},
-      {"id":128,"resistances":[0,3,0,0,1,3,0,0,1,0,0],"skills":["23631"]},
-      {"id":129,"resistances":[1,0,0,3,1,0,3,0,0,0,0],"skills":["21021"]},
-      {"id":130,"resistances":[0,1,0,3,0,0,0,1,3,0,0],"skills":["23491"]},
-      {"id":131,"resistances":[0,0,1,3,1,0,3,0,0,0,0],"skills":["23731"]},
-      {"id":132,"resistances":[3,0,0,1,1,0,0,3,0,0,0],"skills":["23961"]},
-      {"id":133,"resistances":[0,0,0,0,3,1,0,3,1,0,0],"skills":["21151"]},
-      {"id":134,"resistances":[0,1,0,0,0,1,3,0,3,0,0],"skills":["24631"]},
-      {"id":135,"resistances":[0,4,2,0,1,0,0,0,3,0,0],"skills":["20101"]},
-      {"id":136,"resistances":[0,3,0,0,1,0,3,0,1,0,0],"skills":["23691"]},
-      {"id":137,"resistances":[0,1,3,0,3,1,0,0,0,0,0],"skills":["20031"]},
-      {"id":138,"resistances":[0,2,3,0,4,1,0,0,0,0,0],"skills":["27301"]},
-      {"id":139,"resistances":[0,1,0,1,0,3,3,0,0,0,0],"skills":["21001"]},
-      {"id":140,"resistances":[0,1,0,3,0,1,3,0,0,0,0],"skills":["23931"]},
-      {"id":141,"resistances":[0,1,0,3,0,0,1,0,3,0,0],"skills":["23941"]},
-      {"id":142,"resistances":[3,1,3,0,0,2,0,0,0,0,0],"skills":["22401"]},
-      {"id":143,"resistances":[1,0,0,3,0,1,3,0,0,0,0],"skills":["23411"]},
-      {"id":144,"resistances":[0,1,0,0,0,1,3,3,0,0,0],"skills":["24551"]},
-      {"id":145,"resistances":[0,3,1,0,1,3,0,0,0,0,0],"skills":["20781"]},
-      {"id":146,"resistances":[0,1,0,3,0,1,0,0,3,0,0],"skills":["23671"]},
-      {"id":147,"resistances":[0,1,3,3,0,1,0,0,0,0,0],"skills":["23991"]},
-      {"id":148,"resistances":[0,1,0,0,0,1,3,3,0,0,0],"skills":["27291"]},
-      {"id":149,"resistances":[0,3,0,3,1,0,0,1,0,0,0],"skills":["22091"]},
-      {"id":150,"resistances":[0,0,0,0,1,3,1,0,3,0,0],"skills":["21131"]},
-      {"id":151,"resistances":[1,3,0,0,0,0,4,0,1,0,0],"skills":["20051"]},
-      {"id":152,"resistances":[0,3,0,0,1,0,3,0,1,0,0],"skills":["24521"]},
-      {"id":153,"resistances":[0,1,0,0,3,0,0,0,0,1,3],"skills":["20301"]},
-      {"id":154,"resistances":[0,0,1,3,1,0,3,0,0,0,0],"skills":["23131"]},
-      {"id":155,"resistances":[0,0,0,1,1,3,3,0,0,0,0],"skills":["25981"]},
-      {"id":156,"resistances":[1,3,0,0,0,0,0,0,0,1,3],"skills":["20931"]},
-      {"id":157,"resistances":[1,0,1,0,0,0,3,3,0,0,0],"skills":["22281"]},
-      {"id":158,"resistances":[0,1,0,3,0,0,3,0,1,0,0],"skills":["25921"]},
-      {"id":159,"resistances":[3,1,0,1,1,1,1,1,0,0,0],"skills":["23751"]},
-      {"id":160,"resistances":[0,1,3,3,0,1,0,0,0,0,0],"skills":["20701"]},
-      {"id":161,"resistances":[3,1,0,0,0,0,0,0,0,1,3],"skills":["20131"]},
-      {"id":162,"resistances":[0,1,3,0,3,0,0,1,0,0,0],"skills":["25801"]},
-      {"id":163,"resistances":[0,3,1,0,1,0,3,0,0,0,0],"skills":["25791"]},
-      {"id":164,"resistances":[0,1,0,3,0,0,1,0,3,0,0],"skills":["25861"]},
-      {"id":165,"resistances":[0,0,1,3,1,0,0,0,0,0,0],"skills":["27521"]},
-      {"id":166,"resistances":[0,0,0,0,3,1,0,0,0,1,3],"skills":["20431"]},
-      {"id":167,"resistances":[0,1,0,3,0,0,3,1,0,0,0],"skills":["23141"]},
-      {"id":168,"resistances":[0,1,0,0,0,1,3,0,0,0,3],"skills":["20171"]},
-      {"id":169,"resistances":[0,1,3,0,0,0,3,0,1,0,0],"skills":["22201"]},
-      {"id":170,"resistances":[1,0,0,3,0,1,3,0,0,0,0],"skills":["26151"]},
-      {"id":171,"resistances":[0,1,3,0,0,0,0,0,0,1,3],"skills":["25901"]},
-      {"id":172,"resistances":[0,0,1,0,1,1,3,3,3,0,0],"skills":["24541"]},
-      {"id":173,"resistances":[3,1,0,3,1,1,3,1,3,0,0],"skills":["20151"]},
-      {"id":174,"resistances":[1,0,1,3,1,1,3,3,3,0,0],"skills":["27111"]},
-      {"id":175,"resistances":[3,1,3,0,3,1,3,1,1,0,0],"skills":["23651"]},
-      {"id":176,"resistances":[1,0,1,1,3,1,3,3,0,3,0],"skills":["27601"]},
-      {"id":177,"resistances":[3,1,0,3,1,1,1,3,0,0,3],"skills":["20911"]},
-      {"id":178,"resistances":[2,1,3,0,0,3,0,1,0,0,3],"skills":["26301"]},
-      {"id":179,"resistances":[0,1,3,1,3,1,1,3,0,0,3],"skills":["21451"]},
-      {"id":180,"resistances":[1,1,3,3,1,1,3,3,0,0,0],"skills":["21422"]},
-      {"id":181,"resistances":[3,0,1,3,1,3,3,1,1,0,0],"skills":["21441"]},
-      {"id":182,"resistances":[0,3,1,0,0,1,3,3,1,3,1],"skills":["21471"]},
-      {"id":183,"resistances":[0,3,1,3,1,3,1,0,1,3,0],"skills":["27161"]},
-      {"id":184,"resistances":[0,1,3,0,3,1,1,0,3,3,1],"skills":["21461"]},
-      {"id":185,"resistances":[3,3,0,1,1,3,1,1,3,0,0],"skills":["21411"]},
-      {"id":186,"resistances":[1,0,1,1,1,3,3,3,0,3,0],"skills":["21391"]},
-      {"id":187,"resistances":[0,4,1,0,2,0,0,3,0,0,0],"skills":["26761","26791"]},
-      {"id":188,"resistances":[0,0,0,0,3,0,1,0,0,4,2],"skills":["26801","26811"]},
-      {"id":189,"resistances":[0,1,4,0,0,2,0,3,0,0,0],"skills":["21621","21631"]},
-      {"id":190,"resistances":[0,4,1,0,2,3,0,0,0,0,0],"skills":["26761","26791"]},
-      {"id":191,"resistances":[0,1,4,0,0,2,0,3,0,0,0],"skills":["21621","21631"]},
-      {"id":192,"resistances":[0,0,1,0,0,0,0,0,3,4,2],"skills":["26801","26811"]},
-      {"id":193,"resistances":[0,0,1,1,0,3,0,0,3,0,0],"skills":["21841","21842"]},
-      {"id":194,"resistances":[0,1,0,3,0,0,3,0,1,0,0],"skills":["21881","21882"]},
-      {"id":195,"resistances":[0,0,0,0,0,3,1,0,0,1,3],"skills":["21851","21852"]},
-      {"id":196,"resistances":[0,1,3,0,3,1,0,0,0,0,0],"skills":["21871","21872"]},
-      {"id":197,"resistances":[0,0,0,0,0,3,0,0,1,3,1],"skills":["21861","21863"]},
-      {"id":198,"resistances":[0,0,0,0,3,1,1,3,0,0,0],"skills":["23051"]},
-      {"id":199,"resistances":[0,0,1,0,0,1,3,3,0,0,0],"skills":["23421"]},
-      {"id":200,"resistances":[0,3,0,0,0,0,1,1,3,0,0],"skills":["22101"]},
-      {"id":201,"resistances":[0,0,0,1,0,3,1,0,4,0,0],"skills":["24001"]},
-      {"id":202,"resistances":[0,1,0,3,0,0,0,1,3,0,0],"skills":["20011"]},
-      {"id":203,"resistances":[0,0,3,0,0,0,1,0,0,3,1],"skills":["21481"]},
-      {"id":204,"resistances":[0,0,0,1,0,0,3,1,3,0,0],"skills":["23091"]},
-      {"id":205,"resistances":[0,0,0,1,3,3,1,0,0,0,0],"skills":["24031"]},
-      {"id":206,"resistances":[3,1,0,0,0,3,0,0,1,0,0],"skills":["20261"]},
-      {"id":207,"resistances":[0,3,1,0,0,1,0,3,0,0,0],"skills":["24911"]},
-      {"id":208,"resistances":[0,3,0,0,1,0,3,0,1,0,3],"skills":["22231","22241"]},
-      {"id":209,"resistances":[0,3,0,0,1,0,3,0,1,0,3],"skills":["22231","22241"]},
-      {"id":210,"resistances":[1,0,0,0,3,1,0,3,0,0,0],"skills":["27191"]},
-      {"id":211,"resistances":[0,1,0,0,1,0,3,0,3,0,0],"skills":["24841"]},
-      {"id":212,"resistances":[0,1,3,0,3,1,0,0,0,0,0],"skills":["23451"]},
-      {"id":213,"resistances":[0,1,0,0,0,0,0,0,3,3,1],"skills":["20841"]},
-      {"id":214,"resistances":[1,3,0,0,1,0,0,4,0,0,0],"skills":["26991"]},
-      {"id":215,"resistances":[0,1,0,0,0,4,1,0,3,0,0],"skills":["24141"]},
-      {"id":216,"resistances":[0,1,3,0,3,1,0,0,0,0,0],"skills":["24091"]},
-      {"id":217,"resistances":[3,0,0,1,0,0,1,3,0,0,0],"skills":["21921"]},
-      {"id":218,"resistances":[0,3,1,1,0,3,0,0,0,0,0],"skills":["25751"]},
-      {"id":219,"resistances":[0,4,1,0,1,3,0,0,0,0,0],"skills":["21381"]},
-      {"id":220,"resistances":[0,0,4,0,3,1,0,1,0,0,0],"skills":["20211"]},
-      {"id":221,"resistances":[0,0,0,0,0,3,1,0,0,4,2],"skills":["21011"]},
-      {"id":222,"resistances":[0,1,0,0,3,1,3,0,0,0,0],"skills":["25881"]},
-      {"id":223,"resistances":[0,3,0,0,1,2,3,3,0,0,0],"skills":["23021"]},
-      {"id":224,"resistances":[1,1,0,0,0,0,3,3,0,0,0],"skills":["20611"]},
-      {"id":225,"resistances":[3,1,0,0,0,0,1,3,0,0,0],"skills":["27211"]},
-      {"id":226,"resistances":[1,0,1,0,0,0,0,3,0,3,0],"skills":["20711"]},
-      {"id":227,"resistances":[0,0,1,3,0,1,0,3,0,0,0],"skills":["27221"]},
-      {"id":228,"resistances":[0,0,0,1,0,1,3,3,0,0,0],"skills":["24791"]},
-      {"id":229,"resistances":[0,0,3,0,3,0,1,0,1,0,0],"skills":["21401"]},
-      {"id":230,"resistances":[0,1,3,0,0,1,3,0,0,0,0],"skills":["26051"]},
-      {"id":231,"resistances":[3,1,0,0,0,0,0,3,0,1,3],"skills":["29201"]},
-      {"id":232,"resistances":[0,1,0,0,0,0,0,0,3,3,1],"skills":["27311"]},
-      {"id":233,"resistances":[1,0,0,1,0,0,3,3,0,0,0],"skills":["27561"]},
-      {"id":234,"resistances":[0,3,1,0,1,0,0,3,0,0,0],"skills":["26831","26832"]},
-      {"id":235,"resistances":[1,3,0,0,1,1,1,3,3,0,3],"skills":["22291"]},
-      {"id":236,"resistances":[1,0,3,0,3,1,0,0,0,0,0],"skills":["20443"]},
-      {"id":237,"resistances":[0,1,0,0,3,1,1,0,0,0,3],"skills":["20041"]},
-      {"id":238,"resistances":[1,0,0,1,0,0,3,3,0,0,0],"skills":["20791"]},
-      {"id":239,"resistances":[0,1,0,0,0,0,0,3,0,1,3],"skills":["22391"]},
-      {"id":240,"resistances":[0,0,0,0,3,1,0,3,1,0,0],"skills":["21161"]},
-      {"id":241,"resistances":[3,0,0,1,0,0,1,0,3,0,0],"skills":["22321","22322","22323"]},
-      {"id":242,"resistances":[0,0,0,0,0,0,1,0,3,1,3],"skills":["24051"]},
-      {"id":243,"resistances":[1,3,0,0,0,3,0,0,0,0,0],"skills":["23741"]},
-      {"id":244,"resistances":[1,4,0,0,0,1,0,3,0,0,0],"skills":["24061"]},
-      {"id":245,"resistances":[0,1,0,3,0,0,3,1,0,0,0],"skills":["23781"]},
-      {"id":246,"resistances":[0,0,0,3,1,1,3,0,0,0,0],"skills":["20331"]},
-      {"id":247,"resistances":[3,0,1,0,0,1,0,3,0,0,0],"skills":["24071"]},
-      {"id":248,"resistances":[0,0,0,1,0,1,0,3,3,0,0],"skills":["27181"]},
-      {"id":249,"resistances":[0,1,3,0,3,0,0,1,0,0,0],"skills":["26061"]},
-      {"id":250,"resistances":[0,1,0,3,0,0,0,3,1,0,0],"skills":["20411"]},
-      {"id":251,"resistances":[0,1,0,3,0,0,3,1,0,0,0],"skills":["25961"]},
-      {"id":252,"resistances":[1,1,0,0,0,0,0,3,3,3,0],"skills":["20281"]},
-      {"id":253,"resistances":[0,1,3,0,0,0,3,0,1,0,0],"skills":["24101"]},
-      {"id":254,"resistances":[0,3,1,1,0,0,0,0,3,0,0],"skills":["20821"]},
-      {"id":255,"resistances":[0,0,3,3,0,1,0,1,0,0,0],"skills":["27241"]},
-      {"id":256,"resistances":[0,3,1,0,1,0,0,3,0,0,0],"skills":["20591"]},
-      {"id":257,"resistances":[0,1,0,0,0,1,3,0,3,0,0],"skills":["24652"]},
-      {"id":258,"resistances":[0,0,0,1,3,0,1,0,3,0,0],"skills":["20741"]},
-      {"id":259,"resistances":[1,3,1,0,0,0,0,3,0,0,0],"skills":["24121"]},
-      {"id":260,"resistances":[0,1,4,0,0,3,1,0,0,0,0],"skills":["21321"]},
-      {"id":261,"resistances":[3,3,1,0,0,2,0,3,0,0,0],"skills":["24131"]},
-      {"id":262,"resistances":[0,1,0,3,0,0,3,1,0,0,0],"skills":["20731"]},
-      {"id":263,"resistances":[0,1,0,3,0,0,0,1,3,0,0],"skills":["23591"]},
-      {"id":264,"resistances":[1,3,0,0,1,0,0,3,0,0,0],"skills":["21981"]},
-      {"id":265,"resistances":[0,0,0,1,0,0,0,0,3,1,3],"skills":["22371"]},
-      {"id":266,"resistances":[0,1,0,3,0,0,3,0,1,0,0],"skills":["21991"]},
-      {"id":267,"resistances":[0,0,0,0,0,0,3,1,0,1,3],"skills":["20851"]},
-      {"id":268,"resistances":[0,1,0,1,3,0,3,0,0,0,0],"skills":["23111"]},
-      {"id":269,"resistances":[0,0,0,3,0,1,1,3,0,0,0],"skills":["24011"]},
-      {"id":270,"resistances":[1,0,0,3,0,0,3,1,0,0,0],"skills":["21491"]},
-      {"id":271,"resistances":[1,1,0,3,0,3,0,0,0,0,0],"skills":["23801"]},
-      {"id":272,"resistances":[0,0,0,0,0,1,0,3,0,1,3],"skills":["24021"]},
-      {"id":273,"resistances":[0,0,0,3,0,1,3,0,1,0,0],"skills":["27271"]},
-      {"id":274,"resistances":[0,0,0,3,1,0,3,0,1,0,0],"skills":["22111"]},
-      {"id":275,"resistances":[1,0,4,0,3,1,0,0,0,0,0],"skills":["29071"]},
-      {"id":276,"resistances":[0,0,3,1,0,0,3,0,1,0,0],"skills":["20761"]},
-      {"id":277,"resistances":[0,1,0,4,0,0,3,1,0,0,0],"skills":["23791"]},
-      {"id":278,"resistances":[0,1,3,0,0,0,0,0,0,1,3],"skills":["24041"]},
-      {"id":279,"resistances":[0,1,0,0,0,0,0,3,0,1,3],"skills":["20061"]},
-      {"id":280,"resistances":[0,1,3,0,0,3,0,0,0,2,3],"skills":["29081"]},
-      {"id":281,"resistances":[1,0,0,0,0,0,0,3,0,1,3],"skills":["22171"]},
-      {"id":282,"resistances":[0,1,3,0,0,1,3,0,0,0,0],"skills":["21291"]},
-      {"id":283,"resistances":[0,3,1,0,0,1,3,0,0,0,0],"skills":["27701"]},
-      {"id":284,"resistances":[0,0,3,3,0,1,0,0,1,0,0],"skills":["23761"]},
-      {"id":285,"resistances":[1,0,3,0,3,1,0,0,0,0,0],"skills":["25761"]},
-      {"id":286,"resistances":[0,1,0,0,3,0,0,0,0,1,3],"skills":["25841"]},
-      {"id":287,"resistances":[1,0,0,0,0,0,0,3,0,1,3],"skills":["27531"]},
-      {"id":288,"resistances":[0,4,1,0,3,1,0,0,0,0,0],"skills":["21771"]},
-      {"id":289,"resistances":[1,1,0,3,3,0,0,0,0,0,0],"skills":["24111"]},
-      {"id":290,"resistances":[0,0,0,1,0,1,3,0,0,0,3],"skills":["20311"]},
-      {"id":291,"resistances":[3,2,0,0,0,0,3,0,0,1,3],"skills":["22261"]},
-      {"id":292,"resistances":[0,3,3,0,0,1,1,0,0,0,0],"skills":["26021"]},
-      {"id":293,"resistances":[0,3,0,0,0,1,3,1,0,0,0],"skills":["23011"]},
-      {"id":294,"resistances":[3,0,0,1,0,0,0,3,1,0,0],"skills":["21341"]},
-      {"id":295,"resistances":[3,0,1,0,0,2,0,3,3,0,0],"skills":["23641"]},
-      {"id":296,"resistances":[1,0,0,0,0,0,0,1,0,3,3],"skills":["20391","20392"]},
-      {"id":297,"resistances":[0,3,0,0,1,0,0,0,0,1,3],"skills":["21071"]},
-      {"id":298,"resistances":[3,1,0,0,0,0,3,0,1,0,0],"skills":["27261"]},
-      {"id":299,"resistances":[0,1,4,0,0,0,1,0,0,0,3],"skills":["21331"]},
-      {"id":300,"resistances":[1,3,0,0,1,3,1,3,0,3,1],"skills":["27231"]},
-      {"id":301,"resistances":[3,1,0,3,0,3,1,1,3,0,1],"skills":["27201"]},
-      {"id":302,"resistances":[1,3,1,3,1,3,1,0,0,0,3],"skills":["20231"]},
-      {"id":303,"resistances":[3,0,1,1,3,1,1,3,3,0,0],"skills":["24081"]},
-      {"id":304,"resistances":[2,1,3,0,0,3,0,1,0,0,3],"skills":["26271"]},
-      {"id":305,"resistances":[3,4,1,0,2,0,0,0,0,0,0],"skills":["26691"]},
-      {"id":306,"resistances":[0,0,0,1,0,0,0,0,3,4,2],"skills":["26701"]},
-      {"id":307,"resistances":[0,4,1,0,2,0,0,0,0,4,2],"skills":["21731","21732"]},
-      {"id":308,"resistances":[0,1,0,0,1,0,3,1,3,0,0],"skills":["24161","24162"]},
-      {"id":309,"resistances":[0,1,0,0,0,1,3,0,3,0,0],"skills":["24171","24172"]},
-      {"id":310,"resistances":[0,0,0,1,0,0,0,0,3,3,1],"skills":["21171","21172"]},
-      {"id":311,"resistances":[0,1,0,3,0,0,0,0,0,4,2],"skills":["21721","21722"]},
-      {"id":312,"resistances":[0,3,1,0,0,0,3,0,0,0,1],"skills":["20271","20272"]},
-      {"id":313,"resistances":[3,0,0,1,0,0,1,3,0,0,0],"skills":["21931","21932"]},
-      {"id":314,"resistances":[0,0,0,3,0,0,1,0,0,3,1],"skills":["24211","24212"]},
-      {"id":315,"resistances":[1,0,0,0,0,0,0,3,0,3,1],"skills":["26131"]},
-      {"id":316,"resistances":[1,0,0,0,0,3,1,3,0,0,0],"skills":["27341","27342"]},
-      {"id":317,"resistances":[0,3,0,0,1,0,1,3,0,0,0],"skills":["21971","21972"]},
-      {"id":318,"resistances":[0,0,0,0,0,0,0,0,0,0,0],"skills":["20451","20452"]},
-      {"id":319,"resistances":[0,0,0,0,0,3,1,0,0,3,1],"skills":["27741","27742"]},
-      {"id":320,"resistances":[0,0,0,0,0,3,1,0,0,3,1],"skills":["27351","27352"]},
-      {"id":321,"resistances":[1,0,0,0,0,0,3,0,0,4,2],"skills":["20481"]},
-      {"id":322,"resistances":[0,3,1,0,1,0,3,0,0,3,0],"skills":["20941","20942"]},
-      {"id":323,"resistances":[3,0,1,0,0,1,0,3,0,0,0],"skills":["27371","27375"]},
-      {"id":324,"resistances":[0,1,0,0,3,0,0,0,0,1,3],"skills":["24611"]},
-      {"id":325,"resistances":[1,0,0,0,0,0,0,3,0,3,1],"skills":["26141","26142"]},
-      {"id":326,"resistances":[1,3,0,0,3,1,0,0,0,0,0],"skills":["20861","20862"]},
-      {"id":327,"resistances":[3,0,1,0,0,1,0,3,0,0,0],"skills":["22131","22132","22133"]},
-      {"id":328,"resistances":[1,3,0,0,0,0,0,0,0,3,1],"skills":["23151","23152"]},
-      {"id":329,"resistances":[0,3,1,0,1,3,0,0,0,0,0],"skills":["27411","27412"]},
-      {"id":330,"resistances":[1,3,0,0,1,0,0,4,0,0,0],"skills":["27001","27002"]},
-      {"id":331,"resistances":[0,1,4,0,3,1,0,0,0,0,0],"skills":["20751","20752"]},
-      {"id":332,"resistances":[3,0,1,0,0,1,0,3,0,0,0],"skills":["24261"]},
-      {"id":333,"resistances":[0,3,0,0,1,0,3,0,1,0,0],"skills":["20491","20492"]},
-      {"id":334,"resistances":[3,1,0,0,0,1,0,0,3,0,0],"skills":["23061"]},
-      {"id":335,"resistances":[0,3,1,0,0,0,0,0,0,3,1],"skills":["23101"]},
-      {"id":336,"resistances":[0,0,0,1,0,0,0,0,3,4,2],"skills":["24531"]},
-      {"id":337,"resistances":[1,0,0,0,0,0,0,1,0,3,3],"skills":["27481","27482","27483"]},
-      {"id":338,"resistances":[0,0,3,1,0,0,0,0,0,3,1],"skills":["20241"]},
-      {"id":339,"resistances":[4,3,1,0,1,0,0,0,0,0,0],"skills":["21741","21742"]},
-      {"id":340,"resistances":[0,0,1,0,0,4,0,0,0,4,2],"skills":["21681","21682"]},
-      {"id":341,"resistances":[0,0,0,3,0,1,0,1,3,0,0],"skills":["27401","27402"]},
-      {"id":342,"resistances":[0,0,0,1,0,0,3,3,1,0,0],"skills":["27251","27252"]},
-      {"id":343,"resistances":[1,3,0,0,0,0,1,4,0,0,0],"skills":["21781","21786"]},
-      {"id":344,"resistances":[0,0,1,0,1,3,3,0,0,0,0],"skills":["26881","26882"]},
-      {"id":345,"resistances":[0,0,0,0,0,0,0,0,3,3,1],"skills":["27541","27542"]},
-      {"id":346,"resistances":[0,3,0,0,3,0,1,0,1,0,0],"skills":["27041"]},
-      {"id":347,"resistances":[0,0,0,0,1,0,3,1,3,0,0],"skills":["20831"]},
-      {"id":348,"resistances":[0,1,0,4,1,0,4,0,0,0,0],"skills":["21761","21762","21891"]},
-      {"id":349,"resistances":[0,2,0,4,1,0,4,0,0,0,0],"skills":["21761","21762","21891"]},
-      {"id":350,"resistances":[0,0,0,1,0,3,3,0,1,0,0],"skills":["24241","24242"]},
-      {"id":351,"resistances":[3,0,0,0,0,0,0,1,0,3,1],"skills":["24251","24252"]},
-      {"id":352,"resistances":[1,3,0,0,1,3,0,0,0,0,0],"skills":["27491","27493"]},
-      {"id":353,"resistances":[0,1,3,0,0,1,0,3,0,0,0],"skills":["20981","20982"]},
-      {"id":354,"resistances":[0,2,3,0,4,0,0,0,1,0,0],"skills":["27331","27332"]},
-      {"id":355,"resistances":[0,0,0,1,3,0,1,0,3,0,0],"skills":["27381","27383"]},
-      {"id":356,"resistances":[3,0,0,0,1,0,1,3,0,0,0],"skills":["27391","27392","27431"]},
-      {"id":357,"resistances":[3,0,0,0,1,0,1,3,0,0,0],"skills":["27391","27431","27432"]},
-      {"id":358,"resistances":[1,3,0,0,1,0,0,3,0,0,3],"skills":["20191","20192"]},
-      {"id":359,"resistances":[0,3,1,0,1,0,0,3,0,0,0],"skills":["20601","20602"]},
-      {"id":360,"resistances":[0,0,0,0,3,1,0,0,0,3,1],"skills":["24291"]},
-      {"id":361,"resistances":[0,0,4,0,3,1,1,0,0,0,0],"skills":["24502"]},
-      {"id":362,"resistances":[0,1,0,0,0,0,3,3,1,0,0],"skills":["24311"]},
-      {"id":363,"resistances":[3,0,0,1,0,1,0,3,0,0,0],"skills":["20951","20952"]},
-      {"id":364,"resistances":[0,0,0,1,3,1,0,3,0,0,0],"skills":["21351","21352"]},
-      {"id":365,"resistances":[3,1,3,0,0,2,0,3,0,0,0],"skills":["24341"]},
-      {"id":366,"resistances":[3,0,0,0,1,1,0,0,3,0,0],"skills":["26031","26032"]},
-      {"id":367,"resistances":[0,1,0,4,1,3,0,0,0,0,0],"skills":["20571","20572"]},
-      {"id":368,"resistances":[0,1,3,3,0,0,0,1,0,0,0],"skills":["27421","27422","27423"]},
-      {"id":369,"resistances":[3,0,0,0,1,0,0,0,0,1,3],"skills":["26171","26172"]},
-      {"id":370,"resistances":[1,0,0,3,0,1,3,0,0,0,0],"skills":["24511","24512"]},
-      {"id":371,"resistances":[0,3,0,0,0,1,0,0,0,1,3],"skills":["26001"]},
-      {"id":372,"resistances":[3,0,0,1,0,0,0,3,1,0,0],"skills":["23381","23382"]},
-      {"id":373,"resistances":[1,3,0,0,0,0,0,3,0,1,0],"skills":["27441","27442"]},
-      {"id":374,"resistances":[1,0,0,0,0,0,0,3,0,1,3],"skills":["21501","21502"]},
-      {"id":375,"resistances":[0,3,1,0,1,0,0,3,0,0,0],"skills":["24221"]},
-      {"id":376,"resistances":[1,2,0,0,3,0,0,3,0,0,0],"skills":["24921","24922"]},
-      {"id":377,"resistances":[0,3,1,0,0,1,0,3,0,0,0],"skills":["21941","21942"]},
-      {"id":378,"resistances":[0,1,0,3,0,0,3,0,1,0,0],"skills":["21271"]},
-      {"id":379,"resistances":[0,0,0,0,3,0,0,0,1,1,3],"skills":["20321","20322"]},
-      {"id":380,"resistances":[0,0,0,0,0,0,0,0,0,0,0],"skills":["20461","20462"]},
-      {"id":381,"resistances":[0,0,3,1,3,1,0,0,0,0,0],"skills":["22251","22252"]},
-      {"id":382,"resistances":[0,1,0,0,3,0,0,0,0,2,4],"skills":["29121","29122"]},
-      {"id":383,"resistances":[1,3,0,0,0,1,0,3,0,0,0],"skills":["27711","27712"]},
-      {"id":384,"resistances":[0,0,1,3,0,1,0,0,3,0,0],"skills":["27451"]},
-      {"id":385,"resistances":[0,1,0,0,0,0,3,0,0,1,3],"skills":["24401","24402"]},
-      {"id":386,"resistances":[0,3,1,0,1,0,3,0,0,0,0],"skills":["21281","21282"]},
-      {"id":387,"resistances":[0,3,0,0,1,0,0,0,0,2,4],"skills":["20381"]},
-      {"id":388,"resistances":[0,0,0,0,0,0,0,3,1,3,1],"skills":["21261","21262"]},
-      {"id":389,"resistances":[3,1,0,3,1,0,0,0,1,0,0],"skills":["21791","21792"]},
-      {"id":390,"resistances":[3,2,0,4,1,0,0,0,1,0,0],"skills":["27671"]},
-      {"id":391,"resistances":[0,3,1,0,0,0,0,0,0,2,4],"skills":["20361","20362"]},
-      {"id":392,"resistances":[1,0,0,0,0,3,0,1,3,0,3],"skills":["24271"]},
-      {"id":393,"resistances":[0,1,0,3,0,0,3,1,0,0,0],"skills":["24281"]},
-      {"id":394,"resistances":[0,0,0,0,3,1,0,0,0,1,3],"skills":["22271"]},
-      {"id":395,"resistances":[0,0,3,1,0,1,0,3,0,0,0],"skills":["21961"]},
-      {"id":396,"resistances":[0,0,1,0,0,4,1,3,0,0,0],"skills":["20691","20692"]},
-      {"id":397,"resistances":[0,0,0,0,3,1,0,0,0,2,4],"skills":["21801","21802"]},
-      {"id":398,"resistances":[0,0,0,1,0,1,3,3,0,0,0],"skills":["22141","22142"]},
-      {"id":399,"resistances":[0,3,0,0,1,0,0,0,0,1,3],"skills":["22331","22332"]},
-      {"id":400,"resistances":[0,0,0,0,0,0,3,0,1,1,3],"skills":["21951","21952"]},
-      {"id":401,"resistances":[3,0,1,0,0,0,0,0,0,2,4],"skills":["20351","20352"]},
-      {"id":402,"resistances":[0,3,0,0,1,0,0,0,0,1,3],"skills":["24391","24392"]},
-      {"id":403,"resistances":[3,0,1,0,1,3,0,0,0,0,0],"skills":["26161","26162"]},
-      {"id":404,"resistances":[0,1,0,0,0,1,3,0,3,0,0],"skills":["27471","27472"]},
-      {"id":405,"resistances":[3,0,0,0,0,1,0,0,0,1,3],"skills":["22301"]},
-      {"id":406,"resistances":[3,0,0,0,0,1,1,3,0,0,0],"skills":["23851"]},
-      {"id":407,"resistances":[0,3,1,0,1,0,0,0,0,0,3],"skills":["20471","20472"]},
-      {"id":408,"resistances":[3,0,0,0,1,2,3,3,0,0,0],"skills":["23121"]},
-      {"id":409,"resistances":[0,0,0,3,0,1,3,0,3,0,2],"skills":["20801","20802"]},
-      {"id":410,"resistances":[0,0,0,1,0,3,0,0,0,4,2],"skills":["21701","21703"]},
-      {"id":411,"resistances":[0,0,0,1,0,3,0,0,0,2,4],"skills":["21711","21712"]},
-      {"id":412,"resistances":[1,0,1,0,0,3,0,3,0,0,0],"skills":["23831","23832"]},
-      {"id":413,"resistances":[0,0,4,0,0,2,0,0,0,2,4],"skills":["20371","20372"]},
-      {"id":414,"resistances":[3,0,0,0,0,0,0,1,0,2,4],"skills":["20341"]},
-      {"id":415,"resistances":[0,0,3,0,0,1,0,3,1,0,0],"skills":["27031","27032"]},
-      {"id":416,"resistances":[3,3,1,0,1,1,3,3,1,0,0],"skills":["24191","27321","27322"]},
-      {"id":417,"resistances":[3,3,1,0,1,1,1,3,0,3,0],"skills":["24191","24192","27322"]},
-      {"id":418,"resistances":[3,1,3,3,3,1,1,1,0,0,0],"skills":["23461","23462"]},
-      {"id":419,"resistances":[3,0,0,1,3,0,1,1,3,3,1],"skills":["27731","27732"]},
-      {"id":420,"resistances":[0,1,0,3,0,0,0,0,0,1,3],"skills":["24231"]},
-      {"id":421,"resistances":[2,1,3,0,0,3,0,1,0,0,3],"skills":["26321"]},
-      {"id":422,"resistances":[0,0,1,0,0,3,0,0,0,3,1],"skills":["27511"]},
-      {"id":423,"resistances":[1,0,1,0,0,3,1,3,3,3,1],"skills":["23821","23822"]},
-      {"id":424,"resistances":[0,4,1,0,2,0,3,0,0,0,0],"skills":["26771","26772"]},
-      {"id":425,"resistances":[1,0,0,0,0,0,0,0,3,4,2],"skills":["26781"]},
-      {"id":426,"resistances":[1,0,0,0,0,0,0,0,3,4,2],"skills":["26751"]},
-      {"id":427,"resistances":[0,1,0,0,1,0,3,1,3,0,0],"skills":["27661","27662"]},
-      {"id":428,"resistances":[0,1,0,0,0,3,1,4,0,0,0],"skills":["24941"]},
-      {"id":429,"resistances":[3,0,0,0,0,0,0,0,1,3,1],"skills":["24201"]},
-      {"id":430,"resistances":[0,3,0,0,3,0,1,3,1,0,0],"skills":["20881","20882"]},
-      {"id":431,"resistances":[1,1,0,0,3,0,0,3,0,0,0],"skills":["27571","27572"]},
-      {"id":432,"resistances":[3,1,3,1,1,1,1,1,3,3,3],"skills":["27721","27722"]},
-      {"id":433,"resistances":[1,3,1,3,3,3,3,3,1,1,1],"skills":["21181","21182"]},
-      {"id":434,"resistances":[1,0,0,0,0,1,0,0,0,3,3],"skills":["26041","26042"]},
-      {"id":435,"resistances":[0,3,0,0,0,3,1,1,0,4,0],"skills":["27761","27762"]},
-      {"id":436,"resistances":[1,0,0,0,0,3,1,0,0,3,0],"skills":["21041","21042"]},
-      {"id":437,"resistances":[0,0,1,0,0,4,0,0,0,4,2],"skills":["21691","21692"]},
-      {"id":438,"resistances":[0,0,0,3,0,1,0,1,3,0,0],"skills":["27781","27782"]},
-      {"id":439,"resistances":[0,0,0,1,0,0,0,0,3,0,0],"skills":["22151","22152"]},
-      {"id":440,"resistances":[1,0,0,0,0,3,0,1,3,0,0],"skills":["27771","27772"]},
-      {"id":441,"resistances":[0,1,0,4,1,3,0,0,0,0,0],"skills":["27791","27792"]},
-      {"id":442,"resistances":[0,1,0,0,3,0,0,0,0,2,4],"skills":["29151"]},
-      {"id":443,"resistances":[0,3,1,0,0,0,0,0,0,3,1],"skills":["21051","21052"]},
-      {"id":444,"resistances":[0,3,0,0,0,0,1,0,0,1,3],"skills":["27751","27752"]},
-      {"id":445,"resistances":[0,3,0,0,1,0,0,3,0,2,4],"skills":["20401","20402"]},
-      {"id":446,"resistances":[0,0,0,1,0,0,3,3,0,3,2],"skills":["21811","21812"]},
-      {"id":447,"resistances":[1,3,0,0,0,0,0,0,0,1,4],"skills":["24351","24352"]},
-      {"id":448,"resistances":[2,1,3,0,0,3,0,1,0,0,3],"skills":["21061","21062"]},
-      {"id":449,"resistances":[0,4,1,0,2,1,3,0,0,0,0],"skills":["24891","24892"]},
-      {"id":450,"resistances":[2,0,0,0,0,0,0,3,0,2,3],"skills":["23281"]},
-      {"id":451,"resistances":[0,0,0,1,4,1,0,3,2,0,0],"skills":["24901","24902"]},
+      {"id":1,"resistances":[1,0,3,0,1,1,1,3,0,0,3],"skills":["26291"],"skillsZh":[{"name":"闪耀之眼","element":"暗","sp":25,"kind":"魔法","power":"35","target":"敌方单体","effect":""}]},
+      {"id":2,"resistances":[0,0,1,3,1,3,1,0,0,0,3],"skills":["22411"],"skillsZh":[{"name":"干扰粉末","element":"钢","sp":15,"kind":"物理","power":"5","target":"敌方单体","effect":"15%的几率使对方混乱"}]},
+      {"id":3,"resistances":[1,0,3,3,3,1,0,0,1,0,0],"skills":["23161"],"skillsZh":[{"name":"小铁粒","element":"钢","sp":25,"kind":"物理","power":"35","target":"敌方单体","effect":""}]},
+      {"id":4,"resistances":[1,1,3,0,0,0,3,0,0,3,1],"skills":["23871"],"skillsZh":[{"name":"黏着性泡泡","sp":5,"kind":"弱化","target":"敌方单体","effect":"100%的几率在3回合内下降速度10%"}]},
+      {"id":5,"resistances":[0,3,0,0,1,1,0,0,3,1,3],"skills":["24371"],"skillsZh":[{"name":"酸性泡泡","sp":5,"kind":"弱化","target":"敌方单体","effect":"100%几率在3回合内下降防御力10%"}]},
+      {"id":6,"resistances":[3,3,0,0,1,3,0,0,1,0,1],"skills":["23171"],"skillsZh":[{"name":"酸性泡泡","sp":5,"kind":"弱化","target":"敌方单体","effect":"100%几率在3回合内下降防御力10%"}]},
+      {"id":7,"resistances":[1,1,3,3,0,1,0,3,0,0,0],"skills":["23201"],"skillsZh":[{"name":"酸性泡泡","element":"火","sp":25,"kind":"物理","power":"35","target":"敌方单体","effect":""}]},
+      {"id":8,"resistances":[1,1,0,0,0,3,1,3,3,0,0],"skills":["22421"],"skillsZh":[{"name":"嚎叫电频","element":"无","sp":25,"kind":"物理","power":"15","target":"敌方单体","effect":"20%的几率使对方麻痹"}]},
+      {"id":9,"resistances":[1,0,3,0,3,0,0,0,1,1,3],"skills":["23221"],"skillsZh":[{"name":"泡泡","element":"水","sp":30,"kind":"物理","power":"40","target":"敌方单体","effect":""}]},
+      {"id":10,"resistances":[0,1,0,3,1,0,3,1,0,3,0],"skills":["25121"],"skillsZh":[{"name":"黏着性泡泡","sp":5,"kind":"弱化","target":"敌方单体","effect":"100%的几率在3回合内下降速度10%"}]},
+      {"id":11,"resistances":[3,1,1,1,0,0,3,3,0,0,0],"skills":["24381"],"skillsZh":[{"name":"酸性泡泡","element":"水","sp":30,"kind":"物理","power":"40","target":"敌方单体","effect":""}]},
+      {"id":12,"resistances":[3,3,1,0,1,0,0,1,0,0,3],"skills":["26311"],"skillsZh":[{"name":"指爪切斩","element":"暗","sp":30,"kind":"物理","power":"40","target":"敌方单体","effect":""}]},
+      {"id":13,"resistances":[0,3,3,1,0,1,0,3,1,0,0],"skills":["23251"],"skillsZh":[{"name":"牙咬","element":"无","sp":35,"kind":"物理","power":"45","target":"敌方单体","effect":""}]},
+      {"id":14,"resistances":[0,3,0,1,0,3,1,3,1,0,0],"skills":["24661"],"skillsZh":[{"name":"金属滴粒","element":"钢","sp":30,"kind":"物理","power":"40","target":"敌方单体","effect":""}]},
+      {"id":15,"resistances":[0,1,1,3,0,0,0,0,3,1,3],"skills":["25151"],"skillsZh":[{"name":"狐尾","element":"无","sp":30,"kind":"物理","power":"30","target":"敌方单体","effect":"100%几率在3回合内下降速度20%"}]},
+      {"id":16,"resistances":[0,1,3,1,3,1,3,0,0,0,0],"skills":["25671"],"skillsZh":[{"name":"毒性泡泡","element":"暗","sp":25,"kind":"物理","power":"15","target":"敌方单体","effect":"30%几率使对方中毒"}]},
+      {"id":17,"resistances":[0,1,0,0,1,0,3,1,0,3,0],"skills":["25101"],"skillsZh":[{"name":"肥皂花","element":"水","sp":30,"kind":"物理","power":"40","target":"敌方单体","effect":""}]},
+      {"id":18,"resistances":[0,1,3,0,3,1,3,1,0,0,0],"skills":["25141"],"skillsZh":[{"name":"空气泡泡","element":"风","sp":30,"kind":"物理","power":"40","target":"敌方单体","effect":""}]},
+      {"id":19,"resistances":[0,1,3,3,1,0,0,3,1,0,0],"skills":["23881"],"skillsZh":[{"name":"伸缩性泡泡","element":"水","sp":30,"kind":"物理","power":"40","target":"敌方单体","effect":""}]},
+      {"id":20,"resistances":[0,1,1,3,0,0,0,0,3,1,3],"skills":["23211"],"skillsZh":[{"name":"微笑之牙","element":"无","sp":35,"kind":"物理","power":"45","target":"敌方单体","effect":""}]},
+      {"id":21,"resistances":[0,3,0,0,1,1,3,0,0,0,0],"skills":["20501"],"skillsZh":[{"name":"小型火焰","element":"火","sp":55,"kind":"物理","power":"50","target":"敌方单体","effect":""}]},
+      {"id":22,"resistances":[0,0,0,0,0,0,0,1,3,3,1],"skills":["20531"],"skillsZh":[{"name":"绝光冲","sp":15,"kind":"弱化","target":"敌方单体","effect":"100%在3回合下降命中率20%"}]},
+      {"id":23,"resistances":[0,1,3,0,3,1,0,0,0,0,0],"skills":["23431"],"skillsZh":[{"name":"鱼群大进军","element":"水","sp":55,"kind":"物理","power":"50","target":"敌方单体","effect":""}]},
+      {"id":24,"resistances":[0,4,1,0,1,0,0,0,0,3,0],"skills":["21361"],"skillsZh":[{"name":"日冕烈焰弹","element":"火","sp":75,"kind":"物理","power":"45","target":"敌方单体","effect":"适性不利无效"}]},
+      {"id":25,"resistances":[1,3,0,0,1,0,0,4,0,0,0],"skills":["26971"],"skillsZh":[{"name":"二十俯冲","element":"钢","sp":55,"kind":"物理","power":"40","target":"敌方单体","effect":"CRT20%"}]},
+      {"id":26,"resistances":[0,3,1,0,1,3,0,0,0,0,0],"skills":["27281"],"skillsZh":[{"name":"闪光之环","element":"光","sp":55,"kind":"物理","power":"10x5","target":"敌方单体","effect":""}]},
+      {"id":27,"resistances":[0,3,0,1,0,0,0,1,3,0,0],"skills":["27011"],"skillsZh":[{"name":"小龙卷","element":"风","sp":70,"kind":"魔法","power":"30","target":"敌方全体","effect":""}]},
+      {"id":28,"resistances":[0,1,0,3,0,0,3,0,1,0,0],"skills":["23031"],"skillsZh":[{"name":"小型雷电","element":"雷","sp":60,"kind":"魔法","power":"50","target":"敌方单体","effect":""}]},
+      {"id":29,"resistances":[1,0,3,0,3,0,0,0,1,0,0],"skills":["27081"],"skillsZh":[{"name":"玩具火焰","element":"无","sp":60,"kind":"物理","power":"50","target":"敌方单体","effect":"20%几率使对方混乱"}]},
+      {"id":30,"resistances":[0,1,0,0,0,3,0,0,1,3,0],"skills":["22311"],"skillsZh":[{"name":"恶梦症候群","element":"暗","sp":50,"kind":"魔法","power":"40","target":"敌方单体","effect":"10%几率使对方睡眠"}]},
+      {"id":31,"resistances":[0,0,3,1,3,0,1,0,0,0,0],"skills":["25731"],"skillsZh":[{"name":"断竹斩","element":"钢","sp":65,"kind":"物理","power":"45","target":"敌方单体","effect":"适性不利无效"}]},
+      {"id":32,"resistances":[0,3,0,3,0,0,1,0,1,0,0],"skills":["23071"],"skillsZh":[{"name":"魔法火焰","element":"火","sp":55,"kind":"魔法","power":"50","target":"敌方单体","effect":""}]},
+      {"id":33,"resistances":[0,0,0,0,1,0,3,1,3,0,0],"skills":["27051"],"skillsZh":[{"name":"手里里剑","element":"钢","sp":65,"kind":"物理","power":"25","target":"敌方全体","effect":"CRT10%"}]},
+      {"id":34,"resistances":[0,1,0,0,0,0,3,0,0,3,1],"skills":["23611"],"skillsZh":[{"name":"小狗咆哮","element":"光","sp":50,"kind":"魔法","power":"30","target":"敌方单体","effect":"50%使对方麻痹"}]},
+      {"id":35,"resistances":[0,1,0,3,1,0,3,0,0,0,0],"skills":["22341"],"skillsZh":[{"name":"小熊正拳冲","element":"无","sp":65,"kind":"物理","power":"55","target":"敌方单体","effect":"CRT10%"}]},
+      {"id":36,"resistances":[0,1,3,0,3,0,0,1,0,0,0],"skills":["26221"],"skillsZh":[{"name":"无限耳光","element":"无","sp":55,"kind":"物理","power":"15x3","target":"敌方单体","effect":""}]},
+      {"id":37,"resistances":[0,0,0,3,1,3,1,0,0,0,0],"skills":["24581"],"skillsZh":[{"name":"冲击拳头","element":"无","sp":60,"kind":"物理","power":"60","target":"敌方单体","effect":""}]},
+      {"id":38,"resistances":[3,0,0,1,0,0,1,3,0,0,0],"skills":["21901"],"skillsZh":[{"name":"居合刃","element":"钢","sp":50,"kind":"物理","power":"45","target":"敌方单体","effect":"CRT10%"}]},
+      {"id":39,"resistances":[0,0,0,0,0,0,0,0,0,3,1],"skills":["23901"],"skillsZh":[{"name":"宏伟十字架","element":"光","sp":200,"kind":"魔法","power":"50","target":"敌方全体","effect":""}]},
+      {"id":40,"resistances":[0,0,1,0,1,3,0,0,3,0,0],"skills":["25641"],"skillsZh":[{"name":"闪烁雷击","element":"雷","sp":55,"kind":"物理","power":"40","target":"敌方单体","effect":"20%几率麻痹对方"}]},
+      {"id":41,"resistances":[0,0,0,1,3,0,1,0,3,0,0],"skills":["20551"],"skillsZh":[{"name":"双重反拍","element":"风","sp":70,"kind":"物理","power":"25","target":"敌方全体","effect":"CRT10%"}]},
+      {"id":42,"resistances":[0,0,3,1,0,1,0,3,0,0,0],"skills":["21031"],"skillsZh":[{"name":"巨剪处刑","element":"水","sp":50,"kind":"物理","power":"45","target":"敌方单体","effect":"如对方陷入混乱/错乱, 25%概率即死"}]},
+      {"id":43,"resistances":[0,3,0,1,3,0,0,0,1,0,0],"skills":["21511"],"skillsZh":[{"name":"爆炎火焰弹","element":"火","sp":55,"kind":"物理","power":"45","target":"敌方单体","effect":"100%在3回合下降防御力10%"}]},
+      {"id":44,"resistances":[3,0,0,0,1,1,0,3,0,0,0],"skills":["20521"],"skillsZh":[{"name":"指示箭头","element":"水","sp":60,"kind":"物理","power":"45","target":"敌方单体","effect":"必中"}]},
+      {"id":45,"resistances":[0,0,1,0,1,3,0,0,3,0,0],"skills":["26091"],"skillsZh":[{"name":"剪刀臂迷你版","element":"雷","sp":60,"kind":"物理","power":"45","target":"敌方单体","effect":"CRT10%"}]},
+      {"id":46,"resistances":[0,0,3,1,0,0,4,0,1,0,0],"skills":["25951"],"skillsZh":[{"name":"愤怒之石","element":"地面","sp":65,"kind":"物理","power":"25","target":"敌方全体","effect":""}]},
+      {"id":47,"resistances":[0,3,1,0,0,3,1,0,0,0,0],"skills":["22191"],"skillsZh":[{"name":"愤怒之石","element":"地面","sp":65,"kind":"物理","power":"25","target":"敌方全体","effect":""}]},
+      {"id":48,"resistances":[0,3,1,0,1,0,0,3,0,0,0],"skills":["26821"],"skillsZh":[{"name":"摇滚魂","element":"火","sp":60,"kind":"物理","power":"40","target":"敌方单体","effect":"HP越低, 增伤越多"}]},
+      {"id":49,"resistances":[0,3,1,1,0,3,0,0,0,0,0],"skills":["22081"],"skillsZh":[{"name":"幼龙吐息","element":"火","sp":55,"kind":"物理","power":"50","target":"敌方单体","effect":""}]},
+      {"id":50,"resistances":[3,0,0,0,0,1,0,3,1,0,0],"skills":["21121"],"skillsZh":[{"name":"金属加农","element":"钢","sp":50,"kind":"物理","power":"50","target":"敌方单体","effect":""}]},
+      {"id":51,"resistances":[0,1,0,0,0,0,0,0,3,3,1],"skills":["20961"],"skillsZh":[{"name":"空气炮","element":"风","sp":55,"kind":"魔法","power":"50","target":"敌方单体","effect":""}]},
+      {"id":52,"resistances":[0,3,0,1,0,1,0,3,0,0,0],"skills":["26871"],"skillsZh":[{"name":"五连闪","element":"无","sp":50,"kind":"物理","power":"14x5","target":"敌方单体","effect":"命中率70%"}]},
+      {"id":53,"resistances":[0,1,0,3,1,0,3,0,0,0,0],"skills":["23481"],"skillsZh":[{"name":"毒藤蔓","element":"草木","sp":55,"kind":"物理","power":"45","target":"敌方单体","effect":"20%概率中毒"}]},
+      {"id":54,"resistances":[0,1,0,3,0,0,3,1,0,0,0],"skills":["26111"],"skillsZh":[{"name":"过敏喷雾","element":"草木","sp":65,"kind":"魔法","power":"20","target":"敌方全体","effect":"20%概率使对方混乱"}]},
+      {"id":55,"resistances":[0,0,1,3,1,0,3,0,0,0,0],"skills":["26231"],"skillsZh":[{"name":"热带喙啄","element":"无","sp":55,"kind":"物理","power":"15x3","target":"敌方单体","effect":""}]},
+      {"id":56,"resistances":[0,1,0,3,1,0,3,0,0,0,0],"skills":["20561"],"skillsZh":[{"name":"坚果喷射","element":"草木","sp":55,"kind":"物理","power":"15x3","target":"敌方单体","effect":"命中率90% CRT10%"}]},
+      {"id":57,"resistances":[0,1,0,0,3,1,3,0,0,0,3],"skills":["20021"],"skillsZh":[{"name":"泪珠射击","element":"水","sp":55,"kind":"魔法","power":"50","target":"敌方单体","effect":""}]},
+      {"id":58,"resistances":[0,1,0,3,0,0,0,1,3,0,0],"skills":["23911"],"skillsZh":[{"name":"狐叶楔","element":"草木","sp":55,"kind":"魔法","power":"50","target":"敌方单体","effect":""}]},
+      {"id":59,"resistances":[0,0,0,1,3,0,1,0,3,0,0],"skills":["27501"],"skillsZh":[{"name":"炽烈寒冰","element":"冰","sp":55,"kind":"魔法","power":"50","target":"敌方单体","effect":""}]},
+      {"id":60,"resistances":[0,3,0,0,1,3,0,0,0,1,0],"skills":["20811"],"skillsZh":[{"name":"召唤","element":"无","sp":60,"kind":"魔法","power":"60","target":"敌方单体","effect":""}]},
+      {"id":61,"resistances":[0,1,3,3,0,1,0,0,0,0,0],"skills":["25821"],"skillsZh":[{"name":"催眠泡泡","element":"水","sp":50,"kind":"魔法","power":"40","target":"敌方单体","effect":"30%概率睡眠"}]},
+      {"id":62,"resistances":[0,1,0,0,3,0,1,0,3,0,0],"skills":["25691"],"skillsZh":[{"name":"麻痹之息","element":"无","sp":70,"kind":"物理","power":"25","target":"敌方全体","effect":"20%概率麻痹"}]},
+      {"id":63,"resistances":[0,0,3,0,0,1,1,0,3,0,0],"skills":["25941"],"skillsZh":[{"name":"旋转飞刃","element":"无","sp":65,"kind":"物理","power":"55","target":"敌方单体","effect":"CRT10%"}]},
+      {"id":64,"resistances":[0,3,1,0,1,0,3,0,0,0,0],"skills":["20901"],"skillsZh":[{"name":"破岩爪","element":"火","sp":60,"kind":"物理","power":"45","target":"敌方单体","effect":"CRT10%"}]},
+      {"id":65,"resistances":[0,3,0,1,3,0,1,0,0,0,0],"skills":["21111"],"skillsZh":[{"name":"哥布林强袭","element":"火","sp":55,"kind":"物理","power":"40","target":"敌方单体","effect":"100%在3回合内下降速度30%"}]},
+      {"id":66,"resistances":[0,1,0,3,0,1,1,0,3,0,0],"skills":["25771"],"skillsZh":[{"name":"萨满重锤","element":"无","sp":60,"kind":"物理","power":"50","target":"敌方单体","effect":"100%在3回合内下降攻击力20%"}]},
+      {"id":67,"resistances":[0,1,3,0,0,1,0,3,0,0,0],"skills":["27091"],"skillsZh":[{"name":"黑珍珠","element":"水","sp":105,"kind":"物理","power":"30","target":"敌方全体","effect":"CRT50%"}]},
+      {"id":68,"resistances":[0,2,3,0,3,1,0,0,0,0,0],"skills":["25781"],"skillsZh":[{"name":"雪凝块霹雳","element":"冰","sp":55,"kind":"物理","power":"40","target":"敌方单体","effect":"100%降低冰抗性"}]},
+      {"id":69,"resistances":[0,1,0,3,0,0,3,0,0,1,0],"skills":["20201"],"skillsZh":[{"name":"奶酪炸弹","element":"火","sp":55,"kind":"物理","power":"40","target":"敌方单体","effect":"30%概率中毒"}]},
+      {"id":70,"resistances":[0,0,0,0,0,0,3,0,1,1,3],"skills":["24571"],"skillsZh":[{"name":"恶梦之眼","element":"暗","sp":55,"kind":"魔法","power":"45","target":"敌方单体","effect":"恢复伤害的10%HP"}]},
+      {"id":71,"resistances":[0,3,1,0,0,1,0,3,0,0,0],"skills":["20091"],"skillsZh":[{"name":"黑暗齿轮","element":"暗","sp":55,"kind":"物理","power":"50","target":"敌方单体","effect":""}]},
+      {"id":72,"resistances":[0,1,3,0,0,0,0,0,0,1,3],"skills":["20971"],"skillsZh":[{"name":"小型飞镖","element":"暗","sp":70,"kind":"物理","power":"25","target":"敌方全体","effect":"恢复伤害的15%HP"}]},
+      {"id":73,"resistances":[0,1,0,3,0,0,1,0,3,0,0],"skills":["20421"],"skillsZh":[{"name":"齿轮刺针","element":"无","sp":60,"kind":"物理","power":"20x3","target":"敌方单体","effect":""}]},
+      {"id":74,"resistances":[0,1,3,0,0,3,0,1,0,0,0],"skills":["23891"],"skillsZh":[{"name":"电击霹雳","element":"雷","sp":75,"kind":"魔法","power":"25","target":"敌方全体","effect":""}]},
+      {"id":75,"resistances":[0,1,0,3,0,0,3,0,1,0,0],"skills":["26071"],"skillsZh":[{"name":"毒蘑菇炸弹","element":"草木","sp":65,"kind":"物理","power":"20","target":"敌方全体","effect":"30%概率中毒"}]},
+      {"id":76,"resistances":[1,0,1,3,1,3,3,3,1,0,0],"skills":["27071"],"skillsZh":[{"name":"滚石","element":"地面","sp":50,"kind":"物理","power":"45","target":"敌方单体","effect":"100%在3回合下降防御力20%"}]},
+      {"id":77,"resistances":[3,1,0,0,3,1,3,1,1,3,0],"skills":["21141"],"skillsZh":[{"name":"V仔兽头槌","element":"无","sp":55,"kind":"物理","power":"45","target":"敌方单体","effect":"30%概率混乱"}]},
+      {"id":78,"resistances":[3,1,0,3,1,1,3,1,3,0,0],"skills":["27061"],"skillsZh":[{"name":"飞羽斩","element":"风","sp":55,"kind":"物理","power":"50","target":"敌方单体","effect":""}]},
+      {"id":79,"resistances":[1,1,3,3,0,1,3,0,1,0,3],"skills":["23921"],"skillsZh":[{"name":"粘粘网","element":"草木","sp":50,"kind":"物理","power":"40","target":"敌方单体","effect":"100%在3回合速度降低50%"}]},
+      {"id":80,"resistances":[2,1,3,0,0,3,0,1,0,0,3],"skills":["26261"],"skillsZh":[{"name":"狂笑","element":"暗","sp":55,"kind":"物理","power":"50","target":"敌方单体","effect":""}]},
+      {"id":81,"resistances":[0,0,1,1,0,3,0,0,0,0,0],"skills":["21831","21832"],"skillsZh":[{"name":"逃窜殴袭","element":"雷","sp":95,"kind":"物理","power":"60","target":"敌方单体","effect":"20%概率麻痹, 对因子(泰坦族)增伤"},{"name":"引诱回响","sp":60,"kind":"强化","target":"我方单体","effect":"使自己挑衅, 100%在1回合提升回避30%"}]},
+      {"id":82,"resistances":[0,1,3,0,3,1,0,0,0,0,0],"skills":["23441"],"skillsZh":[{"name":"鱼叉火神炮","element":"无","sp":100,"kind":"物理","power":"75","target":"敌方单体","effect":""}]},
+      {"id":83,"resistances":[0,0,0,0,1,0,3,1,3,0,0],"skills":["20111"],"skillsZh":[{"name":"旋针","element":"风","sp":115,"kind":"魔法","power":"40","target":"敌方全体","effect":""}]},
+      {"id":84,"resistances":[0,0,3,0,0,0,1,0,0,3,1],"skills":["20871"],"skillsZh":[{"name":"天堂之拳","element":"光","sp":90,"kind":"魔法","power":"65","target":"敌方单体","effect":"100%在3回合降低精神20%, 对因子(魔)增伤"}]},
+      {"id":85,"resistances":[0,0,0,0,3,1,1,3,0,0,0],"skills":["23041"],"skillsZh":[{"name":"百万冲击波","element":"雷","sp":90,"kind":"魔法","power":"60","target":"敌方单体","effect":"对病毒种50%概率麻痹, 对因子(虫)增伤"}]},
+      {"id":86,"resistances":[0,0,3,1,3,0,0,0,1,0,0],"skills":["27101"],"skillsZh":[{"name":"达达上勾拳","element":"钢","sp":80,"kind":"物理","power":"65","target":"敌方单体","effect":"100%在3回合下降攻击力10%"}]},
+      {"id":87,"resistances":[0,3,0,0,3,1,0,0,1,0,0],"skills":["20121"],"skillsZh":[{"name":"妖狐火焰","element":"火","sp":95,"kind":"物理","power":"70","target":"敌方单体","effect":""}]},
+      {"id":88,"resistances":[3,0,0,1,0,0,1,3,0,0,0],"skills":["21911"],"skillsZh":[{"name":"彻甲刃","element":"钢","sp":85,"kind":"物理","power":"65","target":"敌方单体","effect":"CRT10%, 对因子(战士)增伤"}]},
+      {"id":89,"resistances":[0,1,0,3,1,0,3,0,0,0,0],"skills":["22353"],"skillsZh":[{"name":"当身返","element":"无","sp":100,"kind":"强化","power":"85","effect":"变成物理反击状态, 受到物理攻击进行反击"}]},
+      {"id":90,"resistances":[0,3,1,0,1,0,3,0,0,0,0],"skills":["23261"],"skillsZh":[{"name":"超级火焰","element":"火","sp":120,"kind":"物理","power":"40","target":"敌方全体","effect":""}]},
+      {"id":91,"resistances":[0,3,0,0,3,0,0,1,1,0,0],"skills":["22181"],"skillsZh":[{"name":"蓝焰吐息","element":"火","sp":90,"kind":"物理","power":"65","target":"敌方单体","effect":"100%在3回合下降防御力10%, 对因子(妖精)增伤"}]},
+      {"id":92,"resistances":[0,3,1,1,1,0,4,0,0,0,0],"skills":["20541"],"skillsZh":[{"name":"超级爆裂","element":"火","sp":95,"kind":"物理","power":"70","target":"敌方单体","effect":""}]},
+      {"id":93,"resistances":[0,3,1,3,0,0,0,0,0,0,1],"skills":["20161"],"skillsZh":[{"name":"强袭獠牙","element":"火","sp":90,"kind":"物理","power":"65","target":"敌方单体","effect":"100%3回合下降速度20%"}]},
+      {"id":94,"resistances":[0,1,0,3,0,0,0,3,1,0,0],"skills":["25971"],"skillsZh":[{"name":"影子镰刀","element":"暗","sp":105,"kind":"物理","power":"60","target":"敌方单体","effect":"必中, CRT20%"}]},
+      {"id":95,"resistances":[1,3,0,0,1,0,0,4,0,0,0],"skills":["26981"],"skillsZh":[{"name":"Vantheon","element":"钢","sp":90,"kind":"物理","power":"30x2","target":"敌方单体","effect":"CRT20%, 对因子(人)增伤"}]},
+      {"id":96,"resistances":[0,1,0,0,3,0,0,0,0,3,1],"skills":["27551"],"skillsZh":[{"name":"结晶云","element":"冰","sp":90,"kind":"魔法","power":"70","target":"敌方单体","effect":"对因子(魔法)增伤"}]},
+      {"id":97,"resistances":[0,0,0,1,0,0,0,0,3,3,1],"skills":["20921"],"skillsZh":[{"name":"猫猫拳","element":"光","sp":90,"kind":"物理","power":"70","target":"敌方单体","effect":"50%概率混乱"}]},
+      {"id":98,"resistances":[0,1,0,0,0,0,3,1,3,0,0],"skills":["22221"],"skillsZh":[{"name":"灰色噪音","sp":30,"kind":"弱化","target":"敌方全体","effect":"3回合内下降精神10%, 50%概率液晶化"}]},
+      {"id":99,"resistances":[0,3,1,0,1,0,0,0,3,0,0],"skills":["23081"],"skillsZh":[{"name":"陨石巨翼","element":"火","sp":120,"kind":"魔法","power":"40","target":"敌方全体","effect":""}]},
+      {"id":100,"resistances":[0,4,1,0,1,3,0,0,0,0,0],"skills":["21371"],"skillsZh":[{"name":"烈焰俯冲","element":"火","sp":95,"kind":"物理","power":"70","target":"敌方单体","effect":"对因子(冰)增伤"}]},
+      {"id":101,"resistances":[0,3,1,0,0,3,1,0,3,0,0],"skills":["23971"],"skillsZh":[{"name":"V箭吐息","element":"火","sp":95,"kind":"物理","power":"70","target":"敌方单体","effect":""}]},
+      {"id":102,"resistances":[0,0,0,0,3,1,3,0,1,0,0],"skills":["25741"],"skillsZh":[{"name":"双燕返","element":"钢","sp":90,"kind":"物理","power":"30x2","target":"敌方单体","effect":"必中"}]},
+      {"id":103,"resistances":[0,1,0,3,0,1,3,0,0,0,0],"skills":["27021"],"skillsZh":[{"name":"苦无羽","element":"钢","sp":115,"kind":"物理","power":"30","target":"敌方全体","effect":"CRT20%"}]},
+      {"id":104,"resistances":[0,1,3,0,3,1,0,0,0,0,0],"skills":["23711"],"skillsZh":[{"name":"冰柱棒","element":"冰","sp":90,"kind":"物理","power":"70","target":"敌方单体","effect":""}]},
+      {"id":105,"resistances":[0,2,0,0,4,1,0,0,3,0,0],"skills":["23701"],"skillsZh":[{"name":"绝对零度拳","element":"冰","sp":120,"kind":"物理","power":"40","target":"敌方全体","effect":""}]},
+      {"id":106,"resistances":[0,0,0,0,0,0,1,0,3,3,1],"skills":["25481"],"skillsZh":[{"name":"神圣飞弹","element":"光","sp":90,"kind":"魔法","power":"70","target":"敌方单体","effect":"对因子(梦幻)增伤"}]},
+      {"id":107,"resistances":[1,0,0,0,0,1,0,3,3,0,0],"skills":["20251"],"skillsZh":[{"name":"伏杀","element":"钢","sp":80,"kind":"物理","power":"65","target":"敌方单体","effect":"3回合内下降防御力10%"}]},
+      {"id":108,"resistances":[1,0,0,1,3,0,0,3,0,0,0],"skills":["24561"],"skillsZh":[{"name":"正义弹丸","element":"光","sp":90,"kind":"物理","power":"70","target":"敌方单体","effect":"对因子(人)增伤"}]},
+      {"id":109,"resistances":[0,1,0,0,0,1,3,0,3,0,0],"skills":["20721"],"skillsZh":[{"name":"兽王拳","element":"地面","sp":85,"kind":"物理","power":"70","target":"敌方单体","effect":""}]},
+      {"id":110,"resistances":[0,1,0,1,0,0,0,3,3,0,0],"skills":["20771"],"skillsZh":[{"name":"驱驱裂空斩","element":"钢","sp":85,"kind":"物理","power":"30x2","target":"敌方单体","effect":"CRT10%, 对因子(草)增伤"}]},
+      {"id":111,"resistances":[0,1,3,0,4,1,0,0,0,0,0],"skills":["27581"],"skillsZh":[{"name":"雪球炸弹","element":"冰","sp":110,"kind":"物理","power":"15x2","target":"敌方全体","effect":""}]},
+      {"id":112,"resistances":[0,3,0,0,1,3,0,1,0,0,0],"skills":["23771"],"skillsZh":[{"name":"雷云","element":"雷","sp":100,"kind":"魔法","power":"70","target":"敌方单体","effect":"对因子(魔法)增伤"}]},
+      {"id":113,"resistances":[0,0,3,1,0,0,1,0,3,0,0],"skills":["26011"],"skillsZh":[{"name":"烈风","element":"风","sp":85,"kind":"魔法","power":"60","target":"敌方单体","effect":"30%概率受伤, 对因子(魔法)增伤"}]},
+      {"id":114,"resistances":[0,0,0,1,3,0,1,0,3,0,0],"skills":["20681"],"skillsZh":[{"name":"螺旋吹袭","element":"风","sp":90,"kind":"物理","power":"70","target":"敌方单体","effect":""}]},
+      {"id":115,"resistances":[0,1,3,3,0,2,0,0,0,0,0],"skills":["20511"],"skillsZh":[{"name":"DJ射击","element":"水","sp":90,"kind":"物理","power":"70","target":"敌方单体","effect":""}]},
+      {"id":116,"resistances":[0,1,0,3,0,0,3,1,0,0,0],"skills":["26101"],"skillsZh":[{"name":"小型啄喙","element":"火","sp":90,"kind":"物理","power":"15x4","target":"敌方单体","effect":"自己回承受HP1%的反作用力伤害"}]},
+      {"id":117,"resistances":[0,3,0,0,0,0,1,1,3,0,0],"skills":["23951"],"skillsZh":[{"name":"鬼火球","element":"火","sp":95,"kind":"魔法","power":"70","target":"敌方单体","effect":""}]},
+      {"id":118,"resistances":[0,0,1,0,0,1,3,3,0,0,0],"skills":["23981"],"skillsZh":[{"name":"时空破坏者","element":"无","sp":90,"kind":"魔法","power":"60","target":"敌方单体","effect":"解除状态变化, 20%概率睡眠"}]},
+      {"id":119,"resistances":[0,0,0,0,0,3,1,1,3,0,0],"skills":["23721"],"skillsZh":[{"name":"猎杀加农炮","element":"雷","sp":105,"kind":"物理","power":"105","target":"敌方单体","effect":"下一回合无法行动"}]},
+      {"id":120,"resistances":[0,1,0,3,0,0,0,0,0,3,1],"skills":["20581"],"skillsZh":[{"name":"太阳光束","element":"草木","sp":95,"kind":"魔法","power":"105","target":"敌方单体","effect":"下一回合无法行动"}]},
+      {"id":121,"resistances":[0,0,3,0,3,1,1,0,0,0,0],"skills":["23471"],"skillsZh":[{"name":"冰箭","element":"冰","sp":90,"kind":"魔法","power":"70","target":"敌方单体","effect":"对因子(水)增伤"}]},
+      {"id":122,"resistances":[1,0,0,3,1,0,0,3,0,0,0],"skills":["21301"],"skillsZh":[{"name":"变异飞镖","element":"水","sp":80,"kind":"物理","power":"60","target":"敌方单体","effect":"如对象陷入混乱/错乱, 25%概率即死"}]},
+      {"id":123,"resistances":[1,0,3,0,0,1,3,0,0,0,0],"skills":["23681"],"skillsZh":[{"name":"高压水炮","element":"水","sp":90,"kind":"魔法","power":"60","target":"敌方单体","effect":"如自己陷入提升防御状态, CRT25%"}]},
+      {"id":124,"resistances":[0,0,0,1,0,3,1,3,0,0,0],"skills":["20141"],"skillsZh":[{"name":"流星暴雨","element":"地面","sp":110,"kind":"物理","power":"10x2~5","target":"敌方全体","effect":""}]},
+      {"id":125,"resistances":[0,3,0,1,0,0,3,0,1,0,0],"skills":["26211"],"skillsZh":[{"name":"超强加农炮","element":"火","sp":100,"kind":"物理","power":"105","target":"敌方单体","effect":"下一回合无法行动"}]},
+      {"id":126,"resistances":[0,3,1,1,0,0,3,0,0,0,0],"skills":["27591"],"skillsZh":[{"name":"巨重拳","element":"地面","sp":115,"kind":"物理","power":"40","target":"敌方全体","effect":""}]},
+      {"id":127,"resistances":[0,0,3,0,3,1,1,0,0,0,0],"skills":["24741"],"skillsZh":[{"name":"蜥蜴之舞","element":"钢","sp":80,"kind":"物理","power":"20x3","target":"敌方单体","effect":""}]},
+      {"id":128,"resistances":[0,3,0,0,1,3,0,0,1,0,0],"skills":["23631"],"skillsZh":[{"name":"火焰吐息","element":"火","sp":95,"kind":"物理","power":"70","target":"敌方单体","effect":"对因子(人)增伤"}]},
+      {"id":129,"resistances":[1,0,0,3,1,0,3,0,0,0,0],"skills":["21021"],"skillsZh":[{"name":"严兔列斗","element":"钢","sp":80,"kind":"物理","power":"20x3","target":"敌方单体","effect":""}]},
+      {"id":130,"resistances":[0,1,0,3,0,0,0,1,3,0,0],"skills":["23491"],"skillsZh":[{"name":"尖尖碰碰拳","element":"草木","sp":110,"kind":"物理","power":"35","target":"敌方全体","effect":"25%概率中毒"}]},
+      {"id":131,"resistances":[0,0,1,3,1,0,3,0,0,0,0],"skills":["23731"],"skillsZh":[{"name":"钻头旋转","element":"地面","sp":115,"kind":"物理","power":"65","target":"敌方单体","effect":"适性不利无效, 对因子(矿)增伤"}]},
+      {"id":132,"resistances":[3,0,0,1,1,0,0,3,0,0,0],"skills":["23961"],"skillsZh":[{"name":"威力金属球","element":"钢","sp":85,"kind":"物理","power":"70","target":"敌方单体","effect":""}]},
+      {"id":133,"resistances":[0,0,0,0,3,1,0,3,1,0,0],"skills":["21151"],"skillsZh":[{"name":"五连叉","element":"无","sp":100,"kind":"物理","power":"12x5","target":"敌方单体","effect":"CRT15%"}]},
+      {"id":134,"resistances":[0,1,0,0,0,1,3,0,3,0,0],"skills":["24631"],"skillsZh":[{"name":"齐柏林爆炸","element":"火","sp":115,"kind":"物理","power":"60","target":"敌方全体","effect":"命中率70%, 对因子(鸟)增伤"}]},
+      {"id":135,"resistances":[0,4,2,0,1,0,0,0,3,0,0],"skills":["20101"],"skillsZh":[{"name":"燃烧拳","element":"火","sp":90,"kind":"物理","power":"20x3","target":"敌方单体","effect":"对因子(冰)增伤"}]},
+      {"id":136,"resistances":[0,3,0,0,1,0,3,0,1,0,0],"skills":["23691"],"skillsZh":[{"name":"火山强袭","element":"火","sp":95,"kind":"物理","power":"70","target":"敌方单体","effect":""}]},
+      {"id":137,"resistances":[0,1,3,0,3,1,0,0,0,0,0],"skills":["20031"],"skillsZh":[{"name":"月夜水弹","element":"水","sp":85,"kind":"魔法","power":"60","target":"敌方单体","effect":"30%概率睡眠, 对因子(兽)增伤"}]},
+      {"id":138,"resistances":[0,2,3,0,4,1,0,0,0,0,0],"skills":["27301"],"skillsZh":[{"name":"冷冻之爪","element":"冰","sp":100,"kind":"物理","power":"65","target":"敌方单体","effect":"恢复伤害的20%HP, 对因子(火)增伤"}]},
+      {"id":139,"resistances":[0,1,0,1,0,3,3,0,0,0,0],"skills":["21001"],"skillsZh":[{"name":"毁灭声波","element":"风","sp":150,"kind":"物理","power":"35","target":"敌方全体","effect":"适性不利无效"}]},
+      {"id":140,"resistances":[0,1,0,3,0,1,3,0,0,0,0],"skills":["23931"],"skillsZh":[{"name":"枯木吸取","element":"草木","sp":95,"kind":"物理","power":"65","target":"敌方单体","effect":"恢复伤害的20%HP"}]},
+      {"id":141,"resistances":[0,1,0,3,0,0,1,0,3,0,0],"skills":["23941"],"skillsZh":[{"name":"霸王拳","element":"暗","sp":85,"kind":"物理","power":"60","target":"敌方单体","effect":"3回合内降低命中率20%"}]},
+      {"id":142,"resistances":[3,1,3,0,0,2,0,0,0,0,0],"skills":["22401"],"skillsZh":[{"name":"海鸣墨枪","sp":25,"kind":"弱化","target":"敌方单体","effect":"80%概率3回合内下降命中率30%, 50%概率中毒"}]},
+      {"id":143,"resistances":[1,0,0,3,0,1,3,0,0,0,0],"skills":["23411"],"skillsZh":[{"name":"毁灭榴弹","element":"火","sp":100,"kind":"物理","power":"65","target":"敌方单体","effect":"必中"}]},
+      {"id":144,"resistances":[0,1,0,0,0,1,3,3,0,0,0],"skills":["24551"],"skillsZh":[{"name":"熟成大便","sp":200,"kind":"比例伤害","power":"HP15%","target":"敌方单体","effect":""}]},
+      {"id":145,"resistances":[0,3,1,0,1,3,0,0,0,0,0],"skills":["20781"],"skillsZh":[{"name":"排射烈焰","element":"火","sp":95,"kind":"物理","power":"70","target":"敌方单体","effect":""}]},
+      {"id":146,"resistances":[0,1,0,3,0,1,0,0,3,0,0],"skills":["23671"],"skillsZh":[{"name":"剪刀臂","element":"草木","sp":90,"kind":"物理","power":"70","target":"敌方单体","effect":"对因子(虫)增伤"}]},
+      {"id":147,"resistances":[0,1,3,3,0,1,0,0,0,0,0],"skills":["23991"],"skillsZh":[{"name":"碰撞交响乐","element":"水","sp":100,"kind":"魔法","power":"60","target":"敌方单体","effect":"对睡眠/昏睡状态敌人增伤"}]},
+      {"id":148,"resistances":[0,1,0,0,0,1,3,3,0,0,0],"skills":["27291"],"skillsZh":[{"name":"超恶臭","sp":30,"kind":"弱化","target":"敌方全体","effect":"3回合内降低精神10%, 50%概率麻痹"}]},
+      {"id":149,"resistances":[0,3,0,3,1,0,0,1,0,0,0],"skills":["22091"],"skillsZh":[{"name":"绿焰吐息","element":"火","sp":125,"kind":"物理","power":"65","target":"敌方单体","effect":"适性不利无效, 对因子(妖精)增伤"}]},
+      {"id":150,"resistances":[0,0,0,0,1,3,1,0,3,0,0],"skills":["21131"],"skillsZh":[{"name":"一掷千金","sp":250,"kind":"比例伤害","power":"HP2%x3","target":"敌方全体","effect":"3回合内降低精神15%"}]},
+      {"id":151,"resistances":[1,3,0,0,0,0,4,0,1,0,0],"skills":["20051"],"skillsZh":[{"name":"绯红诅咒","sp":30,"kind":"弱化","target":"敌方全体","effect":"3回合内降低防御力10%, 50%概率麻痹"}]},
+      {"id":152,"resistances":[0,3,0,0,1,0,3,0,1,0,0],"skills":["24521"],"skillsZh":[{"name":"超高热","element":"火","sp":90,"kind":"物理","power":"65","target":"敌方单体","effect":"下降火抗性"}]},
+      {"id":153,"resistances":[0,1,0,0,3,0,0,0,0,1,3],"skills":["20301"],"skillsZh":[{"name":"突刺刃","element":"暗","sp":85,"kind":"物理","power":"20x3","target":"敌方单体","effect":"对因子*兽增伤"}]},
+      {"id":154,"resistances":[0,0,1,3,1,0,3,0,0,0,0],"skills":["23131"],"skillsZh":[{"name":"大便","sp":190,"kind":"比例伤害","power":"HP1%x5","target":"敌方单体","effect":"3回合内降低10%精神, 60%概率中毒"}]},
+      {"id":155,"resistances":[0,0,0,1,1,3,3,0,0,0,0],"skills":["25981"],"skillsZh":[{"name":"装甲车之拳","element":"无","sp":90,"kind":"物理","power":"85","target":"敌方单体","effect":"命中率80%"}]},
+      {"id":156,"resistances":[1,3,0,0,0,0,0,0,0,1,3],"skills":["20931"],"skillsZh":[{"name":"死亡之爪","element":"暗","sp":95,"kind":"物理","power":"65","target":"敌方单体","effect":"恢复伤害的20%HP, 对因子(圣)增伤"}]},
+      {"id":157,"resistances":[1,0,1,0,0,0,3,3,0,0,0],"skills":["22281"],"skillsZh":[{"name":"三重能量炮","element":"无","sp":100,"kind":"物理","power":"25x3","target":"敌方单体","effect":"对因子(不明)增伤"}]},
+      {"id":158,"resistances":[0,1,0,3,0,0,3,0,1,0,0],"skills":["25921"],"skillsZh":[{"name":"穿孔毒针","element":"草木","sp":80,"kind":"物理","power":"60","target":"敌方单体","effect":"如对象中毒/剧毒/睡眠/昏睡, 25%概率即死, 对因子(虫)增伤"}]},
+      {"id":159,"resistances":[3,1,0,1,1,1,1,1,0,0,0],"skills":["23751"],"skillsZh":[{"name":"大便叩击","sp":190,"kind":"比例伤害","power":"HP5%","target":"敌方单体","effect":"3回合内降低防御力/精神15%"}]},
+      {"id":160,"resistances":[0,1,3,3,0,1,0,0,0,0,0],"skills":["20701"],"skillsZh":[{"name":"大便投掷","sp":190,"kind":"比例伤害","power":"HP5%","target":"敌方单体","effect":"3回合内降低25%精神"}]},
+      {"id":161,"resistances":[3,1,0,0,0,0,0,0,0,1,3],"skills":["20131"],"skillsZh":[{"name":"死亡魅惑","sp":200,"kind":"比例伤害","power":"HP15%","target":"敌方单体","effect":"50%概率受伤"}]},
+      {"id":162,"resistances":[0,1,3,0,3,0,0,1,0,0,0],"skills":["25801"],"skillsZh":[{"name":"冰雪拳","element":"冰","sp":90,"kind":"物理","power":"60","target":"敌方单体","effect":"降低冰抗性"}]},
+      {"id":163,"resistances":[0,3,1,0,1,0,3,0,0,0,0],"skills":["25791"],"skillsZh":[{"name":"邪恶飓风","element":"风","sp":115,"kind":"物理","power":"40","target":"敌方全体","effect":""}]},
+      {"id":164,"resistances":[0,1,0,3,0,0,1,0,3,0,0],"skills":["25861"],"skillsZh":[{"name":"致命毒针","element":"草木","sp":85,"kind":"物理","power":"60","target":"敌方单体","effect":"10%概率麻痹/无法行动, 对因子(人)增伤"}]},
+      {"id":165,"resistances":[0,0,1,3,1,0,0,0,0,0,0],"skills":["27521"],"skillsZh":[{"name":"稀有金属大便","sp":70,"kind":"比例伤害","power":"HP1%x5","target":"敌方单体","effect":"3回合内降低20%精神, 30%概率混乱"}]},
+      {"id":166,"resistances":[0,0,0,0,3,1,0,0,0,1,3],"skills":["20431"],"skillsZh":[{"name":"猫猫拳","element":"暗","sp":90,"kind":"物理","power":"70","target":"敌方单体","effect":"50%概率混乱"}]},
+      {"id":167,"resistances":[0,1,0,3,0,0,3,1,0,0,0],"skills":["23141"],"skillsZh":[{"name":"超恶臭喷射","element":"无","sp":115,"kind":"物理","power":"30","target":"敌方全体","effect":"50%概率中毒"}]},
+      {"id":168,"resistances":[0,1,0,0,0,1,3,0,0,0,3],"skills":["20171"],"skillsZh":[{"name":"恶魔震动","element":"地面","sp":115,"kind":"物理","power":"40","target":"敌方全体","effect":"对因子(矿)增伤"}]},
+      {"id":169,"resistances":[0,1,3,0,0,0,3,0,1,0,0],"skills":["22201"],"skillsZh":[{"name":"格杀勿论","element":"钢","sp":110,"kind":"物理","power":"65","target":"敌方单体","effect":"如打倒对方, 恢复自己的HP50%"}]},
+      {"id":170,"resistances":[1,0,0,3,0,1,3,0,0,0,0],"skills":["26151"],"skillsZh":[{"name":"闪烁光束","element":"雷","sp":95,"kind":"物理","power":"60","target":"敌方单体","effect":"60%概率麻痹"}]},
+      {"id":171,"resistances":[0,1,3,0,0,0,0,0,0,1,3],"skills":["25901"],"skillsZh":[{"name":"烂泥","sp":25,"kind":"弱化","target":"敌方单体","effect":"3回合内降低10%防御力/精神, 50%概率中毒"}]},
+      {"id":172,"resistances":[0,0,1,0,1,1,3,3,3,0,0],"skills":["24541"],"skillsZh":[{"name":"涡轮刺针","element":"雷","sp":105,"kind":"物理","power":"15x5","target":"敌方单体","effect":"对因子(人)增伤"}]},
+      {"id":173,"resistances":[3,1,0,3,1,1,3,1,3,0,0],"skills":["20151"],"skillsZh":[{"name":"滑翔号角","element":"风","sp":90,"kind":"物理","power":"65","target":"敌方单体","effect":"3回合内降低20%攻击力, 对因子(鸟)增伤"}]},
+      {"id":174,"resistances":[1,0,1,3,1,1,3,3,3,0,0],"skills":["27111"],"skillsZh":[{"name":"巨尾重锤","element":"地面","sp":85,"kind":"物理","power":"65","target":"敌方单体","effect":"25%概率混乱"}]},
+      {"id":175,"resistances":[3,1,3,0,3,1,3,1,1,0,0],"skills":["23651"],"skillsZh":[{"name":"X激光","element":"风","sp":90,"kind":"物理","power":"70","target":"敌方单体","effect":""}]},
+      {"id":176,"resistances":[1,0,1,1,3,1,3,3,0,3,0],"skills":["27601"],"skillsZh":[{"name":"毁灭榴弹","element":"火","sp":130,"kind":"物理","power":"35","target":"敌方全体","effect":"必中"}]},
+      {"id":177,"resistances":[3,1,0,3,1,1,1,3,0,0,3],"skills":["20911"],"skillsZh":[{"name":"终结刺钉","element":"草木","sp":110,"kind":"物理","power":"65","target":"敌方单体","effect":"对象未行动, CRT25%"}]},
+      {"id":178,"resistances":[2,1,3,0,0,3,0,1,0,0,3],"skills":["26301"],"skillsZh":[{"name":"数据粉碎者","element":"暗","sp":85,"kind":"物理","power":"60","target":"敌方单体","effect":"30%概率液晶化"}]},
+      {"id":179,"resistances":[0,1,3,1,3,1,1,3,0,0,3],"skills":["21451"],"skillsZh":[{"name":"氧气自导","element":"水","sp":130,"kind":"物理","power":"45","target":"敌方全体","effect":""}]},
+      {"id":180,"resistances":[1,1,3,3,1,1,3,3,0,0,0],"skills":["21422"],"skillsZh":[{"name":"草薙","element":"钢","sp":120,"kind":"物理","power":"22x2","target":"敌方全体","effect":"对因子(龙)增伤"}]},
+      {"id":181,"resistances":[3,0,1,3,1,3,3,1,1,0,0],"skills":["21441"],"skillsZh":[{"name":"黄金冲击","element":"钢","sp":130,"kind":"物理","power":"40","target":"敌方全体","effect":"如对象已结束行动, 增伤"}]},
+      {"id":182,"resistances":[0,3,1,0,0,1,3,3,1,3,1],"skills":["21471"],"skillsZh":[{"name":"罗塞塔石碑","element":"地面","sp":90,"kind":"魔法","power":"75","target":"敌方单体","effect":"50%概率混乱"}]},
+      {"id":183,"resistances":[0,3,1,3,1,3,1,0,1,3,0],"skills":["27161"],"skillsZh":[{"name":"火焰之拳","element":"火","sp":105,"kind":"物理","power":"75","target":"敌方单体","effect":"HP越低, 增伤越多, 对因子(龙)增伤"}]},
+      {"id":184,"resistances":[0,1,3,0,3,1,1,0,3,3,1],"skills":["21461"],"skillsZh":[{"name":"银色光芒","element":"光","sp":110,"kind":"魔法","power":"75","target":"敌方单体","effect":"对病毒种增伤"}]},
+      {"id":185,"resistances":[3,3,0,1,1,3,1,1,3,0,0],"skills":["21411"],"skillsZh":[{"name":"风暴之翼","element":"风","sp":95,"kind":"物理","power":"18x4","target":"敌方单体","effect":""}]},
+      {"id":186,"resistances":[1,0,1,1,1,3,3,3,0,3,0],"skills":["21391"],"skillsZh":[{"name":"闪电斩","element":"雷","sp":105,"kind":"物理","power":"75","target":"敌方单体","effect":""}]},
+      {"id":187,"resistances":[0,4,1,0,2,0,0,3,0,0,0],"skills":["26761","26791"],"skillsZh":[{"name":"火龙烈焰拳","element":"火","sp":85,"kind":"物理","power":"35x2","target":"敌方单体","effect":"对因子*不死增伤"},{"name":"日冕冲击波","element":"火","sp":150,"kind":"物理","power":"20x2","target":"敌方全体","effect":"模式转换, 对因子(不死)增伤"}]},
+      {"id":188,"resistances":[0,0,0,0,3,0,1,0,0,4,2],"skills":["26801","26811"],"skillsZh":[{"name":"双重胜利者","element":"光","sp":85,"kind":"物理","power":"75","target":"敌方单体","effect":"对因子(魔)增伤"},{"name":"速度之星","element":"钢","sp":105,"kind":"物理","power":"70","target":"敌方单体","effect":"自己下一轮行动顺序变成第一个, 模式转换, 对因子(兽)增伤"}]},
+      {"id":189,"resistances":[0,1,4,0,0,2,0,3,0,0,0],"skills":["21621","21631"],"skillsZh":[{"name":"豪雨流柱","element":"火","sp":80,"kind":"魔法","power":"70","target":"敌方单体","effect":""},{"name":"泰坦冲击","element":"无","sp":120,"kind":"物理","power":"75","target":"敌方单体","effect":"模式转换"}]},
+      {"id":190,"resistances":[0,4,1,0,2,3,0,0,0,0,0],"skills":["26761","26791"],"skillsZh":[{"name":"日冕冲击波","element":"火","sp":150,"kind":"物理","power":"20x2","target":"敌方全体","effect":"对因子(不死)增伤"},{"name":"火龙烈焰拳","element":"火","sp":85,"kind":"物理","power":"35x2","target":"敌方单体","effect":"模式转换, 对因子(不死)增伤"}]},
+      {"id":191,"resistances":[0,1,4,0,0,2,0,3,0,0,0],"skills":["21621","21631"],"skillsZh":[{"name":"泰坦冲击","element":"无","sp":120,"kind":"物理","power":"75","target":"敌方单体","effect":""},{"name":"豪雨流柱","element":"水","sp":80,"kind":"魔法","power":"70","target":"敌方单体","effect":"模式转换"}]},
+      {"id":192,"resistances":[0,0,1,0,0,0,0,0,3,4,2],"skills":["26801","26811"],"skillsZh":[{"name":"速度之星","element":"钢","sp":105,"kind":"物理","power":"70","target":"敌方单体","effect":"自己的下一轮行动顺序变成第一个,对因子(兽)增伤"},{"name":"双重胜利者","element":"光","sp":85,"kind":"物理","power":"75","target":"敌方单体","effect":"模式转换, 对因子(魔)增伤"}]},
+      {"id":193,"resistances":[0,0,1,1,0,3,0,0,3,0,0],"skills":["21841","21842"],"skillsZh":[{"name":"霹雳击破拳","element":"雷","sp":155,"kind":"物理","power":"25x3","target":"敌方单体","effect":"30%几率使对方麻痹, 对因子(神)增伤"},{"name":"闪电桩","element":"雷","sp":150,"kind":"物理","power":"70","target":"敌方单体","effect":"100%几率下降雷抗性, 对因子(水)增伤"}]},
+      {"id":194,"resistances":[0,1,0,3,0,0,3,0,1,0,0],"skills":["21881","21882"],"skillsZh":[{"name":"荆棘撕咬","element":"草木","sp":170,"kind":"物理","power":"85","target":"敌方单体","effect":"恢复10%HP/SP, 100%下降草木抗性, 对因子(神)增伤"},{"name":"荆棘摇篮","element":"草木","sp":215,"kind":"物理","power":"60","target":"敌方全体","effect":"20%几率使对方睡眠, 对因子(矿)增伤"}]},
+      {"id":195,"resistances":[0,0,0,0,0,3,1,0,0,1,3],"skills":["21851","21852"],"skillsZh":[{"name":"三角镰","element":"暗","sp":160,"kind":"物理","power":"25x3","target":"敌方单体","effect":"对数据种增伤, 对因子(神)增伤"},{"name":"等离子狂怒","element":"暗","sp":155,"kind":"物理","power":"70","target":"敌方单体","effect":"对数据种增伤, 100%下降暗抗性, 对因子(天使)增伤"}]},
+      {"id":196,"resistances":[0,1,3,0,3,1,0,0,0,0,0],"skills":["21871","21872"],"skillsZh":[{"name":"动力点燃","element":"钢","sp":135,"kind":"物理","power":"80","target":"敌方单体","effect":"100%下降钢抗性, 对因子(神)增伤"},{"name":"穿透激光","element":"钢","sp":140,"kind":"物理","power":"100","target":"敌方单体","effect":"自己SP越低伤害减少越多, 对因子(火)增伤"}]},
+      {"id":197,"resistances":[0,0,0,0,0,3,0,0,1,3,1],"skills":["21861","21863"],"skillsZh":[{"name":"闪电倾泻","element":"光","sp":220,"kind":"物理","power":"30x3","target":"敌方全体","effect":"100%下降光抗性, 对因子(魔)增伤"},{"name":"环形防御","sp":155,"kind":"强化","target":"自身","effect":"变成物理反击状态, 若承受物理攻击, 会以威力90的雷魔法反击"}]},
+      {"id":198,"resistances":[0,0,0,0,3,1,1,3,0,0,0],"skills":["23051"],"skillsZh":[{"name":"巨角破坏炮","element":"草木","sp":145,"kind":"物理","power":"80","target":"敌方单体","effect":"100%几率3回合内下降速度20%"}]},
+      {"id":199,"resistances":[0,0,1,0,0,1,3,3,0,0,0],"skills":["23421"],"skillsZh":[{"name":"螺旋剑","element":"雷","sp":165,"kind":"物理","power":"80","target":"敌方单体","effect":"CRT率10%, 对因子(机械)增伤"}]},
+      {"id":200,"resistances":[0,3,0,0,0,0,1,1,3,0,0],"skills":["22101"],"skillsZh":[{"name":"超音炽热息","element":"火","sp":185,"kind":"物理","power":"80","target":"敌方单体","effect":"对象未行动, CRT率25%"}]},
+      {"id":201,"resistances":[0,0,0,1,0,3,1,0,4,0,0],"skills":["24001"],"skillsZh":[{"name":"幻龙冲击","element":"风","sp":150,"kind":"物理","power":"90","target":"敌方单体","effect":"对因子(龙)增伤"}]},
+      {"id":202,"resistances":[0,1,0,3,0,0,0,1,3,0,0],"skills":["20011"],"skillsZh":[{"name":"可爱一击","sp":135,"kind":"恢复","target":"我方单体","effect":"会根据精神值恢复相应的HP"}]},
+      {"id":203,"resistances":[0,0,3,0,0,0,1,0,0,3,1],"skills":["21481"],"skillsZh":[{"name":"神圣之箭","element":"光","sp":155,"kind":"魔法","power":"90","target":"敌方单体","effect":"对因子(魔)增伤"}]},
+      {"id":204,"resistances":[0,0,0,1,0,0,3,1,3,0,0],"skills":["23091"],"skillsZh":[{"name":"影翼斩","element":"火","sp":200,"kind":"魔法","power":"50","target":"敌方全体","effect":"对因子(鸟)增伤"}]},
+      {"id":205,"resistances":[0,0,0,1,3,3,1,0,0,0,0],"skills":["24031"],"skillsZh":[{"name":"狮子兽波斩","element":"风","sp":145,"kind":"物理","power":"80","target":"敌方单体","effect":"100%在3回合内下降防御力20%, 对因子(兽)增伤"}]},
+      {"id":206,"resistances":[3,1,0,0,0,3,0,0,1,0,0],"skills":["20261"],"skillsZh":[{"name":"十字刃","element":"钢","sp":135,"kind":"物理","power":"80","target":"敌方单体","effect":"自己下一轮行动顺序变成第一"}]},
+      {"id":207,"resistances":[0,3,1,0,0,1,0,3,0,0,0],"skills":["24911"],"skillsZh":[{"name":"斗魂爪","element":"地面","sp":145,"kind":"物理","power":"90","target":"敌方单体","effect":""}]},
+      {"id":208,"resistances":[0,3,0,0,1,0,3,0,1,0,3],"skills":["22231","22241"],"skillsZh":[{"name":"地狱业焰","element":"暗","sp":185,"kind":"物理","power":"45","target":"敌方全体","effect":"20%使对方液晶化, 对因子(兽)增伤"},{"name":"地狱分离","element":"暗","sp":195,"kind":"物理","power":"85","target":"敌方单体","effect":"适性不利无效, 模式转换, 对因子(兽)增伤"}]},
+      {"id":209,"resistances":[0,3,0,0,1,0,3,0,1,0,3],"skills":["22231","22241"],"skillsZh":[{"name":"地狱分离","element":"暗","sp":195,"kind":"物理","power":"85","target":"敌方单体","effect":"适性不利无效, 对因子(兽)增伤"},{"name":"地狱业焰","element":"暗","sp":185,"kind":"物理","power":"45","target":"敌方全体","effect":"20%使对方液晶化, 模式转换, 对因子(兽)增伤"}]},
+      {"id":210,"resistances":[1,0,0,0,3,1,0,3,0,0,0],"skills":["27191"],"skillsZh":[{"name":"绝灭爪","element":"无","sp":175,"kind":"物理","power":"85","target":"敌方单体","effect":"对数据种增伤"}]},
+      {"id":211,"resistances":[0,1,0,0,1,0,3,0,3,0,0],"skills":["24841"],"skillsZh":[{"name":"尖刺冲击波","element":"草木","sp":190,"kind":"物理","power":"25x3","target":"敌方单体","effect":"适性不利无效, 对因子(虫)增伤"}]},
+      {"id":212,"resistances":[0,1,3,0,3,1,0,0,0,0,0],"skills":["23451"],"skillsZh":[{"name":"重锤火花","element":"雷","sp":160,"kind":"物理","power":"90","target":"敌方单体","effect":"对因子(武装)增伤"}]},
+      {"id":213,"resistances":[0,1,0,0,0,0,0,0,3,3,1],"skills":["20841"],"skillsZh":[{"name":"疾风天翔剑","element":"光","sp":155,"kind":"物理","power":"90","target":"敌方单体","effect":""}]},
+      {"id":214,"resistances":[1,3,0,0,1,0,0,4,0,0,0],"skills":["26991"],"skillsZh":[{"name":"调和","element":"钢","sp":150,"kind":"物理","power":"70","target":"敌方单体","effect":"CRT率20% 100%在3回合内下降防御力20%"}]},
+      {"id":215,"resistances":[0,1,0,0,0,4,1,0,3,0,0],"skills":["24141"],"skillsZh":[{"name":"妙尔尼尔轰雷","element":"雷","sp":160,"kind":"魔法","power":"90","target":"敌方单体","effect":"对因子(机械)增伤"}]},
+      {"id":216,"resistances":[0,1,3,0,3,1,0,0,0,0,0],"skills":["24091"],"skillsZh":[{"name":"冰兽拳","element":"冰","sp":155,"kind":"物理","power":"90","target":"敌方单体","effect":""}]},
+      {"id":217,"resistances":[3,0,0,1,0,0,1,3,0,0,0],"skills":["21921"],"skillsZh":[{"name":"成龙刃","element":"钢","sp":190,"kind":"物理","power":"80","target":"敌方单体","effect":"CRT率10%, 适性不利无效"}]},
+      {"id":218,"resistances":[0,3,1,1,0,3,0,0,0,0,0],"skills":["25751"],"skillsZh":[{"name":"日轮之舞","element":"火","sp":205,"kind":"物理","power":"45","target":"敌方全体","effect":"CRT率10%, 对因子(战士)增伤"}]},
+      {"id":219,"resistances":[0,4,1,0,1,3,0,0,0,0,0],"skills":["21381"],"skillsZh":[{"name":"红莲狮王波","element":"火","sp":155,"kind":"物理","power":"90","target":"敌方单体","effect":"对因子(草)增伤"}]},
+      {"id":220,"resistances":[0,0,4,0,3,1,0,1,0,0,0],"skills":["20211"],"skillsZh":[{"name":"潮汐波","element":"水","sp":190,"kind":"物理","power":"45","target":"敌方全体","effect":"100%下降水抗性, 对因子(火)增伤"}]},
+      {"id":221,"resistances":[0,0,0,0,0,3,1,0,0,4,2],"skills":["21011"],"skillsZh":[{"name":"天国之门","element":"光","sp":200,"kind":"魔法","power":"50","target":"敌方全体","effect":"对因子(魔)增伤"}]},
+      {"id":222,"resistances":[0,1,0,0,3,1,3,0,0,0,0],"skills":["25881"],"skillsZh":[{"name":"长牙强袭","element":"无","sp":160,"kind":"物理","power":"90","target":"敌方单体","effect":""}]},
+      {"id":223,"resistances":[0,3,0,0,1,2,3,3,0,0,0],"skills":["23021"],"skillsZh":[{"name":"千兆破坏炮","element":"火","sp":155,"kind":"物理","power":"90","target":"敌方单体","effect":""}]},
+      {"id":224,"resistances":[1,1,0,0,0,0,3,3,0,0,0],"skills":["20611"],"skillsZh":[{"name":"愛心攻击","sp":175,"kind":"恢复","target":"我方全体","effect":"根据精神值恢复HP"}]},
+      {"id":225,"resistances":[3,1,0,0,0,0,1,3,0,0,0],"skills":["27211"],"skillsZh":[{"name":"瓮布都神","element":"风","sp":195,"kind":"魔法","power":"50","target":"敌方全体","effect":""}]},
+      {"id":226,"resistances":[1,0,1,0,0,0,0,3,0,3,0],"skills":["20711"],"skillsZh":[{"name":"三叉戟左轮","element":"火","sp":130,"kind":"物理","power":"50x3","target":"敌方单体","effect":"命中率60%"}]},
+      {"id":227,"resistances":[0,0,1,3,0,1,0,3,0,0,0],"skills":["27221"],"skillsZh":[{"name":"黄金三角","element":"雷","sp":155,"kind":"魔法","power":"80","target":"敌方单体","effect":"50%使对方受伤, 对因子(机械)增伤"}]},
+      {"id":228,"resistances":[0,0,0,1,0,1,3,3,0,0,0],"skills":["24791"],"skillsZh":[{"name":"钻孔暴风","element":"钢","sp":160,"kind":"物理","power":"25x3","target":"敌方单体","effect":"若对象尚未行动则增伤, 对因子(矿)增伤"}]},
+      {"id":229,"resistances":[0,0,3,0,3,0,1,0,1,0,0],"skills":["21401"],"skillsZh":[{"name":"恺撒锐爪","element":"无","sp":160,"kind":"物理","power":"45x2","target":"敌方单体","effect":""}]},
+      {"id":230,"resistances":[0,1,3,0,0,1,3,0,0,0,0],"skills":["26051"],"skillsZh":[{"name":"刺杀惊骇","element":"水","sp":135,"kind":"物理","power":"35x2","target":"敌方单体","effect":"若对象陷入混乱/错乱, 有25%几率即死"}]},
+      {"id":231,"resistances":[3,1,0,0,0,0,0,3,0,1,3],"skills":["29201"],"skillsZh":[{"name":"绝境突击","element":"暗","sp":135,"kind":"物理","power":"70","target":"敌方单体","effect":"100%在3回合内下降防御力10%, 对因子(圣)增伤"}]},
+      {"id":232,"resistances":[0,1,0,0,0,0,0,0,3,3,1],"skills":["27311"],"skillsZh":[{"name":"剑叶树之森","element":"风","sp":150,"kind":"物理","power":"40x2","target":"敌方单体","effect":"CRT10%, 对因子(人)增伤"}]},
+      {"id":233,"resistances":[1,0,0,1,0,0,3,3,0,0,0],"skills":["27561"],"skillsZh":[{"name":"宇宙一闪","element":"地面","sp":205,"kind":"物理","power":"15x3~6","target":"敌方全体","effect":""}]},
+      {"id":234,"resistances":[0,3,1,0,1,0,0,3,0,0,0],"skills":["26831","26832"],"skillsZh":[{"name":"劲爆摇滚魂","element":"火","sp":150,"kind":"物理","power":"35x2","target":"敌方单体","effect":"HP越低, 伤害增加越多"},{"name":"重金属火神炮","element":"火","sp":200,"kind":"物理","power":"25x2","target":"敌方全体","effect":"100%在3回合内下降智慧10%"}]},
+      {"id":235,"resistances":[1,3,0,0,1,1,1,3,3,0,3],"skills":["22291"],"skillsZh":[{"name":"灼热毒蛇","element":"火","sp":200,"kind":"物理","power":"25x3","target":"敌方单体","effect":"适性不利无效, 对因子(冰)增伤"}]},
+      {"id":236,"resistances":[1,0,3,0,3,1,0,0,0,0,0],"skills":["20443"],"skillsZh":[{"name":"奇迹炸弹","element":"火","sp":165,"kind":"物理","power":"110","target":"敌方单体","effect":"或是100%在3回合内下降敏捷10%"}]},
+      {"id":237,"resistances":[0,1,0,0,3,1,1,0,0,0,3],"skills":["20041"],"skillsZh":[{"name":"疯狂之舞","element":"冰","sp":165,"kind":"魔法","power":"20x4","target":"敌方单体","effect":"CRT15%, 对因子(兽)增伤"}]},
+      {"id":238,"resistances":[1,0,0,1,0,0,3,3,0,0,0],"skills":["20791"],"skillsZh":[{"name":"哈雷风暴","element":"光","sp":155,"kind":"物理","power":"90","target":"敌方单体","effect":"对因子(矿)增伤"}]},
+      {"id":239,"resistances":[0,1,0,0,0,0,0,3,0,1,3],"skills":["22391"],"skillsZh":[{"name":"坟墓之骨","element":"地面","sp":140,"kind":"物理","power":"80","target":"敌方单体","effect":"100%下降地面抗性, 对因子(矿)增伤"}]},
+      {"id":240,"resistances":[0,0,0,0,3,1,0,3,1,0,0],"skills":["21161"],"skillsZh":[{"name":"三叉戟剑","element":"无","sp":165,"kind":"物理","power":"25x3","target":"敌方单体","effect":"CRT15%"}]},
+      {"id":241,"resistances":[3,0,0,1,0,0,1,0,3,0,0],"skills":["22321","22322","22323"],"skillsZh":[{"name":"第一曲<复调>","sp":50,"kind":"弱化","target":"敌方全体","effect":"100%在3回合内下降防御力10%, 50%使对方混乱"},{"name":"第二曲<咏叹调>","sp":50,"kind":"弱化","target":"敌方全体","effect":"100%在3回合内下降精神30%/命中率10%"},{"name":"第三曲<卡农>","element":"风","sp":150,"kind":"魔法","power":"90","target":"敌方单体","effect":"对因子(人)增伤"}]},
+      {"id":242,"resistances":[0,0,0,0,0,0,1,0,3,1,3],"skills":["24051"],"skillsZh":[{"name":"焚笔闪","element":"暗","sp":140,"kind":"魔法","power":"80","target":"敌方单体","effect":"解除状态提升, 对因子(灵)增伤"}]},
+      {"id":243,"resistances":[1,3,0,0,0,3,0,0,0,0,0],"skills":["23741"],"skillsZh":[{"name":"恶梦症候群","element":"暗","sp":135,"kind":"物理","power":"70","target":"敌方单体","effect":"70%使对方睡眠, 对因子(不明)增伤"}]},
+      {"id":244,"resistances":[1,4,0,0,0,1,0,3,0,0,0],"skills":["24061"],"skillsZh":[{"name":"重金属火焰","element":"火","sp":200,"kind":"物理","power":"50","target":"敌方全体","effect":"对因子(钢)增伤"}]},
+      {"id":245,"resistances":[0,1,0,3,0,0,3,1,0,0,0],"skills":["23781"],"skillsZh":[{"name":"皇家坚果","element":"草木","sp":195,"kind":"物理","power":"50","target":"敌方全体","effect":"对因子(虫)增伤"}]},
+      {"id":246,"resistances":[0,0,0,3,1,1,3,0,0,0,0],"skills":["20331"],"skillsZh":[{"name":"三角攻击","element":"地面","sp":135,"kind":"物理","power":"105","target":"敌方单体","effect":"命中率80%, 对因子(硬体)增伤"}]},
+      {"id":247,"resistances":[3,0,1,0,0,1,0,3,0,0,0],"skills":["24071"],"skillsZh":[{"name":"金属流星","element":"钢","sp":180,"kind":"物理","power":"50","target":"敌方全体","effect":"对因子(机械)增伤"}]},
+      {"id":248,"resistances":[0,0,0,1,0,1,0,3,3,0,0],"skills":["27181"],"skillsZh":[{"name":"狂暴大剑","element":"钢","sp":160,"kind":"物理","power":"120","target":"敌方单体","effect":"命中率50% CRT50%, 对因子(骑士)增伤"}]},
+      {"id":249,"resistances":[0,1,3,0,3,0,0,1,0,0,0],"skills":["26061"],"skillsZh":[{"name":"强袭捕鱼","element":"钢","sp":150,"kind":"物理","power":"80","target":"敌方单体","effect":"必中攻击, 100%在3回合内下降回避率20%, 对因子(水)增伤"}]},
+      {"id":250,"resistances":[0,1,0,3,0,0,0,3,1,0,0],"skills":["20411"],"skillsZh":[{"name":"动物爪","element":"地面","sp":150,"kind":"物理","power":"80","target":"敌方单体","effect":"无法战斗的乙方越多, 伤害增加越多, 对因子(草)增伤"}]},
+      {"id":251,"resistances":[0,1,0,3,0,0,3,1,0,0,0],"skills":["25961"],"skillsZh":[{"name":"不给糖就捣蛋","element":"草木","sp":145,"kind":"魔法","power":"80","target":"敌方单体","effect":"25%几率使对方受伤"}]},
+      {"id":252,"resistances":[1,1,0,0,0,0,0,3,3,3,0],"skills":["20281"],"skillsZh":[{"name":"大微笑炸弹","element":"火","sp":220,"kind":"物理","power":"60","target":"敌方全体","effect":"100%在3回合内下降自己最大HP20%, 对因子(矿)增伤"}]},
+      {"id":253,"resistances":[0,1,3,0,0,0,3,0,1,0,0],"skills":["24101"],"skillsZh":[{"name":"微小炸弹","element":"火","sp":165,"kind":"魔法","power":"70","target":"敌方单体","effect":"对数据种增伤, 对因子(魔法)增伤"}]},
+      {"id":254,"resistances":[0,3,1,1,0,0,0,0,3,0,0],"skills":["20821"],"skillsZh":[{"name":"高温热波","element":"火","sp":200,"kind":"魔法","power":"50","target":"敌方全体","effect":"对因子(冰)增伤"}]},
+      {"id":255,"resistances":[0,0,3,3,0,1,0,1,0,0,0],"skills":["27241"],"skillsZh":[{"name":"腕龙吹泡","element":"水","sp":195,"kind":"物理","power":"50","target":"敌方全体","effect":""}]},
+      {"id":256,"resistances":[0,3,1,0,1,0,0,3,0,0,0],"skills":["20591"],"skillsZh":[{"name":"大爆炸重低音","sp":50,"kind":"弱化","target":"敌方全体","effect":"100%在3回合下降精神10%, 60%使对方麻痹,20%使对方无法行动"}]},
+      {"id":257,"resistances":[0,1,0,0,0,1,3,0,3,0,0],"skills":["24652"],"skillsZh":[{"name":"夜魔突击","element":"钢","sp":170,"kind":"物理","power":"135","target":"敌方单体","effect":"CRT20%, 自己会承受HP10%的反作用伤害, 对因子(鸟)增伤"}]},
+      {"id":258,"resistances":[0,0,0,1,3,0,1,0,3,0,0],"skills":["20741"],"skillsZh":[{"name":"胜利拳击","element":"风","sp":150,"kind":"物理","power":"90","target":"敌方单体","effect":""}]},
+      {"id":259,"resistances":[1,3,1,0,0,0,0,3,0,0,0],"skills":["24121"],"skillsZh":[{"name":"微笑炸弹","element":"火","sp":160,"kind":"物理","power":"85","target":"敌方单体","effect":"CRT10%"}]},
+      {"id":260,"resistances":[0,1,4,0,0,3,1,0,0,0,0],"skills":["21321"],"skillsZh":[{"name":"雷电标枪","element":"雷","sp":160,"kind":"魔法","power":"90","target":"敌方单体","effect":"对因子(水)增伤"}]},
+      {"id":261,"resistances":[3,3,1,0,0,2,0,3,0,0,0],"skills":["24131"],"skillsZh":[{"name":"能量炸弹","element":"雷","sp":160,"kind":"物理","power":"90","target":"敌方单体","effect":""}]},
+      {"id":262,"resistances":[0,1,0,3,0,0,3,1,0,0,0],"skills":["20731"],"skillsZh":[{"name":"丁香密雨","element":"草木","sp":195,"kind":"魔法","power":"50","target":"敌方全体","effect":"对因子(虫)增伤"}]},
+      {"id":263,"resistances":[0,1,0,3,0,0,0,1,3,0,0],"skills":["23591"],"skillsZh":[{"name":"花仙炮","element":"草木","sp":145,"kind":"魔法","power":"80","target":"敌方单体","effect":"30%几率使对方麻痹"}]},
+      {"id":264,"resistances":[1,3,0,0,1,0,0,3,0,0,0],"skills":["21981"],"skillsZh":[{"name":"车轮粉碎机","element":"钢","sp":180,"kind":"物理","power":"25x3","target":"敌方单体","effect":"适性不利无效"}]},
+      {"id":265,"resistances":[0,0,0,1,0,0,0,0,3,1,3],"skills":["22371"],"skillsZh":[{"name":"地狱业焰","element":"暗","sp":150,"kind":"物理","power":"25x3","target":"敌方单体","effect":"必中攻击"}]},
+      {"id":266,"resistances":[0,1,0,3,0,0,3,0,1,0,0],"skills":["21991"],"skillsZh":[{"name":"蜘蛛丝线","element":"草木","sp":150,"kind":"物理","power":"25x3","target":"敌方单体","effect":"CRT10% 对因子(虫)增伤"}]},
+      {"id":267,"resistances":[0,0,0,0,0,0,3,1,0,1,3],"skills":["20851"],"skillsZh":[{"name":"夜魔飞袭","element":"暗","sp":165,"kind":"魔法","power":"85","target":"敌方单体","effect":"恢复伤害的30%HP, 对因子(圣)增伤"}]},
+      {"id":268,"resistances":[0,1,0,1,3,0,3,0,0,0,0],"skills":["23111"],"skillsZh":[{"name":"爱之小夜曲","sp":50,"kind":"弱化","target":"敌方全体","effect":"100%在3回合内下降攻击力30%"}]},
+      {"id":269,"resistances":[0,0,0,3,0,1,1,3,0,0,0],"skills":["24011"],"skillsZh":[{"name":"剪刀臂Ω","element":"草木","sp":200,"kind":"物理","power":"85","target":"敌方单体","effect":"适性不利无效, 对因子(硬体)增伤"}]},
+      {"id":270,"resistances":[1,0,0,3,0,0,3,1,0,0,0],"skills":["21491"],"skillsZh":[{"name":"天丛云","element":"钢","sp":140,"kind":"物理","power":"90","target":"敌方单体","effect":"对因子(龙)增伤"}]},
+      {"id":271,"resistances":[1,1,0,3,0,3,0,0,0,0,0],"skills":["23801"],"skillsZh":[{"name":"便便火箭炮","sp":310,"kind":"比例伤害","power":"5%","target":"敌方单体","effect":"100%在3回合内下降对方攻击力10%"}]},
+      {"id":272,"resistances":[0,0,0,0,0,1,0,3,0,1,3],"skills":["24021"],"skillsZh":[{"name":"绝灭装置","element":"火","sp":220,"kind":"物理","power":"30x2","target":"敌方全体","effect":""}]},
+      {"id":273,"resistances":[0,0,0,3,0,1,3,0,1,0,0],"skills":["27271"],"skillsZh":[{"name":"硝基刺针","element":"雷","sp":160,"kind":"物理","power":"85","target":"敌方单体","effect":"30%使对方麻痹, 对因子(虫)增伤"}]},
+      {"id":274,"resistances":[0,0,0,3,1,0,3,0,1,0,0],"skills":["22111"],"skillsZh":[{"name":"铁屑粉碎爪","element":"地面","sp":140,"kind":"物理","power":"80","target":"敌方单体","effect":"50%几率使对方受伤"}]},
+      {"id":275,"resistances":[1,0,4,0,3,1,0,0,0,0,0],"skills":["29071"],"skillsZh":[{"name":"火炮齐射","element":"钢","sp":175,"kind":"物理","power":"45","target":"敌方全体","effect":""}]},
+      {"id":276,"resistances":[0,0,3,1,0,0,3,0,1,0,0],"skills":["20761"],"skillsZh":[{"name":"降妖杖·瀑布之阵","element":"水","sp":195,"kind":"魔法","power":"50","target":"敌方全体","effect":"对因子(火)增伤"}]},
+      {"id":277,"resistances":[0,1,0,4,0,0,3,1,0,0,0],"skills":["23791"],"skillsZh":[{"name":"樱桃炸弹","element":"草木","sp":185,"kind":"物理","power":"15x3","target":"敌方全体","effect":"30%使对方中毒, 对因子(兽)增伤"}]},
+      {"id":278,"resistances":[0,1,3,0,0,0,0,0,0,1,3],"skills":["24041"],"skillsZh":[{"name":"湮没猎鸟","element":"火","sp":155,"kind":"物理","power":"90","target":"敌方单体","effect":""}]},
+      {"id":279,"resistances":[0,1,0,0,0,0,0,3,0,1,3],"skills":["20061"],"skillsZh":[{"name":"爪骨","element":"暗","sp":190,"kind":"魔法","power":"50","target":"敌方全体","effect":"对因子(圣)增伤"}]},
+      {"id":280,"resistances":[0,1,3,0,0,3,0,0,0,2,3],"skills":["29081"],"skillsZh":[{"name":"雷电标枪","element":"雷","sp":160,"kind":"魔法","power":"90","target":"敌方单体","effect":"对因子(水)增伤"}]},
+      {"id":281,"resistances":[1,0,0,0,0,0,0,3,0,1,3],"skills":["22171"],"skillsZh":[{"name":"黑暗爆炸","element":"暗","sp":185,"kind":"物理","power":"10x3~6","target":"敌方全体","effect":""}]},
+      {"id":282,"resistances":[0,1,3,0,0,1,3,0,0,0,0],"skills":["21291"],"skillsZh":[{"name":"禁忌三叉戟","element":"水","sp":185,"kind":"物理","power":"90","target":"敌方单体","effect":"如打倒对象, 恢复自己25%SP"}]},
+      {"id":283,"resistances":[0,3,1,0,0,1,3,0,0,0,0],"skills":["27701"],"skillsZh":[{"name":"奋发加农炮","element":"火","sp":165,"kind":"物理","power":"125","target":"敌方单体","effect":"下一回合无法行动, 对因子(人)增伤"}]},
+      {"id":284,"resistances":[0,0,3,3,0,1,0,0,1,0,0],"skills":["23761"],"skillsZh":[{"name":"花腔音调","element":"无","sp":180,"kind":"魔法","power":"90","target":"敌方单体","effect":"如对象陷入睡眠/昏睡则增伤, 对因子(两栖类)增伤"}]},
+      {"id":285,"resistances":[1,0,3,0,3,1,0,0,0,0,0],"skills":["25761"],"skillsZh":[{"name":"插头炸弹","element":"火","sp":150,"kind":"魔法","power":"85","target":"敌方单体","effect":"100%使对方反转"}]},
+      {"id":286,"resistances":[0,1,0,0,3,0,0,0,0,1,3],"skills":["25841"],"skillsZh":[{"name":"灵魂切断","sp":310,"kind":"比例伤害","power":"HP15%","target":"敌方单体","effect":"100%使对方受伤"}]},
+      {"id":287,"resistances":[1,0,0,0,0,0,0,3,0,1,3],"skills":["27531"],"skillsZh":[{"name":"黑暗瞳孔","element":"无","sp":145,"kind":"魔法","power":"70","target":"敌方单体","effect":"50%几率使对方受伤"}]},
+      {"id":288,"resistances":[0,4,1,0,3,1,0,0,0,0,0],"skills":["21771"],"skillsZh":[{"name":"寒冷烈焰","element":"冰","sp":155,"kind":"物理","power":"90","target":"敌方单体","effect":"对因子(火)增伤"}]},
+      {"id":289,"resistances":[1,1,0,3,3,0,0,0,0,0,0],"skills":["24111"],"skillsZh":[{"name":"恶魔飞吻","element":"暗","sp":135,"kind":"魔法","power":"70","target":"敌方单体","effect":"30%液晶化, 对因子(人)增伤"}]},
+      {"id":290,"resistances":[0,0,0,1,0,1,3,0,0,0,3],"skills":["20311"],"skillsZh":[{"name":"蝶绝喇叭蹴","element":"暗","sp":150,"kind":"物理","power":"25x3","target":"敌方单体","effect":"恢复伤害的20%HP, 对因子(人)增伤"}]},
+      {"id":291,"resistances":[3,2,0,0,0,0,3,0,0,1,3],"skills":["22261"],"skillsZh":[{"name":"蛇型绷带","sp":40,"kind":"弱化","target":"敌方单体","effect":"100%在3回合内下降敏捷20%, 使对方麻痹"}]},
+      {"id":292,"resistances":[0,3,3,0,0,1,1,0,0,0,0],"skills":["26021"],"skillsZh":[{"name":"爆风火焰","element":"火","sp":150,"kind":"魔法","power":"80","target":"敌方单体","effect":"100%3回合内提升防御力/精神10%, 对因子(战士)增伤"}]},
+      {"id":293,"resistances":[0,3,0,0,0,1,3,1,0,0,0],"skills":["23011"],"skillsZh":[{"name":"灭绝攻击","element":"火","sp":155,"kind":"物理","power":"30x3","target":"敌方单体","effect":"对因子(骑士)增伤"}]},
+      {"id":294,"resistances":[3,0,0,1,0,0,0,3,1,0,0],"skills":["21341"],"skillsZh":[{"name":"原子冲击波","element":"火","sp":220,"kind":"物理","power":"100","target":"敌方全体","effect":"下一回合无法行动, 对因子(不明)增伤"}]},
+      {"id":295,"resistances":[3,0,1,0,0,2,0,3,3,0,0],"skills":["23641"],"skillsZh":[{"name":"核子激光","element":"雷","sp":215,"kind":"物理","power":"85","target":"敌方单体","effect":"适性不利无效, 对因子(钢)增伤"}]},
+      {"id":296,"resistances":[1,0,0,0,0,0,0,1,0,3,3],"skills":["20391","20392"],"skillsZh":[{"name":"生或死","element":"暗","sp":225,"kind":"魔法","power":"30/120","target":"敌方单体","effect":"对因子：圣 增伤"},{"name":"失乐园","element":"无","sp":230,"kind":"物理","power":"95","target":"敌方单体","effect":"100%敌无抗下降 对因子：神 增伤"}]},
+      {"id":297,"resistances":[0,3,0,0,1,0,0,0,0,1,3],"skills":["21071"],"skillsZh":[{"name":"暗黑波动","element":"暗","sp":185,"kind":"魔法","power":"15x3","target":"敌方全体","effect":"对因子(圣)增伤"}]},
+      {"id":298,"resistances":[3,1,0,0,0,0,3,0,1,0,0],"skills":["27261"],"skillsZh":[{"name":"潘多拉对话","element":"无","sp":160,"kind":"魔法","power":"90","target":"敌方单体","effect":"对因子(魔法)增伤"}]},
+      {"id":299,"resistances":[0,1,4,0,0,0,1,0,0,0,3],"skills":["21331"],"skillsZh":[{"name":"黑暗漩涡","element":"暗","sp":145,"kind":"魔法","power":"90","target":"敌方单体","effect":"对因子(鱼)增伤"}]},
+      {"id":300,"resistances":[1,3,0,0,1,3,1,3,0,3,1],"skills":["27231"],"skillsZh":[{"name":"荒御魂","element":"光","sp":150,"kind":"魔法","power":"80","target":"敌方单体","effect":"30%液晶化, 对因子(水)增伤"}]},
+      {"id":301,"resistances":[3,1,0,3,0,3,1,1,3,0,1],"skills":["27201"],"skillsZh":[{"name":"风灵弹","element":"风","sp":150,"kind":"魔法","power":"90","target":"敌方单体","effect":"对因子(鸟)增伤"}]},
+      {"id":302,"resistances":[1,3,1,3,1,3,1,0,0,0,3],"skills":["20231"],"skillsZh":[{"name":"地狱舞踏","element":"草木","sp":175,"kind":"物理","power":"25x3","target":"敌方单体","effect":"若对象未行动, CRT25%"}]},
+      {"id":303,"resistances":[3,0,1,1,3,1,1,3,3,0,0],"skills":["24081"],"skillsZh":[{"name":"亡命冲击波","element":"无","sp":210,"kind":"物理","power":"15x3","target":"敌方全体","effect":"CRT10%, 对因子(人)增伤"}]},
+      {"id":304,"resistances":[2,1,3,0,0,3,0,1,0,0,3],"skills":["26271"],"skillsZh":[{"name":"地狱榴弹","element":"暗","sp":155,"kind":"物理","power":"23x4","target":"敌方单体","effect":"对因子(不明)增伤"}]},
+      {"id":305,"resistances":[3,4,1,0,2,0,0,0,0,0,0],"skills":["26691"],"skillsZh":[{"name":"梵天热弹","element":"火","sp":165,"kind":"物理","power":"30*3","target":"敌方单体","effect":"CT+10% 对因子：草 增伤"}]},
+      {"id":306,"resistances":[0,0,0,1,0,0,0,0,3,4,2],"skills":["26701"],"skillsZh":[{"name":"双剑斩","element":"光","sp":190,"kind":"物理","power":"90","target":"敌方单体","effect":"敌方未行动CT+25% 对因子：魔 增伤"}]},
+      {"id":307,"resistances":[0,4,1,0,2,0,0,0,0,4,2],"skills":["21731","21732"],"skillsZh":[{"name":"太阳神冲击波","element":"火","sp":325,"kind":"物理","power":"60","target":"敌方全体","effect":"对因子：不死 增伤"},{"name":"太阳神拳","element":"火","sp":230,"kind":"物理","power":"90","target":"敌方单体","effect":"现HP越低伤害越高 对因子：水 增伤"}]},
+      {"id":308,"resistances":[0,1,0,0,1,0,3,1,3,0,0],"skills":["24161","24162"],"skillsZh":[{"name":"圣剑格雷达尔法","element":"光","sp":220,"kind":"物理","power":"90","target":"敌方单体","effect":"下回合行动条第一 对因子：骑士 增伤"},{"name":"灵魂数据化","element":"无","sp":375,"kind":"魔法","power":"55","target":"敌方全体","effect":"敌方未行动时CT+25% 对因子：不明 增伤"}]},
+      {"id":309,"resistances":[0,1,0,0,0,1,3,0,3,0,0],"skills":["24171","24172"],"skillsZh":[{"name":"闪光V热线","element":"光","sp":320,"kind":"物理","power":"55","target":"敌方全体","effect":"必中 100%敌3回合命中率-20% 对因子：人型 增伤"},{"name":"究极力之剑","element":"风","sp":240,"kind":"物理","power":"30*3","target":"敌方单体","effect":"CT+15% 对因子：战士 增伤"}]},
+      {"id":310,"resistances":[0,0,0,1,0,0,0,0,3,3,1],"skills":["21171","21172"],"skillsZh":[{"name":"净化之光","element":"光","sp":320,"kind":"魔法","power":"55","target":"敌方全体","effect":"必中 敌状态+解除 对因子：魔 增伤"},{"name":"极光波动","sp":70,"kind":"强化","target":"我方全体","effect":"异常无效 基本异常解除"}]},
+      {"id":311,"resistances":[0,1,0,3,0,0,0,0,0,4,2],"skills":["21721","21722"],"skillsZh":[{"name":"和平幻想曲","element":"无","sp":180,"kind":"固定","power":"10*3","target":"敌方单体","effect":"100%敌3回合攻击/智力-30% 敌状态+解除"},{"name":"LOVE YOU","sp":260,"kind":"恢复","target":"我方全体","effect":"根据精神值回复HP 我方状态-解除"}]},
+      {"id":312,"resistances":[0,3,1,0,0,0,3,0,0,0,1],"skills":["20271","20272"],"skillsZh":[{"name":"盖亚之力","element":"火","sp":225,"kind":"物理","power":"95","target":"敌方单体","effect":"对因子：草 增伤"},{"name":"勇气龙卷风","element":"无","sp":250,"kind":"物理","power":"30*3","target":"敌方单体","effect":"CT+15% 对因子：龙 增伤"}]},
+      {"id":313,"resistances":[3,0,0,1,0,0,1,3,0,0,0],"skills":["21931","21932"],"skillsZh":[{"name":"永世龙王刃","element":"雷","sp":330,"kind":"物理","power":"90","target":"敌方单体","effect":"CT+10% 无视敌抗性 对因子：龙 增伤"},{"name":"黄铠","element":"钢","sp":295,"kind":"物理","power":"60","target":"敌方全体","effect":"对因子：软体 增伤"}]},
+      {"id":314,"resistances":[0,0,0,3,0,0,1,0,0,3,1],"skills":["24211","24212"],"skillsZh":[{"name":"伊甸标枪","element":"光","sp":205,"kind":"魔法","power":"85","target":"敌方单体","effect":"病毒种敌方75%3回合攻击/智力-15% 对因子：不死 增伤"},{"name":"神球水晶","element":"光","sp":230,"kind":"魔法","power":"9*10","target":"敌方单体","effect":"CT+10% 对因子：灵 增伤"}]},
+      {"id":315,"resistances":[1,0,0,0,0,0,0,3,0,3,1],"skills":["26131"],"skillsZh":[{"name":"关键之钥","element":"光","sp":335,"kind":"魔法","power":"55","target":"敌方全体","effect":"对象陷入状态提升则增伤 对因子：不明 增伤"}]},
+      {"id":316,"resistances":[1,0,0,0,0,3,1,3,0,0,0],"skills":["27341","27342"],"skillsZh":[{"name":"终结华尔兹","element":"钢","sp":350,"kind":"魔法","power":"30*2","target":"敌方全体","effect":"已行动敌方 增伤 对因子：魔 增伤"},{"name":"神之庇佑","sp":55,"kind":"强化","target":"自身","effect":"100%物理/魔法无效"}]},
+      {"id":317,"resistances":[0,3,0,0,1,0,1,3,0,0,0],"skills":["21971","21972"],"skillsZh":[{"name":"恺撒不死鸟","element":"钢","sp":205,"kind":"物理","power":"95","target":"敌方单体","effect":"对因子：鸟 增伤"},{"name":"神秘破坏光","element":"无","sp":330,"kind":"魔法","power":"65","target":"敌方全体","effect":"100%敌3回合精神-20%"}]},
+      {"id":318,"resistances":[0,0,0,0,0,0,0,0,0,0,0],"skills":["20451","20452"],"skillsZh":[{"name":"神圣耀炎","element":"火","sp":325,"kind":"魔法","power":"85","target":"敌方全体","effect":"敌状态+解除 对因子：魔 增伤"},{"name":"翼刃时空断","element":"光","sp":350,"kind":"物理","power":"110","target":"敌方单体","effect":"必中 无视敌抗性"}]},
+      {"id":319,"resistances":[0,0,0,0,0,3,1,0,0,3,1],"skills":["27741","27742"],"skillsZh":[{"name":"闪电长矛","element":"暗","sp":285,"kind":"魔法","power":"90","target":"敌方单体","effect":"无视敌抗性 对因子：圣 增伤"},{"name":"天堂审判","element":"暗","sp":305,"kind":"魔法","power":"20*3","target":"敌方全体","effect":"对因子：不死 增伤"}]},
+      {"id":320,"resistances":[0,0,0,0,0,3,1,0,0,3,1],"skills":["27351","27352"],"skillsZh":[{"name":"天堂审判","element":"光","sp":320,"kind":"魔法","power":"20*3","target":"敌方全体","effect":"对因子：灵 增伤"},{"name":"闪电长矛","element":"光","sp":300,"kind":"魔法","power":"90","target":"敌方单体","effect":"无视敌抗性 对因子：魔 增伤"}]},
+      {"id":321,"resistances":[1,0,0,0,0,0,3,0,0,4,2],"skills":["20481"],"skillsZh":[{"name":"神之烈焰","element":"光","sp":370,"kind":"魔法","power":"55","target":"敌方全体","effect":"敌死亡时回复自身HP/SP20% 对因子：灵 增伤"}]},
+      {"id":322,"resistances":[0,3,1,0,1,0,3,0,0,3,0],"skills":["20941","20942"],"skillsZh":[{"name":"大地暴龙剑","element":"地面","sp":210,"kind":"物理","power":"90","target":"敌方单体","effect":"100%自身3回合攻击+20% 对因子：妖精 增伤"},{"name":"辉煌爆破","element":"光","sp":320,"kind":"物理","power":"60","target":"敌方全体","effect":"对因子：魔 增伤"}]},
+      {"id":323,"resistances":[3,0,1,0,0,1,0,3,0,0,0],"skills":["27371","27375"],"skillsZh":[{"name":"正义飞踢","element":"无","sp":245,"kind":"物理","power":"105","target":"敌方单体","effect":"对因子：人 增伤"},{"name":"三位一体武装","element":"钢/无/雷","sp":260,"kind":"物理","power":"110/100/10","target":"敌方单体","effect":"对因子：矿 增伤 无视敌抗性（钢） 对因子：武装 增伤 CT+20%（无） 对因子：两栖类 增伤（雷）"}]},
+      {"id":324,"resistances":[0,1,0,0,3,0,0,0,0,1,3],"skills":["24611"],"skillsZh":[{"name":"回旋骨","element":"无","sp":330,"kind":"物理","power":"70","target":"敌方全体","effect":"对因子：恐龙 增伤"}]},
+      {"id":325,"resistances":[1,0,0,0,0,0,0,3,0,3,1],"skills":["26141","26142"],"skillsZh":[{"name":"天堂斩裂刃","element":"钢","sp":210,"kind":"物理","power":"30*3","target":"敌方单体","effect":"CT+10% 对因子：不死 增伤"},{"name":"神圣之剑","element":"光","sp":220,"kind":"物理","power":"90","target":"敌方单体","effect":"50%敌受伤 对因子：魔 增伤"}]},
+      {"id":326,"resistances":[1,3,0,0,3,1,0,0,0,0,0],"skills":["20861","20862"],"skillsZh":[{"name":"虹桥烈矢","element":"火","sp":225,"kind":"物理","power":"95","target":"敌方单体","effect":"对因子：魔 增伤"},{"name":"奥丁寒息","element":"冰","sp":290,"kind":"魔法","power":"55","target":"敌方全体","effect":"100%敌冰抗下降 对因子：恐龙 增伤"}]},
+      {"id":327,"resistances":[3,0,1,0,0,1,0,3,0,0,0],"skills":["22131","22132","22133"],"skillsZh":[{"name":"天龙斩破","element":"火","sp":280,"kind":"物理","power":"90","target":"敌方单体","effect":"敌方未行动CT+25% 对因子：龙 增伤"},{"name":"升龙斩波","element":"火","sp":355,"kind":"物理","power":"55","target":"敌方全体","effect":"已行动敌方 增伤 对因子：龙 增伤"},{"name":"咬龙斩刃","element":"火","sp":220,"kind":"物理","power":"85","target":"敌方单体","effect":"100%敌3回合防御-20% 对因子：龙 增伤"}]},
+      {"id":328,"resistances":[1,3,0,0,0,0,0,0,0,3,1],"skills":["23151","23152"],"skillsZh":[{"name":"七重天堂","element":"光","sp":220,"kind":"魔法","power":"13*7","target":"敌方单体","effect":"对因子：魔 增伤"},{"name":"圣约","element":"光","sp":315,"kind":"魔法","power":"140","target":"敌方全体","effect":"耗尽SP 自身（下回合？）无法行动 现SP越少威力越低 对因子：神 增伤"}]},
+      {"id":329,"resistances":[0,3,1,0,1,3,0,0,0,0,0],"skills":["27411","27412"],"skillsZh":[{"name":"爆裂射击","element":"火","sp":325,"kind":"物理","power":"55*2","target":"敌方全体","effect":"下回合无法行动 对因子：草 增伤"},{"name":"巨人导弹","element":"火","sp":240,"kind":"物理","power":"48*2","target":"敌方单体","effect":"对因子：矿 增伤"}]},
+      {"id":330,"resistances":[1,3,0,0,1,0,0,4,0,0,0],"skills":["27001","27002"],"skillsZh":[{"name":"双重境界","element":"钢","sp":230,"kind":"物理","power":"90","target":"敌方单体","effect":"CT+20% 对因子：骑士 增伤"},{"name":"王座之刃","element":"钢","sp":295,"kind":"物理","power":"15*4","target":"敌方全体","effect":"对因子：骑士 增伤"}]},
+      {"id":331,"resistances":[0,1,4,0,3,1,0,0,0,0,0],"skills":["20751","20752"],"skillsZh":[{"name":"漩涡穿刺","element":"水","sp":285,"kind":"物理","power":"90","target":"敌方单体","effect":"必中 敌方未行动 增伤 对因子：水 增伤"},{"name":"深渊巨浪","element":"水","sp":285,"kind":"物理","power":"55","target":"敌方全体","effect":"100%敌水抗下降 对因子：火 增伤"}]},
+      {"id":332,"resistances":[3,0,1,0,0,1,0,3,0,0,0],"skills":["24261"],"skillsZh":[{"name":"原子能光线","element":"雷","sp":240,"kind":"物理","power":"95","target":"敌方单体","effect":"对因子：机械 增伤"}]},
+      {"id":333,"resistances":[0,3,0,0,1,0,3,0,1,0,0],"skills":["20491","20492"],"skillsZh":[{"name":"闪光番长拳","element":"光","sp":225,"kind":"物理","power":"90","target":"敌方单体","effect":"现HP越少威力越高 对因子：硬体 增伤"},{"name":"狮子罗王渐","element":"火","sp":255,"kind":"物理","power":"90","target":"敌方单体","effect":"敌方为超究 增伤 对因子：人 增伤"}]},
+      {"id":334,"resistances":[3,1,0,0,0,1,0,0,3,0,0],"skills":["23061"],"skillsZh":[{"name":"千兆冲击波","element":"雷","sp":225,"kind":"魔法","power":"95","target":"敌方单体","effect":"病毒种敌方50%无法行动 对因子：机械 增伤"}]},
+      {"id":335,"resistances":[0,3,1,0,0,0,0,0,0,3,1],"skills":["23101"],"skillsZh":[{"name":"星光爆破","element":"光","sp":320,"kind":"魔法","power":"70","target":"敌方全体","effect":"对因子：灵 增伤"}]},
+      {"id":336,"resistances":[0,0,0,1,0,0,0,0,3,4,2],"skills":["24531"],"skillsZh":[{"name":"神圣烈焰","element":"光","sp":220,"kind":"魔法","power":"90","target":"敌方单体","effect":"100%敌光抗下降 对因子：魔 增伤"}]},
+      {"id":337,"resistances":[1,0,0,0,0,0,0,1,0,3,3],"skills":["27481","27482","27483"],"skillsZh":[{"name":"混沌降阶","element":"无","sp":330,"kind":"魔法","power":"65","target":"敌方全体","effect":"对因子：圣 增伤"},{"name":"神圣希望","element":"光","sp":220,"kind":"魔法","power":"90","target":"敌方单体","effect":"100%敌光抗下降 对因子：魔 增伤"},{"name":"黑暗绝望","element":"暗","sp":285,"kind":"魔法","power":"90","target":"敌方单体","effect":"无视敌抗性 对因子：圣 增伤"}]},
+      {"id":338,"resistances":[0,0,3,1,0,0,0,0,0,3,1],"skills":["20241"],"skillsZh":[{"name":"大海之爱","sp":260,"kind":"恢复","target":"我方全体","effect":"精神依存回复HP 我方异常/受伤/生病解除"}]},
+      {"id":339,"resistances":[4,3,1,0,1,0,0,0,0,0,0],"skills":["21741","21742"],"skillsZh":[{"name":"日冕制裁","element":"火","sp":230,"kind":"物理","power":"90","target":"敌方单体","effect":"自身状态+越高威力越高 对因子：兽 增伤"},{"name":"无限波动","element":"火","sp":300,"kind":"物理","power":"45*2","target":"敌方单体","effect":"无视敌抗性 对因子：软体 增伤"}]},
+      {"id":340,"resistances":[0,0,1,0,0,4,0,0,0,4,2],"skills":["21681","21682"],"skillsZh":[{"name":"惩罚审判","sp":55,"kind":"弱化","target":"敌方单体","effect":"100%敌3回合雷抗/防御-30%"},{"name":"广域神罚","element":"雷","sp":355,"kind":"物理","power":"55","target":"敌方全体","effect":"究极体以下敌方 增伤 对因子：魔 增伤"}]},
+      {"id":341,"resistances":[0,0,0,3,0,1,0,1,3,0,0],"skills":["27401","27402"],"skillsZh":[{"name":"天之尾羽张","element":"雷","sp":310,"kind":"魔法","power":"55","target":"敌方全体","effect":"15%敌无法行动 对因子：鸟 增伤"},{"name":"螺旋渡鸦爪","element":"风","sp":215,"kind":"物理","power":"18*5","target":"敌方单体","effect":"对因子：鸟 增伤"}]},
+      {"id":342,"resistances":[0,0,0,1,0,0,3,3,1,0,0],"skills":["27251","27252"],"skillsZh":[{"name":"究极爆风","element":"风","sp":215,"kind":"物理","power":"90","target":"敌方单体","effect":"100%敌风抗下降 对因子：人 增伤"},{"name":"究极爆震","element":"地面","sp":305,"kind":"物理","power":"70","target":"敌方全体","effect":"对因子：矿 增伤"}]},
+      {"id":343,"resistances":[1,3,0,0,0,0,1,4,0,0,0],"skills":["21781","21786"],"skillsZh":[{"name":"适正武配","element":"钢","sp":215,"kind":"物理","power":"25*4","target":"敌方单体","effect":"对因子：武装 增伤"},{"name":"精准兵制","element":"无","sp":195,"kind":"物理","power":"80","target":"敌方单体","effect":"种族：NO DATA以外 增伤 对因子：矿 增伤"}]},
+      {"id":344,"resistances":[0,0,1,0,1,3,3,0,0,0,0],"skills":["26881","26882"],"skillsZh":[{"name":"地神!神鸣!神驰!亲父!","element":"火","sp":240,"kind":"物理","power":"25*4","target":"敌方单体","effect":"对因子：人 增伤"},{"name":"掀饭桌","sp":145,"kind":"弱化","target":"敌方全体","effect":"敌所有状态反转"}]},
+      {"id":345,"resistances":[0,0,0,0,0,0,0,0,3,3,1],"skills":["27541","27542"],"skillsZh":[{"name":"胎藏界曼陀罗","element":"暗","sp":280,"kind":"魔法","power":"55","target":"敌方全体","effect":"我方（全体？）状态-解除 对因子：不死 增伤"},{"name":"里饭纲","element":"暗","sp":250,"kind":"魔法","power":"90","target":"敌方单体","effect":"CT+25% 对因子：草 增伤"}]},
+      {"id":346,"resistances":[0,3,0,0,3,0,1,0,1,0,0],"skills":["27041"],"skillsZh":[{"name":"毁灭撞击","element":"雷","sp":340,"kind":"物理","power":"20*3","target":"敌方全体","effect":"对因子：不明 增伤"}]},
+      {"id":347,"resistances":[0,0,0,0,1,0,3,1,3,0,0],"skills":["20831"],"skillsZh":[{"name":"超声波音频","element":"风","sp":230,"kind":"物理","power":"32*3","target":"敌方单体","effect":"对因子：鸟 增伤"}]},
+      {"id":348,"resistances":[0,1,0,4,1,0,4,0,0,0,0],"skills":["21761","21762","21891"],"skillsZh":[{"name":"巨鸟陨落","element":"草木","sp":285,"kind":"物理","power":"55","target":"敌方全体","effect":"10%敌即死 对因子：虫 增伤"},{"name":"熔岩炮击","element":"火","sp":295,"kind":"魔法","power":"55","target":"敌方全体","effect":"100%敌火抗下降 对因子：草 增伤"},{"name":"饥饿","element":"草木","sp":310,"kind":"魔法","power":"70","target":"敌方全体","effect":"25%敌剧毒 模式转换 对因子：兽 增伤"}]},
+      {"id":349,"resistances":[0,2,0,4,1,0,4,0,0,0,0],"skills":["21761","21762","21891"],"skillsZh":[{"name":"巨鸟陨落","element":"草木","sp":285,"kind":"物理","power":"55","target":"敌方全体","effect":"10%敌即死 对因子：虫 增伤"},{"name":"熔岩炮击","element":"火","sp":295,"kind":"魔法","power":"55","target":"敌方全体","effect":"100%敌火抗下降 对因子：草 增伤"},{"name":"饥饿","element":"草木","sp":310,"kind":"魔法","power":"70","target":"敌方全体","effect":"25%敌剧毒 模式转换 对因子：兽 增伤"}]},
+      {"id":350,"resistances":[0,0,0,1,0,3,3,0,1,0,0],"skills":["24241","24242"],"skillsZh":[{"name":"粉碎之爪","element":"风","sp":220,"kind":"物理","power":"95","target":"敌方单体","effect":"对因子：兽 增伤"},{"name":"无限飞箭","element":"无","sp":300,"kind":"物理","power":"55","target":"敌方全体","effect":"15%敌无法行动 对因子：鸟 增伤"}]},
+      {"id":351,"resistances":[3,0,0,0,0,0,0,1,0,3,1],"skills":["24251","24252"],"skillsZh":[{"name":"金刚界曼陀罗","element":"光","sp":290,"kind":"魔法","power":"55","target":"敌方全体","effect":"敌状态+解除 对因子：灵 增伤"},{"name":"饭纲","element":"无","sp":275,"kind":"魔法","power":"90","target":"敌方单体","effect":"CT+25% 对因子：草 增伤"}]},
+      {"id":352,"resistances":[1,3,0,0,1,3,0,0,0,0,0],"skills":["27491","27493"],"skillsZh":[{"name":"辙剑审判","element":"无","sp":260,"kind":"物理","power":"18*5","target":"敌方单体","effect":"CT+20%  对因子：古代 增伤"},{"name":"剑灵","sp":240,"kind":"强化","target":"自身","effect":"进入反击状态 受物理攻击时105火物理反击 对因子：人 增伤"}]},
+      {"id":353,"resistances":[0,1,3,0,0,1,0,3,0,0,0],"skills":["20981","20982"],"skillsZh":[{"name":"兆吨水镭射","element":"水","sp":295,"kind":"物理","power":"90","target":"敌方单体","effect":"无视敌抗性 对因子：机械 增伤"},{"name":"巨型陨石坑","element":"无","sp":330,"kind":"物理","power":"20*3","target":"敌方全体","effect":"对因子：软体 增伤"}]},
+      {"id":354,"resistances":[0,2,3,0,4,0,0,0,1,0,0],"skills":["27331","27332"],"skillsZh":[{"name":"晚安之月","sp":55,"kind":"弱化","target":"敌方单体","effect":"100%敌3回合敏捷-30% 80%敌昏睡"},{"name":"月神之箭","element":"冰","sp":250,"kind":"魔法","power":"90","target":"敌方单体","effect":"敌方睡眠/昏睡时 增伤 对因子：人 增伤"}]},
+      {"id":355,"resistances":[0,0,0,1,3,0,1,0,3,0,0],"skills":["27381","27383"],"skillsZh":[{"name":"飞龙之息","element":"火","sp":325,"kind":"物理","power":"115","target":"敌方全体","effect":"自身防御-30% 下回合无法行动 对因子：魔 增伤"},{"name":"龙之怒吼","sp":330,"kind":"强化","target":"自身","effect":"进入反击状态 受物理攻击时115无魔法反击 敌方抗性无效 对因子：幻 增伤"}]},
+      {"id":356,"resistances":[3,0,0,0,1,0,1,3,0,0,0],"skills":["27391","27392","27431"],"skillsZh":[{"name":"毁天灭地","element":"光","sp":350,"kind":"魔法","power":"55","target":"敌方全体","effect":"已行动敌方 增伤 对因子：机械 增伤"},{"name":"重力波","element":"暗","sp":210,"kind":"魔法","power":"90","target":"敌方单体","effect":"已行动敌方50%错乱 对因子：不明 增伤"},{"name":"摩天楼","element":"地面","sp":260,"kind":"物理","power":"90","target":"敌方单体","effect":"敌方未行动CT+25% 模式转换 对因子：鸟 增伤"}]},
+      {"id":357,"resistances":[3,0,0,0,1,0,1,3,0,0,0],"skills":["27391","27431","27432"],"skillsZh":[{"name":"摩天楼","element":"地面","sp":260,"kind":"物理","power":"90","target":"敌方单体","effect":"敌方未行动CT+25% 对因子：鸟 增伤"},{"name":"征服","element":"雷","sp":340,"kind":"物理","power":"60","target":"敌方全体","effect":"对因子：机械 增伤"},{"name":"毁天灭地","element":"光","sp":350,"kind":"魔法","power":"55","target":"敌方全体","effect":"已行动敌方 增伤 模式转换 对因子：机械 增伤"}]},
+      {"id":358,"resistances":[1,3,0,0,1,0,0,3,0,0,3],"skills":["20191","20192"],"skillsZh":[{"name":"豪勇金属击","element":"钢","sp":205,"kind":"物理","power":"95","target":"敌方单体","effect":"对因子：龙 增伤"},{"name":"多路审判","element":"火","sp":325,"kind":"物理","power":"60","target":"敌方全体","effect":"对因子：龙 增伤"}]},
+      {"id":359,"resistances":[0,3,1,0,1,0,0,3,0,0,0],"skills":["20601","20602"],"skillsZh":[{"name":"喷发摔打","element":"火","sp":230,"kind":"物理","power":"90","target":"敌方单体","effect":"现HP越少威力越高 对因子：人 增伤"},{"name":"钻石之拳","element":"地面","sp":210,"kind":"物理","power":"90","target":"敌方单体","effect":"100%敌3回合防御-20% 对因子：钢 增伤"}]},
+      {"id":360,"resistances":[0,0,0,0,3,1,0,0,0,3,1],"skills":["24291"],"skillsZh":[{"name":"微笑弹头","element":"无","sp":230,"kind":"物理","power":"95","target":"敌方单体","effect":"20%敌混乱 对因子：钢 增伤"}]},
+      {"id":361,"resistances":[0,0,4,0,3,1,1,0,0,0,0],"skills":["24502"],"skillsZh":[{"name":"悲伤蓝调","element":"无","sp":330,"kind":"魔法","power":"55","target":"敌方全体","effect":"必中 40%敌错乱 对因子：人 增伤"}]},
+      {"id":362,"resistances":[0,1,0,0,0,0,3,3,1,0,0],"skills":["24311"],"skillsZh":[{"name":"掷斧斯坦纳","element":"钢","sp":185,"kind":"物理","power":"130","target":"敌方单体","effect":"命中70% 对因子：硬体 增伤"}]},
+      {"id":363,"resistances":[3,0,0,1,0,1,0,3,0,0,0],"skills":["20951","20952"],"skillsZh":[{"name":"满月冲击波","element":"光","sp":240,"kind":"物理","power":"95","target":"敌方单体","effect":"自身速度+时CT+25% 对因子：灵 增伤"},{"name":"双月幻影","element":"无","sp":245,"kind":"物理","power":"50*2","target":"敌方单体","effect":"对因子：骑士 增伤"}]},
+      {"id":364,"resistances":[0,0,0,1,3,1,0,3,0,0,0],"skills":["21351","21352"],"skillsZh":[{"name":"慈悲交错冷库","element":"冰","sp":320,"kind":"物理","power":"20*3","target":"敌方全体","effect":"对因子：火 增伤"},{"name":"冰狱冷冻气","element":"冰","sp":220,"kind":"物理","power":"90","target":"敌方单体","effect":"100%敌冰抗下降 对因子：爬虫类 增伤"}]},
+      {"id":365,"resistances":[3,1,3,0,0,2,0,3,0,0,0],"skills":["24341"],"skillsZh":[{"name":"究极波浪炮","element":"光","sp":225,"kind":"魔法","power":"95","target":"敌方单体","effect":"对因子：鱼 增伤"}]},
+      {"id":366,"resistances":[3,0,0,0,1,1,0,0,3,0,0],"skills":["26031","26032"],"skillsZh":[{"name":"飞龙之怒","element":"火","sp":225,"kind":"魔法","power":"95","target":"敌方单体","effect":"对因子：魔法"},{"name":"最终巅峰","element":"风","sp":260,"kind":"魔法","power":"90","target":"敌方单体","effect":"敌方未行动 增伤 对因子：魔法 增伤"}]},
+      {"id":367,"resistances":[0,1,0,4,1,3,0,0,0,0,0],"skills":["20571","20572"],"skillsZh":[{"name":"荆棘之鞭","element":"草木","sp":280,"kind":"魔法","power":"90","target":"敌方单体","effect":"回复伤害量30%的SP 对因子：虫 增伤"},{"name":"禁断诱惑","element":"草木","sp":310,"kind":"魔法","power":"60","target":"敌方全体","effect":"对因子：人 增伤"}]},
+      {"id":368,"resistances":[0,1,3,3,0,0,0,1,0,0,0],"skills":["27421","27422","27423"],"skillsZh":[{"name":"七色幻想曲","element":"光","sp":290,"kind":"魔法","power":"55","target":"敌方全体","effect":"20%敌错乱 对因子：妖精 增伤"},{"name":"巨蛇毁灭","sp":55,"kind":"弱化","target":"敌方单体","effect":"100%敌3回合防御/精神-30%"},{"name":"巨蛇治愈","sp":200,"kind":"恢复","target":"我方单体","effect":"精神依存回复HP 3回合智慧+20%"}]},
+      {"id":369,"resistances":[3,0,0,0,1,0,0,0,0,1,3],"skills":["26171","26172"],"skillsZh":[{"name":"毁灭板机","element":"钢","sp":290,"kind":"物理","power":"35*3","target":"敌方单体","effect":"无视敌抗性 自身受20%反伤 对因子：武装 增伤"},{"name":"痛苦弹丸雨","element":"暗","sp":250,"kind":"物理","power":"18*5","target":"敌方单体","effect":"已行动敌方 增伤 对因子：武装 增伤"}]},
+      {"id":370,"resistances":[1,0,0,3,0,1,3,0,0,0,0],"skills":["24511","24512"],"skillsZh":[{"name":"思维瓦解","sp":110,"kind":"强化","target":"敌方单体","effect":"敌方状态+解除 转移到自身"},{"name":"行星毁灭者","element":"雷","sp":240,"kind":"魔法","power":"90","target":"敌方单体","effect":"自身状态+越高威力越高 对因子：宇宙 增伤"}]},
+      {"id":371,"resistances":[0,3,0,0,0,1,0,0,0,1,3],"skills":["26001"],"skillsZh":[{"name":"剧毒流注","element":"无","sp":225,"kind":"物理","power":"85","target":"敌方单体","effect":"50%敌剧毒 50%敌液晶化 对因子：不明 增伤"}]},
+      {"id":372,"resistances":[3,0,0,1,0,0,0,3,1,0,0],"skills":["23381","23382"],"skillsZh":[{"name":"拉普拉斯之魔","element":"无","sp":245,"kind":"魔法","power":"105","target":"敌方单体","effect":"对因子：不明 增伤"},{"name":"古神之印","element":"无","sp":330,"kind":"魔法","power":"80","target":"敌方单体","effect":"50%敌无法行动 70%敌3回合防御-20% 对因子：圣 增伤"}]},
+      {"id":373,"resistances":[1,3,0,0,0,0,0,3,0,1,0],"skills":["27441","27442"],"skillsZh":[{"name":"磷火斩","element":"火","sp":225,"kind":"物理","power":"45*2","target":"敌方单体","effect":"50%敌受伤 对因子：人 增伤"},{"name":"磷火击","element":"火","sp":240,"kind":"物理","power":"85","target":"敌方单体","effect":"必中 100%敌火抗下降 对因子：人 增伤"}]},
+      {"id":374,"resistances":[1,0,0,0,0,0,0,3,0,1,3],"skills":["21501","21502"],"skillsZh":[{"name":"恶魔之灾祸","element":"暗","sp":210,"kind":"物理","power":"30*3","target":"敌方单体","effect":"解除自身状态- 对因子：圣 增伤"},{"name":"朱迪卡监禁","element":"暗","sp":240,"kind":"魔法","power":"90","target":"敌方单体","effect":"种族：疫苗 增伤 对因子：骑士 增伤"}]},
+      {"id":375,"resistances":[0,3,1,0,1,0,0,3,0,0,0],"skills":["24221"],"skillsZh":[{"name":"超无限大炮","element":"雷","sp":340,"kind":"物理","power":"70","target":"敌方全体","effect":"对因子：机械 增伤"}]},
+      {"id":376,"resistances":[1,2,0,0,3,0,0,3,0,0,0],"skills":["24921","24922"],"skillsZh":[{"name":"野性射击","element":"钢","sp":295,"kind":"物理","power":"80","target":"敌方全体","effect":"-"},{"name":"深林之爪","element":"钢","sp":205,"kind":"物理","power":"95","target":"敌方单体","effect":""}]},
+      {"id":377,"resistances":[0,3,1,0,0,1,0,3,0,0,0],"skills":["21941","21942"],"skillsZh":[{"name":"暴力狂热者","element":"钢","sp":290,"kind":"物理","power":"35*4","target":"敌方全体","effect":"现SP越低伤害越低 消耗所以SP 下回合行动不能 对因子：机械 s增伤"},{"name":"闪电战","element":"钢","sp":220,"kind":"物理","power":"90","target":"敌方单体","effect":"CT+15% 对因子：硬体 增伤"}]},
+      {"id":378,"resistances":[0,1,0,3,0,0,3,0,1,0,0],"skills":["21271"],"skillsZh":[{"name":"耍猴戏","sp":70,"kind":"弱化","target":"敌方全体","effect":"100%敌1回合攻击/智力-50% 自身挑衅状态"}]},
+      {"id":379,"resistances":[0,0,0,0,3,0,0,0,1,1,3],"skills":["20321","20322"],"skillsZh":[{"name":"水晶变革","element":"冰","sp":315,"kind":"魔法","power":"55","target":"敌方全体","effect":"回复伤害量15%的HP 对因子：天使 增伤"},{"name":"戈耳工之眼","element":"冰","sp":215,"kind":"魔法","power":"80","target":"敌方单体","effect":"60%敌错乱 对因子：天使 增伤"}]},
+      {"id":380,"resistances":[0,0,0,0,0,0,0,0,0,0,0],"skills":["20461","20462"],"skillsZh":[{"name":"神圣耀炎","element":"火","sp":440,"kind":"物理","power":"85","target":"敌方全体","effect":"无视敌抗性"},{"name":"时空退化","element":"暗","sp":245,"kind":"魔法","power":"80","target":"敌方单体","effect":"100%敌液晶化 70%敌攻击/防御/智力/精神-20% 敌HP50%以上时 增伤"}]},
+      {"id":381,"resistances":[0,0,3,1,3,1,0,0,0,0,0],"skills":["22251","22252"],"skillsZh":[{"name":"打首狱门","element":"钢","sp":290,"kind":"物理","power":"100","target":"敌方单体","effect":"无视敌抗性 对因子：鬼 增伤"},{"name":"十文字斩","element":"无","sp":245,"kind":"物理","power":"50*2","target":"敌方单体","effect":"对因子：鬼 增伤"}]},
+      {"id":382,"resistances":[0,1,0,0,3,0,0,0,0,2,4],"skills":["29121","29122"],"skillsZh":[{"name":"地狱斩击","element":"暗","sp":410,"kind":"物理","power":"70","target":"敌方全体","effect":"无视敌抗性 50%敌错乱 对因子：圣 增伤"},{"name":"丑恶傀儡","element":"暗","sp":225,"kind":"物理","power":"100","target":"敌方单体","effect":"对因子：圣 增伤"}]},
+      {"id":383,"resistances":[1,3,0,0,0,1,0,3,0,0,0],"skills":["27711","27712"],"skillsZh":[{"name":"黑暗咆哮","element":"暗","sp":240,"kind":"物理","power":"90","target":"敌方单体","effect":"命中90% CT+25% 对因子：宇宙 增伤"},{"name":"千兆刺杀枪","element":"无","sp":330,"kind":"物理","power":"105","target":"敌方单体","effect":"无视敌抗性 对因子：不死 增伤"}]},
+      {"id":384,"resistances":[0,0,1,3,0,1,0,0,3,0,0],"skills":["27451"],"skillsZh":[{"name":"音速刺针V","element":"雷","sp":245,"kind":"物理","power":"15*6","target":"敌方单体","effect":"CT+10% 对因子：虫 增伤"}]},
+      {"id":385,"resistances":[0,1,0,0,0,0,3,0,0,1,3],"skills":["24401","24402"],"skillsZh":[{"name":"魂魄芯击","element":"地面","sp":280,"kind":"物理","power":"90","target":"敌方单体","effect":"无视敌抗性 对因子：人 增伤"},{"name":"幻刃无痕","element":"地面","sp":210,"kind":"物理","power":"90","target":"敌方单体","effect":"50%敌受伤 对因子：人 增伤"}]},
+      {"id":386,"resistances":[0,3,1,0,1,0,3,0,0,0,0],"skills":["21281","21282"],"skillsZh":[{"name":"虫之爆闪","element":"火","sp":325,"kind":"物理","power":"110","target":"敌方全体","effect":"下回合行动不能 对因子：虫 增伤"},{"name":"虫之旋风","sp":70,"kind":"强化","target":"我方全体","effect":"我方2回合受到的物理/魔法伤害-20%，钢抗性提升"}]},
+      {"id":387,"resistances":[0,3,0,0,1,0,0,0,0,2,4],"skills":["20381"],"skillsZh":[{"name":"业火地狱","element":"火","sp":325,"kind":"魔法","power":"70","target":"敌方全体","effect":"对因子：圣 增伤"}]},
+      {"id":388,"resistances":[0,0,0,0,0,0,0,3,1,3,1],"skills":["21261","21262"],"skillsZh":[{"name":"皇家枪击","element":"光","sp":220,"kind":"物理","power":"90","target":"敌方单体","effect":"（自身？）状态-解除 对因子：不死 增伤"},{"name":"极乐净土","element":"光","sp":250,"kind":"魔法","power":"90","target":"敌方单体","effect":"种族：病毒 增伤 对因子：不明 增伤"}]},
+      {"id":389,"resistances":[3,1,0,3,1,0,0,0,1,0,0],"skills":["21791","21792"],"skillsZh":[{"name":"地狱烹煮","element":"无","sp":260,"kind":"物理","power":"90","target":"敌方单体","effect":"回复伤害量30%HP 对因子：鱼 增伤"},{"name":"天堂派对","element":"水","sp":285,"kind":"物理","power":"55","target":"敌方全体","effect":"30%敌无法行动 对因子：火 增伤"}]},
+      {"id":390,"resistances":[3,2,0,4,1,0,0,0,1,0,0],"skills":["27671"],"skillsZh":[{"name":"死亡逆转","element":"水","sp":315,"kind":"物理","power":"90","target":"敌方单体","effect":"自身进入睡眠 对因子：人 增伤"}]},
+      {"id":391,"resistances":[0,3,1,0,0,0,0,0,0,2,4],"skills":["20361","20362"],"skillsZh":[{"name":"暗狱殿破灭","element":"暗","sp":305,"kind":"魔法","power":"70","target":"敌方全体","effect":"对因子：神 增伤"},{"name":"死亡诱惑","sp":55,"kind":"弱化","target":"敌方单体","effect":"100%敌3回合精神-30% 80%敌错乱"}]},
+      {"id":392,"resistances":[1,0,0,0,0,3,0,1,3,0,3],"skills":["24271"],"skillsZh":[{"name":"王牌飞剑","element":"风","sp":315,"kind":"物理","power":"70","target":"敌方全体","effect":"对因子：不明 增伤"}]},
+      {"id":393,"resistances":[0,1,0,3,0,0,3,1,0,0,0],"skills":["24281"],"skillsZh":[{"name":"弹丸重锤","element":"火","sp":300,"kind":"物理","power":"90","target":"敌方单体","effect":"无视敌抗性 对因子：草 增伤"}]},
+      {"id":394,"resistances":[0,0,0,0,3,1,0,0,0,1,3],"skills":["22271"],"skillsZh":[{"name":"死灵魔雾","element":"暗","sp":205,"kind":"魔法","power":"80","target":"敌方单体","effect":"60%敌错乱 对因子：圣 增伤"}]},
+      {"id":395,"resistances":[0,0,3,1,0,1,0,3,0,0,0],"skills":["21961"],"skillsZh":[{"name":"刺针暴风","element":"钢","sp":295,"kind":"物理","power":"30*2","target":"敌方全体","effect":"对因子：鱼 增伤"}]},
+      {"id":396,"resistances":[0,0,1,0,0,4,1,3,0,0,0],"skills":["20691","20692"],"skillsZh":[{"name":"白金大便","sp":140,"kind":"比例伤害","power":"HP2%*3","target":"敌方全体","effect":"100%敌3回合智力/精神-10%"},{"name":"白金饱嗝","sp":55,"kind":"弱化","target":"敌方单体","effect":"100%敌3回合攻击/防御-30%"}]},
+      {"id":397,"resistances":[0,0,0,0,3,1,0,0,0,2,4],"skills":["21801","21802"],"skillsZh":[{"name":"地狱之门","element":"暗","sp":210,"kind":"物理","power":"90","target":"敌方单体","effect":"100%敌3回合防御-20% 对因子：圣 增伤"},{"name":"野性丛集","element":"暗","sp":280,"kind":"物理","power":"55","target":"敌方全体","effect":"20%敌液晶化 对因子：魔 增伤"}]},
+      {"id":398,"resistances":[0,0,0,1,0,1,3,3,0,0,0],"skills":["22141","22142"],"skillsZh":[{"name":"破坏突进","element":"钢","sp":220,"kind":"物理","power":"30*3","target":"敌方单体","effect":"CT+15% 对因子：矿 增伤"},{"name":"无限掘钻","element":"钢","sp":240,"kind":"物理","power":"18*5","target":"敌方单体","effect":"敌方HP高于50% 增伤 对因子：矿 增伤"}]},
+      {"id":399,"resistances":[0,3,0,0,1,0,0,0,0,1,3],"skills":["22331","22332"],"skillsZh":[{"name":"暗狱殿火焰","element":"火","sp":325,"kind":"魔法","power":"70","target":"敌方全体","effect":"对因子：草 增伤"},{"name":"融化血液","element":"暗","sp":205,"kind":"魔法","power":"85","target":"敌方单体","effect":"50%敌剧毒/受伤 对因子：人 增伤"}]},
+      {"id":400,"resistances":[0,0,0,0,0,0,3,0,1,1,3],"skills":["21951","21952"],"skillsZh":[{"name":"苍蝇弹丸","element":"暗","sp":245,"kind":"魔法","power":"90","target":"敌方单体","effect":"必中 CT+10% 对因子：人 增伤"},{"name":"飓风乱射","element":"暗","sp":320,"kind":"物理","power":"15*4","target":"敌方全体","effect":"CT+10% 对因子：鸟 增伤"}]},
+      {"id":401,"resistances":[3,0,1,0,0,0,0,0,0,2,4],"skills":["20351","20352"],"skillsZh":[{"name":"双重冲击","element":"钢","sp":190,"kind":"物理","power":"24*5","target":"敌方单体","effect":"命中70% CT+10% 对因子：天使 增伤"},{"name":"暗黑利爪","element":"暗","sp":210,"kind":"物理","power":"90","target":"敌方单体","effect":"50%敌受伤 对因子：圣 增伤"}]},
+      {"id":402,"resistances":[0,3,0,0,1,0,0,0,0,1,3],"skills":["24391","24392"],"skillsZh":[{"name":"永恒梦魇","element":"无","sp":300,"kind":"魔法","power":"55","target":"敌方全体","effect":"30%敌昏睡 对因子：不死 增伤"},{"name":"日中花","element":"暗","sp":280,"kind":"魔法","power":"55","target":"敌方全体","effect":"100%敌3回合速度-10% 对因子：不明 增伤"}]},
+      {"id":403,"resistances":[3,0,1,0,1,3,0,0,0,0,0],"skills":["26161","26162"],"skillsZh":[{"name":"幸福弹雨","element":"钢","sp":240,"kind":"物理","power":"30*3","target":"敌方单体","effect":"敌方HP50%以下 增伤 对因子：武装 增伤"},{"name":"约束红扳机","element":"风","sp":295,"kind":"物理","power":"23*4","target":"敌方单体","effect":"无视敌抗性 对因子：武装 增伤"}]},
+      {"id":404,"resistances":[0,1,0,0,0,1,3,0,3,0,0],"skills":["27471","27472"],"skillsZh":[{"name":"强袭旋斩","element":"钢","sp":205,"kind":"物理","power":"95","target":"敌方单体","effect":"对因子：恐龙 增伤"},{"name":"疯狂旋转木马","element":"风","sp":315,"kind":"物理","power":"20*4","target":"敌方全体","effect":"对因子：神 增伤"}]},
+      {"id":405,"resistances":[3,0,0,0,0,1,0,0,0,1,3],"skills":["22301"],"skillsZh":[{"name":"时空无尽","element":"暗","sp":225,"kind":"物理","power":"100","target":"敌方单体","effect":"50%敌液晶化 对因子：魔法 增伤"}]},
+      {"id":406,"resistances":[3,0,0,0,0,1,1,3,0,0,0],"skills":["23851"],"skillsZh":[{"name":"无限大炮","element":"雷","sp":250,"kind":"物理","power":"48*2","target":"敌方单体","effect":"对因子：机械 增伤"}]},
+      {"id":407,"resistances":[0,3,1,0,1,0,0,0,0,0,3],"skills":["20471","20472"],"skillsZh":[{"name":"灭世烈焰","element":"火","sp":265,"kind":"物理","power":"55","target":"敌方全体","effect":"若敌方倒下 自身3回合攻击+20% 对因子：不死 增伤"},{"name":"地狱咆哮","element":"无","sp":220,"kind":"物理","power":"80","target":"敌方单体","effect":"70%敌智力-20% 70%敌液晶化 对因子：不明 增伤"}]},
+      {"id":408,"resistances":[3,0,0,0,1,2,3,3,0,0,0],"skills":["23121"],"skillsZh":[{"name":"香蕉滑行","sp":55,"kind":"弱化","target":"敌方单体","effect":"100%敌3回合敏捷-30% 60%敌下回合无法行动"}]},
+      {"id":409,"resistances":[0,0,0,3,0,1,3,0,3,0,2],"skills":["20801","20802"],"skillsZh":[{"name":"千重拳打","element":"风","sp":215,"kind":"物理","power":"12*8","target":"敌方单体","effect":"自身速度+时CT+10% 对因子：鸟 增伤"},{"name":"心灵魔法","element":"无","sp":220,"kind":"物理","power":"80","target":"敌方单体","effect":"100%敌3回合防御-20% 50%敌受伤 对因子：不明 增伤"}]},
+      {"id":410,"resistances":[0,0,0,1,0,3,0,0,0,4,2],"skills":["21701","21703"],"skillsZh":[{"name":"针刺蜂团","element":"暗","sp":210,"kind":"物理","power":"30*3","target":"敌方单体","effect":"40%敌剧毒 对因子：妖精 增伤"},{"name":"慈悲之枪","sp":305,"kind":"强化","target":"自身","effect":"进入反击状态 受物理攻击时105敌全暗物理反击 对因子：不明 增伤"}]},
+      {"id":411,"resistances":[0,0,0,1,0,3,0,0,0,2,4],"skills":["21711","21712"],"skillsZh":[{"name":"失落之拥","element":"暗","sp":225,"kind":"物理","power":"18*6","target":"敌方单体","effect":"对因子：天使 增伤"},{"name":"拷问套索","element":"暗","sp":255,"kind":"物理","power":"100","target":"敌方单体","effect":"敌方状态变化时 增伤 对因子：人 增伤"}]},
+      {"id":412,"resistances":[1,0,1,0,0,3,0,3,0,0,0],"skills":["23831","23832"],"skillsZh":[{"name":"惊骇电磁炮","element":"雷","sp":235,"kind":"物理","power":"90","target":"敌方单体","effect":"25%敌无法行动 对因子：硬体 增伤"},{"name":"红锈吐息","sp":70,"kind":"弱化","target":"敌方全体","effect":"100%敌3回合防御-30%"}]},
+      {"id":413,"resistances":[0,0,4,0,0,2,0,0,0,2,4],"skills":["20371","20372"],"skillsZh":[{"name":"魔颚","element":"水","sp":210,"kind":"物理","power":"120","target":"敌方单体","effect":"命中80% 对因子：古代 增伤"},{"name":"巨尾","element":"水","sp":270,"kind":"物理","power":"55","target":"敌方全体","effect":"敌方防御-时20%即死 对因子：不明 增伤"}]},
+      {"id":414,"resistances":[3,0,0,0,0,0,0,1,0,2,4],"skills":["20341"],"skillsZh":[{"name":"幻痛","element":"暗","sp":280,"kind":"魔法","power":"55","target":"敌方全体","effect":"100%敌剧毒/受伤 对因子：神 增伤"}]},
+      {"id":415,"resistances":[0,0,3,0,0,1,0,3,1,0,0],"skills":["27031","27032"],"skillsZh":[{"name":"回旋华舞","element":"暗","sp":220,"kind":"物理","power":"13*7","target":"敌方单体","effect":"CT+10% 对因子：软体 增伤"},{"name":"急迫恐惧","element":"火","sp":300,"kind":"物理","power":"90","target":"敌方单体","effect":"无视敌抗性 对因子：武装 增伤"}]},
+      {"id":416,"resistances":[3,3,1,0,1,1,3,3,1,0,0],"skills":["24191","27321","27322"],"skillsZh":[{"name":"百万死亡","element":"暗","sp":305,"kind":"魔法","power":"80","target":"敌方全体","effect":"对因子：古代 增伤"},{"name":"正电子激光炮","element":"光","sp":225,"kind":"物理","power":"95","target":"敌方单体","effect":"对因子：不明 增伤"},{"name":"正电子激光炮","element":"光","sp":225,"kind":"物理","power":"95","target":"敌方单体","effect":"模式转换 对因子：不明 增伤"}]},
+      {"id":417,"resistances":[3,3,1,0,1,1,1,3,0,3,0],"skills":["24191","24192","27322"],"skillsZh":[{"name":"千兆死亡","element":"光","sp":320,"kind":"物理","power":"80","target":"敌方全体","effect":"对因子：不明 增伤"},{"name":"正电子激光炮","element":"光","sp":225,"kind":"物理","power":"95","target":"敌方单体","effect":"对因子：不明 增伤"},{"name":"正电子激光炮","element":"光","sp":225,"kind":"物理","power":"95","target":"敌方单体","effect":"模式转换 对因子：不明 增伤"}]},
+      {"id":418,"resistances":[3,1,3,3,3,1,1,1,0,0,0],"skills":["23461","23462"],"skillsZh":[{"name":"北极暴风雪","element":"冰","sp":320,"kind":"物理","power":"60","target":"敌方全体","effect":"对因子：钢 增伤"},{"name":"维京斧击","element":"钢","sp":205,"kind":"物理","power":"95","target":"敌方单体","effect":"对因子：软体"}]},
+      {"id":419,"resistances":[3,0,0,1,3,0,1,1,3,3,1],"skills":["27731","27732"],"skillsZh":[{"name":"芬里厄剑","element":"冰","sp":220,"kind":"物理","power":"90","target":"敌方单体","effect":"25%敌受伤 对因子：神 增伤"},{"name":"奥尔万迪尔之矢","element":"光","sp":245,"kind":"魔法","power":"90","target":"敌方单体","effect":"必中 对因子：鸟 增伤"}]},
+      {"id":420,"resistances":[0,1,0,3,0,0,0,0,0,1,3],"skills":["24231"],"skillsZh":[{"name":"次元剪刀","element":"草木","sp":230,"kind":"物理","power":"100","target":"敌方单体","effect":"对因子：虫 增伤"}]},
+      {"id":421,"resistances":[2,1,3,0,0,3,0,1,0,0,3],"skills":["26321"],"skillsZh":[{"name":"灾祸巨炮","element":"暗","sp":220,"kind":"物理","power":"35*3","target":"敌方单体","effect":"现HP越少伤害越少 对因子：不明 增伤"}]},
+      {"id":422,"resistances":[0,0,1,0,0,3,0,0,0,3,1],"skills":["27511"],"skillsZh":[{"name":"黄金三角","element":"雷","sp":230,"kind":"魔法","power":"85","target":"敌方单体","effect":"50%敌受伤 对因子：机械 增伤"}]},
+      {"id":423,"resistances":[1,0,1,0,0,3,1,3,3,3,1],"skills":["23821","23822"],"skillsZh":[{"name":"闪金太阳风暴","element":"光","sp":350,"kind":"魔法","power":"55","target":"敌方全体","effect":"自身回复20%HP 对因子：魔 增伤"},{"name":"等离子射击","element":"雷","sp":235,"kind":"物理","power":"45*2","target":"敌方单体","effect":"25%敌无法行动 对因子：机械 增伤"}]},
+      {"id":424,"resistances":[0,4,1,0,2,0,3,0,0,0,0],"skills":["26771","26772"],"skillsZh":[{"name":"炎龙击","element":"火","sp":225,"kind":"物理","power":"90","target":"敌方单体","effect":"对因子：龙 增伤"},{"name":"九头龙阵","element":"地面","sp":205,"kind":"物理","power":"85","target":"敌方单体","effect":"100%敌土抗下降 对因子：龙 增伤"}]},
+      {"id":425,"resistances":[1,0,0,0,0,0,0,0,3,4,2],"skills":["26781"],"skillsZh":[{"name":"破坏机关枪","element":"钢","sp":310,"kind":"物理","power":"25*3","target":"敌方全体","effect":"CT+10% 模式转换 对因子：机械 增伤"}]},
+      {"id":426,"resistances":[1,0,0,0,0,0,0,0,3,4,2],"skills":["26751"],"skillsZh":[{"name":"星光超速度","element":"光","sp":215,"kind":"物理","power":"85","target":"敌方单体","effect":"自身3回合速度+20% 对因子：古代 增伤"}]},
+      {"id":427,"resistances":[0,1,0,0,1,0,3,1,3,0,0],"skills":["27661","27662"],"skillsZh":[{"name":"究极战刃王龙剑","element":"钢","sp":295,"kind":"物理","power":"110","target":"敌方单体","effect":"对因子：龙 增伤"},{"name":"灵魂数据化","element":"无","sp":510,"kind":"魔法","power":"60","target":"敌方全体","effect":"敌方未行动时CT+25% 对因子：不明 增伤"}]},
+      {"id":428,"resistances":[0,1,0,0,0,3,1,4,0,0,0],"skills":["24941"],"skillsZh":[{"name":"无情冲撞","element":"无","sp":305,"kind":"魔法","power":"90","target":"敌方单体","effect":"100%敌3回合攻击-10% 对因子：龙 增伤"}]},
+      {"id":429,"resistances":[3,0,0,0,0,0,0,0,1,3,1],"skills":["24201"],"skillsZh":[{"name":"奥米加剑","element":"光","sp":350,"kind":"物理","power":"100","target":"敌方单体","effect":"敌方状态变化时 增伤 对因子：不明 增伤"}]},
+      {"id":430,"resistances":[0,3,0,0,3,0,1,3,1,0,0],"skills":["20881","20882"],"skillsZh":[{"name":"暴龙剑","element":"火","sp":440,"kind":"物理","power":"80","target":"敌方全体","effect":"对因子：龙 增伤"},{"name":"加鲁鲁炮","element":"冰","sp":305,"kind":"物理","power":"100","target":"敌方单体","effect":"对因子：火 增伤"}]},
+      {"id":431,"resistances":[1,1,0,0,3,0,0,3,0,0,0],"skills":["27571","27572"],"skillsZh":[{"name":"暴龙剑","element":"暗","sp":440,"kind":"物理","power":"80","target":"敌方全体","effect":"对因子：龙 增伤"},{"name":"加鲁鲁炮","element":"冰","sp":305,"kind":"物理","power":"100","target":"敌方单体","effect":"对因子：兽 增伤"}]},
+      {"id":432,"resistances":[3,1,3,1,1,1,1,1,3,3,3],"skills":["27721","27722"],"skillsZh":[{"name":"霸王两段剑","element":"光","sp":365,"kind":"物理","power":"60","target":"敌方全体","effect":"现HP越少伤害越高 对因子：鬼 增伤"},{"name":"黑暗日珥","element":"暗","sp":280,"kind":"物理","power":"90","target":"敌方单体","effect":"30%敌液晶化 对因子：不明 增伤"}]},
+      {"id":433,"resistances":[1,3,1,3,3,3,3,3,1,1,1],"skills":["21181","21182"],"skillsZh":[{"name":"霸王两段剑","element":"光","sp":365,"kind":"物理","power":"60","target":"敌方全体","effect":"现HP越少伤害越高 对因子：兽 增伤"},{"name":"极光冲击波","element":"光","sp":295,"kind":"魔法","power":"90","target":"敌方单体","effect":"敌状态+解除 对因子：不明 增伤"}]},
+      {"id":434,"resistances":[1,0,0,0,0,1,0,0,0,3,3],"skills":["26041","26042"],"skillsZh":[{"name":"溶解之指","element":"火","sp":310,"kind":"魔法","power":"100","target":"敌方单体","effect":"对因子：冰 增伤"},{"name":"卡吕冬之弓","element":"冰","sp":500,"kind":"魔法","power":"20*4","target":"敌方全体","effect":"敌异常/受伤/生病时 增伤 对因子：火 增伤"}]},
+      {"id":435,"resistances":[0,3,0,0,0,3,1,1,0,4,0],"skills":["27761","27762"],"skillsZh":[{"name":"最终闪光爆破","element":"火","sp":440,"kind":"物理","power":"100","target":"敌方全体","effect":"自身SP耗尽 对因子：草 增伤"},{"name":"日冕爆炎剑","element":"火","sp":325,"kind":"物理","power":"110","target":"敌方全体","effect":"75%自身3回合防御/精神-10% 对因子：冰 增伤"}]},
+      {"id":436,"resistances":[1,0,0,0,0,3,1,0,0,3,0],"skills":["21041","21042"],"skillsZh":[{"name":"天羽羽斩","element":"光","sp":540,"kind":"物理","power":"60","target":"敌方全体","effect":"无视敌抗性 对因子：龙 增伤"},{"name":"八雷神","element":"雷","sp":320,"kind":"物理","power":"12*8","target":"敌方单体","effect":"对因子：鬼 增伤"}]},
+      {"id":437,"resistances":[0,0,1,0,0,4,0,0,0,4,2],"skills":["21691","21692"],"skillsZh":[{"name":"雷霆裁断","element":"雷","sp":360,"kind":"物理","power":"90","target":"敌方单体","effect":"敌麻痹/无法行动时 增伤 对因子：魔 增伤"},{"name":"主神天雷","element":"雷","sp":310,"kind":"物理","power":"85","target":"敌方单体","effect":"50%敌无法行动 对因子：圣 增伤"}]},
+      {"id":438,"resistances":[0,0,0,3,0,1,0,1,3,0,0],"skills":["27781","27782"],"skillsZh":[{"name":"怒涛暗供丧之舞","element":"风","sp":320,"kind":"物理","power":"18*5","target":"敌方单体","effect":"CT+15% 对因子：圣 增伤"},{"name":"雷光一闪之突","element":"雷","sp":385,"kind":"物理","power":"95","target":"敌方单体","effect":"敌方未行动时 增伤 对因子：圣 增伤"}]},
+      {"id":439,"resistances":[0,0,0,1,0,0,0,0,3,0,0],"skills":["22151","22152"],"skillsZh":[{"name":"龙帝辉光","element":"雷","sp":325,"kind":"物理","power":"100","target":"敌方单体","effect":"对因子：古代 增伤"},{"name":"龙激冲","element":"火","sp":545,"kind":"物理","power":"60","target":"敌方全体","effect":"无视敌方抗性 对因子：龙 增伤"}]},
+      {"id":440,"resistances":[1,0,0,0,0,3,0,1,3,0,0],"skills":["27771","27772"],"skillsZh":[{"name":"满月流星冲击","element":"光","sp":305,"kind":"物理","power":"100","target":"敌方单体","effect":"对因子：灵 增伤"},{"name":"最终幻影冲击波","element":"光","sp":440,"kind":"物理","power":"110","target":"敌方全体","effect":"自身3回合全状态-20% 对因子：不死 增伤"}]},
+      {"id":441,"resistances":[0,1,0,4,1,3,0,0,0,0,0],"skills":["27791","27792"],"skillsZh":[{"name":"性感之唇","element":"光","sp":370,"kind":"魔法","power":"95","target":"敌方单体","effect":"自身回复伤害量15%HP/SP 对因子：虫 增伤"},{"name":"慈悲","element":"光","sp":305,"kind":"魔法","power":"70","target":"敌方单体","effect":"必中 100%敌光抗下降 对因子：人 增伤"}]},
+      {"id":442,"resistances":[0,1,0,0,3,0,0,0,0,2,4],"skills":["29151"],"skillsZh":[{"name":"千尘鬼神斩","element":"暗","sp":280,"kind":"物理","power":"90","target":"敌方单体","effect":"100%敌受伤 对因子：圣 增伤"}]},
+      {"id":443,"resistances":[0,3,1,0,0,0,0,0,0,3,1],"skills":["21051","21052"],"skillsZh":[{"name":"君往何处","element":"光","sp":480,"kind":"物理","power":"70","target":"敌方全体","effect":"必中 对因子：机械 增伤"},{"name":"无敌剑","element":"光","sp":370,"kind":"物理","power":"100","target":"敌方单体","effect":"必中 自身回复10%HP 对因子：古代 增伤"}]},
+      {"id":444,"resistances":[0,3,0,0,0,0,1,0,0,1,3],"skills":["27751","27752"],"skillsZh":[{"name":"混沌爆发","element":"暗","sp":305,"kind":"物理","power":"125","target":"敌方单体","effect":"自身SP耗尽 对因子：天使 增伤"},{"name":"死亡枪手","element":"暗","sp":290,"kind":"物理","power":"100","target":"敌方单体","effect":"对因子：神 增伤"}]},
+      {"id":445,"resistances":[0,3,0,0,1,0,0,3,0,2,4],"skills":["20401","20402"],"skillsZh":[{"name":"暗黑赠礼","element":"暗","sp":290,"kind":"物理","power":"100","target":"敌方单体","effect":"对因子：不死 增伤"},{"name":"日中花","element":"暗","sp":415,"kind":"魔法","power":"80","target":"敌方全体","effect":"100%敌3回合速度-10% 对因子：不明 增伤"}]},
+      {"id":446,"resistances":[0,0,0,1,0,0,3,3,0,3,2],"skills":["21811","21812"],"skillsZh":[{"name":"爱之剧毒","element":"无","sp":450,"kind":"物理","power":"60","target":"敌方全体","effect":"60%敌剧毒 对因子：人 增伤"},{"name":"疯狂旋转木马DX","element":"风","sp":410,"kind":"物理","power":"27*3","target":"敌方全体","effect":"CT+10% 对因子：爬虫类 增伤"}]},
+      {"id":447,"resistances":[1,3,0,0,0,0,0,0,0,1,4],"skills":["24351","24352"],"skillsZh":[{"name":"神之赎罪","element":"光","sp":440,"kind":"魔法","power":"90","target":"敌方全体","effect":"15%敌即死 对因子：圣 增伤"},{"name":"涤罪烈焰","element":"火","sp":310,"kind":"魔法","power":"100","target":"敌方单体","effect":"对因子：神 增伤"}]},
+      {"id":448,"resistances":[2,1,3,0,0,3,0,1,0,0,3],"skills":["21061","21062"],"skillsZh":[{"name":"究极爆炎炮","element":"暗","sp":300,"kind":"物理","power":"40*3","target":"敌方单体","effect":"现HP越少伤害越低 对因子：不明 增伤"},{"name":"黑雨","element":"暗","sp":415,"kind":"物理","power":"80","target":"敌方全体","effect":"100%敌暗抗下降 对因子：梦幻 增伤"}]},
+      {"id":449,"resistances":[0,4,1,0,2,1,3,0,0,0,0],"skills":["24891","24892"],"skillsZh":[{"name":"赤红铰刀","element":"火","sp":310,"kind":"物理","power":"100","target":"敌方单体","effect":"100%敌火抗下降"},{"name":"盖亚勇气弹","element":"火","sp":255,"kind":"物理","power":"60","target":"敌方全体","effect":"CT+10%"}]},
+      {"id":450,"resistances":[2,0,0,0,0,0,0,3,0,2,3],"skills":["23281"],"skillsZh":[{"name":"黑暗区域","sp":505,"kind":"比例伤害","power":"HP20%","target":"敌方全体","effect":"必中"}]},
+      {"id":451,"resistances":[0,0,0,1,4,1,0,3,2,0,0],"skills":["24901","24902"],"skillsZh":[{"name":"赭熠飞星","element":"钢","sp":350,"kind":"物理","power":"12*8","target":"敌方单体","effect":"必中 CT+20%"},{"name":"冷锋","element":"无","sp":490,"kind":"物理","power":"60","target":"敌方全体","effect":"敌方未行动时 增伤"}]},
       {"id":452,"resistances":[0,1,3,0,3,1,0,0,0,0,0],"skills":["26901","26902"]},
       {"id":453,"resistances":[3,0,0,0,0,0,0,0,0,1,0],"skills":["24491","24492"]},
       {"id":454,"resistances":[0,3,1,0,1,3,3,0,0,0,0],"skills":["26891","26892"]},
@@ -1683,14 +1687,14 @@
       {"id":465,"resistances":[1,3,0,0,1,3,0,0,0,0,0],"skills":["dlc3-465-1","dlc3-465-2"]},
       {"id":466,"resistances":[0,0,0,0,0,0,0,3,1,3,1],"skills":["dlc3-466-1","dlc3-466-2"]},
       {"id":467,"resistances":[0,3,0,0,3,0,1,3,1,0,0],"skills":["dlc3-467-1","dlc3-467-2"]},
-      {"id":468,"resistances":[0,3,1,0,0,3,0,0,1,0,0],"skills":["21431"]},
-      {"id":469,"resistances":[0,3,0,1,3,0,0,0,1,0,0],"skills":["27131"]},
-      {"id":470,"resistances":[0,3,0,0,3,1,0,0,1,0,0],"skills":["27141"]},
-      {"id":471,"resistances":[0,3,1,0,1,3,0,0,0,0,0],"skills":["27121"]},
-      {"id":472,"resistances":[0,3,0,0,1,2,0,3,0,0,0],"skills":["23271"]},
-      {"id":473,"resistances":[0,0,3,0,3,0,1,0,1,0,0],"skills":["27151"]},
-      {"id":474,"resistances":[0,0,0,0,0,0,0,3,1,1,3],"skills":["21751","21752"]},
-      {"id":475,"resistances":[0,0,0,1,3,1,0,3,0,0,0],"skills":["21821","21822"]}
+      {"id":468,"resistances":[0,3,1,0,0,3,0,0,1,0,0],"skills":["21431"],"skillsZh":[{"name":"喷火","element":"火","sp":50,"kind":"物理","power":"35","target":"敌方全体","effect":""}]},
+      {"id":469,"resistances":[0,3,0,1,3,0,0,0,1,0,0],"skills":["27131"],"skillsZh":[{"name":"幼角","element":"冰","sp":55,"kind":"物理","power":"50","target":"敌方单体","effect":""}]},
+      {"id":470,"resistances":[0,3,0,0,3,1,0,0,1,0,0],"skills":["27141"],"skillsZh":[{"name":"冰结之牙","element":"冰","sp":90,"kind":"物理","power":"70","target":"敌方单体","effect":""}]},
+      {"id":471,"resistances":[0,3,1,0,1,3,0,0,0,0,0],"skills":["27121"],"skillsZh":[{"name":"比特火焰","element":"火","sp":100,"kind":"物理","power":"14x3","target":"敌方全体","effect":""}]},
+      {"id":472,"resistances":[0,3,0,0,1,2,0,3,0,0,0],"skills":["23271"],"skillsZh":[{"name":"劲力三叉爪","element":"钢","sp":140,"kind":"物理","power":"90","target":"敌方单体","effect":""}]},
+      {"id":473,"resistances":[0,0,3,0,3,0,1,0,1,0,0],"skills":["27151"],"skillsZh":[{"name":"弦月弯刀","element":"冰","sp":140,"kind":"物理","power":"90","target":"敌方单体","effect":""}]},
+      {"id":474,"resistances":[0,0,0,0,0,0,0,3,1,1,3],"skills":["21751","21752"],"skillsZh":[{"name":"黑暗盖亚之力","element":"暗","sp":195,"kind":"物理","power":"95","target":"敌方单体","effect":"对因子(圣)增伤"},{"name":"黑暗龙卷风","element":"无","sp":195,"kind":"物理","power":"30x3","target":"敌方单体","effect":"CRT15% 对因子(龙)增伤"}]},
+      {"id":475,"resistances":[0,0,0,1,3,1,0,3,0,0,0],"skills":["21821","21822"],"skillsZh":[{"name":"慈悲交错冷库","element":"冰","sp":275,"kind":"物理","power":"20x3","target":"敌方全体","effect":"对因子(火)增伤"},{"name":"加鲁鲁战斧","element":"无","sp":265,"kind":"物理","power":"100","target":"敌方单体","effect":"必中, 对因子(水)增伤"}]}
     ],
     "skills": {
       "20011":{"name":{"en":"Pretty Attack"},"element":"null","power":35,"target":"1 ally","effect":{"en":"Removes stat debuffs. Always hits."}},
@@ -4086,6 +4090,8 @@
       { symbol: "×", multiplier: "0×" },
     ];
 
+    const combatElements = ["null", "fire", "water", "grass", "ice", "elec", "ground", "steel", "wind", "light", "dark"];
+
     const combatCopy = {
       zh: {
         elements: { null: "无", fire: "火", water: "水", grass: "草木", ice: "冰", elec: "电", ground: "地面", steel: "钢", wind: "风", light: "光", dark: "暗" },
@@ -4110,9 +4116,23 @@
       return effectiveness[code];
     }
 
+    function getElementMatchups(resistances) {
+      return resistances
+        .map((code, index) => ({ element: combatElements[index], code }))
+        .filter(({ code }) => code !== 0);
+    }
+
     function formatSkill(skill, language) {
       const locale = language === "en" ? "en" : "zh";
       const text = combatCopy[locale];
+      if (typeof skill.name === "string") {
+        const meta = [skill.element].filter(Boolean);
+        if (skill.sp != null) meta.push(`SP ${skill.sp}`);
+        if (skill.kind) meta.push(skill.kind);
+        if (skill.power) meta.push(`${text.power} ${skill.power}`);
+        if (skill.target) meta.push(skill.target);
+        return { name: skill.name, fallback: false, meta, effect: skill.effect || "" };
+      }
       const fallback = locale === "zh" && (!skill.name.zh || !skill.effect.zh);
       const name = skill.name[locale] || skill.name.en;
       const effect = skill.effect[locale] || skill.effect.en;
@@ -4211,6 +4231,7 @@
       formatProfile,
       formatRequirements,
       getAttributeMatchups,
+      getElementMatchups,
       formatEffectiveness,
       formatSkill,
     };
@@ -4219,7 +4240,6 @@
       const data = JSON.parse(document.querySelector("#digimon-data").textContent);
       const indexes = buildIndexes(data);
       const stageOrder = ["inTraining1", "inTraining2", "rookie", "champion", "ultimate", "mega", "megaPlus"];
-      const combatElements = ["null", "fire", "water", "grass", "ice", "elec", "ground", "steel", "wind", "light", "dark"];
       const copy = {
         zh: {
           brand: "时空异客",
@@ -4227,15 +4247,12 @@
           search: "搜索名称或编号",
           noResults: "没有匹配的数码兽",
           related: count => `${count} 只相关数码兽`,
-          compatibility: "克制关系",
-          compatibilityNote: "倍率表示该类攻击命中当前数码兽时受到的伤害。",
-          attributeCompatibility: "种族",
-          elementCompatibility: "属性",
+          weaknesses: "弱点",
+          resistances: "抗性",
           allNeutral: "全部等倍",
           requirements: "进化条件",
-          requirementNote: "显示基础条件；匹配个性的探员技能可能降低属性要求。",
-          specialSkills: "专属技能",
-          noSpecialSkills: "无专属技能",
+          specialSkills: "特殊技能",
+          noSpecialSkills: "无特殊技能",
           englishSource: "英文资料",
           switchLanguage: "Switch to English",
           showSidebar: "展开侧边栏",
@@ -4248,13 +4265,10 @@
           search: "Search name or number",
           noResults: "No matching Digimon",
           related: count => `${count} related Digimon`,
-          compatibility: "Compatibility",
-          compatibilityNote: "Multipliers show damage received from each attack type.",
-          attributeCompatibility: "Attribute",
-          elementCompatibility: "Element",
+          weaknesses: "Weak",
+          resistances: "Resist",
           allNeutral: "All neutral",
           requirements: "Digivolution requirements",
-          requirementNote: "Base requirements; matching Personality Agent Skills may reduce stat thresholds.",
           specialSkills: "Special Skills",
           noSpecialSkills: "No Special Skills",
           englishSource: "English source",
@@ -4414,35 +4428,27 @@
 
       function renderSelectedCompatibility(id) {
         const text = copy[state.language];
-        const digimon = indexes.byId.get(id);
         const combat = indexes.combatById.get(id);
-        const heading = document.createElement("p");
-        heading.className = "detail-heading";
-        heading.textContent = text.compatibility;
-        const note = document.createElement("p");
-        note.className = "detail-note";
-        note.textContent = text.compatibilityNote;
         const groups = document.createElement("div");
         groups.className = "compatibility-groups";
 
-        const attributeChips = getAttributeMatchups(digimon.attribute).map(item => (
-          createCompatibilityChip(profileCopy.attributes[item.attribute][state.language], item.code)
-        ));
-        if (!attributeChips.length) {
+        const matchups = getElementMatchups(combat.resistances);
+        if (!matchups.length) {
           const neutral = document.createElement("span");
           neutral.className = "empty-detail";
           neutral.textContent = text.allNeutral;
-          attributeChips.push(neutral);
+          elements.compatibility.replaceChildren(neutral);
+          return;
         }
 
-        const elementChips = combatElements.map((element, index) => (
-          createCompatibilityChip(combatCopy[state.language].elements[element], combat.resistances[index])
+        const chipsFor = items => items.map(item => (
+          createCompatibilityChip(combatCopy[state.language].elements[item.element], item.code)
         ));
-        groups.append(
-          createCompatibilityGroup(text.attributeCompatibility, attributeChips),
-          createCompatibilityGroup(text.elementCompatibility, elementChips),
-        );
-        elements.compatibility.replaceChildren(heading, note, groups);
+        const weaknesses = matchups.filter(({ code }) => code === 1 || code === 2);
+        const resistances = matchups.filter(({ code }) => code === 3 || code === 4);
+        if (weaknesses.length) groups.append(createCompatibilityGroup(text.weaknesses, chipsFor(weaknesses)));
+        if (resistances.length) groups.append(createCompatibilityGroup(text.resistances, chipsFor(resistances)));
+        elements.compatibility.replaceChildren(groups);
       }
 
       function renderSelectedRequirements(id) {
@@ -4459,13 +4465,6 @@
           list.append(item);
         }
         elements.requirements.replaceChildren(heading, list);
-
-        if (requirement.stats) {
-          const note = document.createElement("p");
-          note.className = "requirement-note";
-          note.textContent = text.requirementNote;
-          elements.requirements.append(note);
-        }
       }
 
       function renderSelectedSkills(id) {
@@ -4483,10 +4482,13 @@
           return;
         }
 
+        const skillRecords = state.language === "zh" && combat.skillsZh?.length
+          ? combat.skillsZh
+          : combat.skills.map(skillId => indexes.skillsById.get(String(skillId)));
         const list = document.createElement("div");
         list.className = "skill-list";
-        for (const skillId of combat.skills) {
-          const skill = formatSkill(indexes.skillsById.get(String(skillId)), state.language);
+        for (const skillRecord of skillRecords) {
+          const skill = formatSkill(skillRecord, state.language);
           const card = document.createElement("article");
           card.className = "skill-card";
           const header = document.createElement("div");
@@ -4507,7 +4509,8 @@
           const effect = document.createElement("p");
           effect.className = "skill-effect";
           effect.textContent = skill.effect;
-          card.append(header, meta, effect);
+          card.append(header, meta);
+          if (skill.effect) card.append(effect);
           list.append(card);
         }
         elements.skills.replaceChildren(heading, list);

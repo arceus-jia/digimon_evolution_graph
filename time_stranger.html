@@ -3912,6 +3912,60 @@
       return `${attribute} · ${type}`;
     }
 
+    const attributeMatchupCodes = {
+      vaccine: { data: 1, virus: 3 },
+      data: { virus: 1, vaccine: 3 },
+      virus: { vaccine: 1, data: 3 },
+    };
+
+    const effectiveness = [
+      { symbol: "—", multiplier: "1×" },
+      { symbol: "○", multiplier: "1.5×" },
+      { symbol: "◎", multiplier: "2×" },
+      { symbol: "△", multiplier: "0.5×" },
+      { symbol: "×", multiplier: "0×" },
+    ];
+
+    const combatCopy = {
+      zh: {
+        elements: { null: "无", fire: "火", water: "水", grass: "草木", ice: "冰", elec: "电", ground: "地面", steel: "钢", wind: "风", light: "光", dark: "暗" },
+        kinds: { physical: "物理", magic: "魔法" },
+        targets: { "1 ally": "单个我方", "1 enemy": "单个敌人", "All allies": "全体我方", "All enemies": "全体敌人", User: "自身" },
+        power: "威力",
+      },
+      en: {
+        elements: { null: "Null", fire: "Fire", water: "Water", grass: "Plant", ice: "Ice", elec: "Electricity", ground: "Earth", steel: "Steel", wind: "Wind", light: "Light", dark: "Dark" },
+        kinds: { physical: "Physical", magic: "Magic" },
+        targets: { "1 ally": "1 ally", "1 enemy": "1 enemy", "All allies": "All allies", "All enemies": "All enemies", User: "User" },
+        power: "Power",
+      },
+    };
+
+    function getAttributeMatchups(attribute) {
+      return Object.entries(attributeMatchupCodes[attribute] || {})
+        .map(([key, code]) => ({ attribute: key, code }));
+    }
+
+    function formatEffectiveness(code) {
+      return effectiveness[code];
+    }
+
+    function formatSkill(skill, language) {
+      const locale = language === "en" ? "en" : "zh";
+      const text = combatCopy[locale];
+      const fallback = locale === "zh" && (!skill.name.zh || !skill.effect.zh);
+      const name = skill.name[locale] || skill.name.en;
+      const effect = skill.effect[locale] || skill.effect.en;
+      const meta = [text.elements[skill.element] || skill.element];
+
+      if (skill.sp != null) meta.push(`SP ${skill.sp}`);
+      if (skill.kind) meta.push(text.kinds[skill.kind] || skill.kind);
+      if (skill.power) meta.push(`${text.power} ${skill.power}`);
+      if (skill.target) meta.push(text.targets[skill.target] || skill.target);
+
+      return { name, fallback, meta, effect };
+    }
+
     const requirementCopy = {
       zh: {
         none: "无法通过进化获得",
@@ -3990,7 +4044,16 @@
       return lines.length ? lines : [text.none];
     }
 
-    globalThis.TimeStranger = { buildIndexes, collectRelated, matchesQuery, formatProfile, formatRequirements };
+    globalThis.TimeStranger = {
+      buildIndexes,
+      collectRelated,
+      matchesQuery,
+      formatProfile,
+      formatRequirements,
+      getAttributeMatchups,
+      formatEffectiveness,
+      formatSkill,
+    };
 
     if (typeof document !== "undefined") {
       const data = JSON.parse(document.querySelector("#digimon-data").textContent);

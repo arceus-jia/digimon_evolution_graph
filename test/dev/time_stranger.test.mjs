@@ -62,6 +62,46 @@ test("formats field guide metadata in Chinese and English", () => {
   assert.equal(api.formatProfile({ attribute: "noData", type: "holyKnight" }, "en"), "No Data · Holy Knight");
 });
 
+test("formats attribute and element compatibility", () => {
+  const { api } = loadApp();
+
+  assert.deepEqual([...api.getAttributeMatchups("vaccine")].map(item => ({ ...item })), [
+    { attribute: "data", code: 1 },
+    { attribute: "virus", code: 3 },
+  ]);
+  assert.deepEqual([...api.getAttributeMatchups("free")], []);
+  assert.deepEqual({ ...api.formatEffectiveness(2) }, { symbol: "◎", multiplier: "2×" });
+  assert.deepEqual({ ...api.formatEffectiveness(4) }, { symbol: "×", multiplier: "0×" });
+});
+
+test("formats localized skills and explicit English fallbacks", () => {
+  const { api } = loadApp();
+  const fallback = api.formatSkill({
+    name: { en: "Pepper Breath" },
+    element: "fire",
+    kind: "physical",
+    target: "1 enemy",
+    effect: { en: "Fire physical attack." },
+  }, "zh");
+
+  assert.equal(fallback.name, "Pepper Breath");
+  assert.equal(fallback.effect, "Fire physical attack.");
+  assert.equal(fallback.fallback, true);
+  assert.deepEqual([...fallback.meta], ["火", "物理", "单个敌人"]);
+
+  const localized = api.formatSkill({
+    name: { zh: "示例技能", en: "Example Skill" },
+    element: "light",
+    sp: 20,
+    effect: { zh: "示例效果。", en: "Example effect." },
+  }, "zh");
+
+  assert.equal(localized.name, "示例技能");
+  assert.equal(localized.effect, "示例效果。");
+  assert.equal(localized.fallback, false);
+  assert.deepEqual([...localized.meta], ["光", "SP 20"]);
+});
+
 test("uses the Simplified Chinese names from Time Stranger", () => {
   const { data } = loadApp();
   const names = new Map(data.digimon.map(({ id, zh }) => [id, zh]));

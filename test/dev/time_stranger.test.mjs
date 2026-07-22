@@ -258,6 +258,18 @@ test("exposes requirement details for hover, focus, and click", () => {
   assert.match(html, /aria-describedby/);
 });
 
+test("renders compatibility and skills only in the selected information panel", () => {
+  const html = readFileSync(htmlUrl, "utf8");
+  assert.match(html, /id="selected-compatibility"/);
+  assert.match(html, /id="selected-skills"/);
+  assert.match(html, /function renderSelectedCompatibility/);
+  assert.match(html, /function renderSelectedSkills/);
+
+  const tooltipBody = html.match(/function showConditionTooltip[\s\S]*?\n      }\n\n      function hideConditionTooltip/)?.[0];
+  assert.ok(tooltipBody);
+  assert.doesNotMatch(tooltipBody, /renderSelectedCompatibility|renderSelectedSkills|selected-skills/);
+});
+
 test("uses a responsive boundary arrow for the sidebar", () => {
   const html = readFileSync(htmlUrl, "utf8");
 

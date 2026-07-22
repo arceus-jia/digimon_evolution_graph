@@ -211,8 +211,13 @@
       align-items: flex-start;
       gap: 10px;
       flex: 0 0 auto;
+      max-height: 48vh;
       padding: 20px 24px 16px;
       border-bottom: 1px solid var(--line);
+      overflow-x: hidden;
+      overflow-y: auto;
+      overscroll-behavior: contain;
+      scrollbar-gutter: stable;
     }
 
     .graph-heading {
@@ -274,8 +279,15 @@
       font-size: 12px;
     }
 
-    .selected-requirements {
+    .selection-profile {
       margin-top: 10px;
+      margin-bottom: 0;
+    }
+
+    .selected-section {
+      margin-top: 12px;
+      padding-top: 10px;
+      border-top: 1px solid #edf0f3;
     }
 
     .profile-meta {
@@ -311,6 +323,140 @@
       margin-top: 5px;
       color: var(--muted);
       font-size: 11px;
+    }
+
+    .detail-heading {
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .detail-note {
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    .compatibility-groups {
+      display: grid;
+      gap: 7px;
+      margin-top: 7px;
+    }
+
+    .compatibility-group {
+      display: grid;
+      grid-template-columns: 58px minmax(0, 1fr);
+      align-items: start;
+      gap: 8px;
+    }
+
+    .compatibility-label {
+      padding-top: 4px;
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    .compatibility-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+    }
+
+    .compatibility-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 3px 6px;
+      background: #f7f8fa;
+      border: 1px solid #dfe3e8;
+      border-radius: 5px;
+      font-size: 11px;
+      line-height: 1.2;
+      white-space: nowrap;
+    }
+
+    .compatibility-chip[data-code="1"],
+    .compatibility-chip[data-code="2"] {
+      background: #fff3f1;
+      border-color: #efc6bf;
+      color: #9d3225;
+    }
+
+    .compatibility-chip[data-code="3"] {
+      background: #eef5ff;
+      border-color: #c9daf3;
+      color: #315f9c;
+    }
+
+    .compatibility-chip[data-code="4"] {
+      background: #f1f2f4;
+      color: #4f5967;
+    }
+
+    .effectiveness-symbol {
+      min-width: 1em;
+      font-weight: 800;
+      text-align: center;
+    }
+
+    .skill-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(260px, 100%), 1fr));
+      gap: 8px;
+      margin-top: 7px;
+    }
+
+    .skill-card {
+      min-width: 0;
+      padding: 9px 10px;
+      background: #f8f9fb;
+      border: 1px solid #e1e5ea;
+      border-radius: 6px;
+    }
+
+    .skill-header {
+      display: flex;
+      align-items: baseline;
+      flex-wrap: wrap;
+      gap: 5px;
+    }
+
+    .skill-name {
+      overflow-wrap: anywhere;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .source-badge {
+      padding: 1px 4px;
+      background: #eef1f5;
+      border-radius: 3px;
+      color: var(--muted);
+      font-size: 9px;
+      font-weight: 600;
+    }
+
+    .skill-meta,
+    .skill-effect,
+    .empty-detail {
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.45;
+    }
+
+    .skill-meta {
+      margin-top: 3px;
+    }
+
+    .skill-effect {
+      margin-top: 4px;
+      overflow-wrap: anywhere;
+      color: var(--text);
+    }
+
+    .empty-detail {
+      margin-top: 6px;
     }
 
     #graph-scroll {
@@ -517,7 +663,16 @@
       }
 
       .graph-header {
+        max-height: 52vh;
         padding: 14px 16px 12px;
+      }
+
+      .compatibility-group {
+        grid-template-columns: 48px minmax(0, 1fr);
+      }
+
+      .skill-list {
+        grid-template-columns: 1fr;
       }
 
       #graph {
@@ -556,7 +711,10 @@
         <div class="graph-heading">
           <h2 id="selection-title"></h2>
           <p id="selection-meta" class="selection-meta"></p>
-          <div id="selected-requirements" class="selected-requirements"></div>
+          <p id="selection-profile" class="profile-meta selection-profile"></p>
+          <div id="selected-compatibility" class="selected-section"></div>
+          <div id="selected-requirements" class="selected-section"></div>
+          <div id="selected-skills" class="selected-section"></div>
         </div>
       </header>
       <div id="graph-scroll">
@@ -3755,18 +3913,20 @@
   (() => {
     "use strict";
 
-    function buildIndexes({ digimon, edges, requirements = [] }) {
+    function buildIndexes({ digimon, edges, requirements = [], combat = [], skills = {} }) {
       const byId = new Map(digimon.map(item => [item.id, item]));
       const next = new Map(digimon.map(item => [item.id, []]));
       const previous = new Map(digimon.map(item => [item.id, []]));
       const requirementsById = new Map(requirements.map(item => [item.id, item]));
+      const combatById = new Map(combat.map(item => [item.id, item]));
+      const skillsById = new Map(Object.entries(skills));
 
       for (const [from, to] of edges) {
         next.get(from).push(to);
         previous.get(to).push(from);
       }
 
-      return { byId, next, previous, requirementsById };
+      return { byId, next, previous, requirementsById, combatById, skillsById };
     }
 
     function walk(start, adjacency, found) {
@@ -4059,6 +4219,7 @@
       const data = JSON.parse(document.querySelector("#digimon-data").textContent);
       const indexes = buildIndexes(data);
       const stageOrder = ["inTraining1", "inTraining2", "rookie", "champion", "ultimate", "mega", "megaPlus"];
+      const combatElements = ["null", "fire", "water", "grass", "ice", "elec", "ground", "steel", "wind", "light", "dark"];
       const copy = {
         zh: {
           brand: "时空异客",
@@ -4066,8 +4227,16 @@
           search: "搜索名称或编号",
           noResults: "没有匹配的数码兽",
           related: count => `${count} 只相关数码兽`,
+          compatibility: "克制关系",
+          compatibilityNote: "倍率表示该类攻击命中当前数码兽时受到的伤害。",
+          attributeCompatibility: "种族",
+          elementCompatibility: "属性",
+          allNeutral: "全部等倍",
           requirements: "进化条件",
           requirementNote: "显示基础条件；匹配个性的探员技能可能降低属性要求。",
+          specialSkills: "专属技能",
+          noSpecialSkills: "无专属技能",
+          englishSource: "英文资料",
           switchLanguage: "Switch to English",
           showSidebar: "展开侧边栏",
           hideSidebar: "收起侧边栏",
@@ -4079,8 +4248,16 @@
           search: "Search name or number",
           noResults: "No matching Digimon",
           related: count => `${count} related Digimon`,
+          compatibility: "Compatibility",
+          compatibilityNote: "Multipliers show damage received from each attack type.",
+          attributeCompatibility: "Attribute",
+          elementCompatibility: "Element",
+          allNeutral: "All neutral",
           requirements: "Digivolution requirements",
           requirementNote: "Base requirements; matching Personality Agent Skills may reduce stat thresholds.",
+          specialSkills: "Special Skills",
+          noSpecialSkills: "No Special Skills",
+          englishSource: "English source",
           switchLanguage: "切换到中文",
           showSidebar: "Show sidebar",
           hideSidebar: "Hide sidebar",
@@ -4106,7 +4283,10 @@
         list: document.querySelector("#digimon-list"),
         title: document.querySelector("#selection-title"),
         meta: document.querySelector("#selection-meta"),
+        profile: document.querySelector("#selection-profile"),
+        compatibility: document.querySelector("#selected-compatibility"),
         requirements: document.querySelector("#selected-requirements"),
+        skills: document.querySelector("#selected-skills"),
         graph: document.querySelector("#graph"),
         graphScroll: document.querySelector("#graph-scroll"),
         columns: document.querySelector("#graph-columns"),
@@ -4147,8 +4327,10 @@
         const ids = new Set(data.digimon.map(item => item.id));
         const edgeKeys = new Set(data.edges.map(edge => edge.join(":")));
         const requirementIds = new Set(data.requirements.map(item => item.id));
+        const combatIds = new Set(data.combat.map(item => item.id));
         if (data.digimon.length !== 475 || ids.size !== 475) throw new Error("Invalid Digimon records");
         if (data.requirements.length !== 475 || requirementIds.size !== 475) throw new Error("Invalid requirement records");
+        if (data.combat.length !== 475 || combatIds.size !== 475) throw new Error("Invalid combat records");
         if (edgeKeys.size !== data.edges.length) throw new Error("Duplicate evolution relation");
         for (const [from, to] of data.edges) {
           if (!ids.has(from) || !ids.has(to) || from === to) throw new Error(`Invalid evolution relation: ${from} -> ${to}`);
@@ -4161,6 +4343,19 @@
           for (const id of requirement.modeFrom || []) {
             if (!ids.has(id)) throw new Error(`Invalid Mode Change requirement: ${id}`);
           }
+        }
+        for (const combat of data.combat) {
+          if (!ids.has(combat.id)) throw new Error(`Invalid combat target: ${combat.id}`);
+          if (combat.resistances.length !== combatElements.length
+            || combat.resistances.some(code => !Number.isInteger(code) || !formatEffectiveness(code))) {
+            throw new Error(`Invalid combat compatibility: ${combat.id}`);
+          }
+          if (!combat.skills.length || combat.skills.some(id => !data.skills[id])) {
+            throw new Error(`Invalid special skills: ${combat.id}`);
+          }
+        }
+        for (const [id, skill] of Object.entries(data.skills)) {
+          if (!skill.name?.en || !skill.effect?.en) throw new Error(`Invalid special skill: ${id}`);
         }
       }
 
@@ -4187,12 +4382,72 @@
         return formatRequirements(indexes.requirementsById.get(id), state.language, indexes.byId);
       }
 
+      function createCompatibilityChip(label, code) {
+        const value = formatEffectiveness(code);
+        const chip = document.createElement("span");
+        chip.className = "compatibility-chip";
+        chip.dataset.code = code;
+
+        const name = document.createElement("span");
+        name.textContent = label;
+        const symbol = document.createElement("span");
+        symbol.className = "effectiveness-symbol";
+        symbol.textContent = value.symbol;
+        const multiplier = document.createElement("span");
+        multiplier.textContent = value.multiplier;
+        chip.append(name, symbol, multiplier);
+        return chip;
+      }
+
+      function createCompatibilityGroup(label, content) {
+        const group = document.createElement("div");
+        group.className = "compatibility-group";
+        const heading = document.createElement("span");
+        heading.className = "compatibility-label";
+        heading.textContent = label;
+        const row = document.createElement("div");
+        row.className = "compatibility-row";
+        row.append(...content);
+        group.append(heading, row);
+        return group;
+      }
+
+      function renderSelectedCompatibility(id) {
+        const text = copy[state.language];
+        const digimon = indexes.byId.get(id);
+        const combat = indexes.combatById.get(id);
+        const heading = document.createElement("p");
+        heading.className = "detail-heading";
+        heading.textContent = text.compatibility;
+        const note = document.createElement("p");
+        note.className = "detail-note";
+        note.textContent = text.compatibilityNote;
+        const groups = document.createElement("div");
+        groups.className = "compatibility-groups";
+
+        const attributeChips = getAttributeMatchups(digimon.attribute).map(item => (
+          createCompatibilityChip(profileCopy.attributes[item.attribute][state.language], item.code)
+        ));
+        if (!attributeChips.length) {
+          const neutral = document.createElement("span");
+          neutral.className = "empty-detail";
+          neutral.textContent = text.allNeutral;
+          attributeChips.push(neutral);
+        }
+
+        const elementChips = combatElements.map((element, index) => (
+          createCompatibilityChip(combatCopy[state.language].elements[element], combat.resistances[index])
+        ));
+        groups.append(
+          createCompatibilityGroup(text.attributeCompatibility, attributeChips),
+          createCompatibilityGroup(text.elementCompatibility, elementChips),
+        );
+        elements.compatibility.replaceChildren(heading, note, groups);
+      }
+
       function renderSelectedRequirements(id) {
         const text = copy[state.language];
         const requirement = indexes.requirementsById.get(id);
-        const profile = document.createElement("p");
-        profile.className = "profile-meta";
-        profile.textContent = formatProfile(indexes.byId.get(id), state.language);
         const heading = document.createElement("p");
         heading.className = "requirement-heading";
         heading.textContent = text.requirements;
@@ -4203,7 +4458,7 @@
           item.textContent = line;
           list.append(item);
         }
-        elements.requirements.replaceChildren(profile, heading, list);
+        elements.requirements.replaceChildren(heading, list);
 
         if (requirement.stats) {
           const note = document.createElement("p");
@@ -4211,6 +4466,51 @@
           note.textContent = text.requirementNote;
           elements.requirements.append(note);
         }
+      }
+
+      function renderSelectedSkills(id) {
+        const text = copy[state.language];
+        const combat = indexes.combatById.get(id);
+        const heading = document.createElement("p");
+        heading.className = "detail-heading";
+        heading.textContent = text.specialSkills;
+
+        if (!combat.skills.length) {
+          const empty = document.createElement("p");
+          empty.className = "empty-detail";
+          empty.textContent = text.noSpecialSkills;
+          elements.skills.replaceChildren(heading, empty);
+          return;
+        }
+
+        const list = document.createElement("div");
+        list.className = "skill-list";
+        for (const skillId of combat.skills) {
+          const skill = formatSkill(indexes.skillsById.get(String(skillId)), state.language);
+          const card = document.createElement("article");
+          card.className = "skill-card";
+          const header = document.createElement("div");
+          header.className = "skill-header";
+          const name = document.createElement("h3");
+          name.className = "skill-name";
+          name.textContent = skill.name;
+          header.append(name);
+          if (skill.fallback) {
+            const badge = document.createElement("span");
+            badge.className = "source-badge";
+            badge.textContent = text.englishSource;
+            header.append(badge);
+          }
+          const meta = document.createElement("p");
+          meta.className = "skill-meta";
+          meta.textContent = skill.meta.join(" · ");
+          const effect = document.createElement("p");
+          effect.className = "skill-effect";
+          effect.textContent = skill.effect;
+          card.append(header, meta, effect);
+          list.append(card);
+        }
+        elements.skills.replaceChildren(heading, list);
       }
 
       function showConditionTooltip(button, id) {
@@ -4322,7 +4622,10 @@
 
         elements.title.textContent = `${numberOf(selected.id)}  ${nameOf(selected)}`;
         elements.meta.textContent = copy[state.language].related(related.size);
+        elements.profile.textContent = formatProfile(selected, state.language);
+        renderSelectedCompatibility(selected.id);
         renderSelectedRequirements(selected.id);
+        renderSelectedSkills(selected.id);
         elements.columns.replaceChildren();
 
         const fragment = document.createDocumentFragment();

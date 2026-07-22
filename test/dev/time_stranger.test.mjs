@@ -122,6 +122,35 @@ test("contains only unique valid directed edges", () => {
   assert.ok(data.edges.every(([from, to]) => ids.has(from) && ids.has(to) && from !== to));
 });
 
+test("contains complete combat records and valid skill references", () => {
+  const { data } = loadApp();
+  const fieldIds = new Set(data.digimon.map(({ id }) => id));
+  const combatIds = data.combat.map(({ id }) => id).sort((a, b) => a - b);
+
+  assert.equal(data.combat.length, 475);
+  assert.deepEqual(combatIds, Array.from({ length: 475 }, (_, index) => index + 1));
+  assert.ok(data.combat.every(({ id, resistances, skills }) => (
+    fieldIds.has(id)
+    && resistances.length === 11
+    && resistances.every(code => Number.isInteger(code) && code >= 0 && code <= 4)
+    && skills.length >= 1
+    && skills.every(skillId => data.skills[skillId]?.name?.en && data.skills[skillId]?.effect?.en)
+  )));
+});
+
+test("matches verified Agumon and DLC3 combat samples", () => {
+  const { data } = loadApp();
+  const combat = new Map(data.combat.map(item => [item.id, item]));
+
+  assert.deepEqual(combat.get(21).resistances, [0, 3, 0, 0, 1, 1, 3, 0, 0, 0, 0]);
+  assert.ok(combat.get(21).skills.includes("20501"));
+  assert.equal(data.skills["20501"].name.en, "Pepper Breath");
+  assert.deepEqual(combat.get(467).resistances, [0, 3, 0, 0, 3, 0, 1, 3, 1, 0, 0]);
+  assert.deepEqual(combat.get(467).skills, ["dlc3-467-1", "dlc3-467-2"]);
+  assert.equal(data.skills["dlc3-467-2"].name.en, "All Delete");
+  assert.equal(data.skills["dlc3-467-2"].sp, 260);
+});
+
 test("contains one structured requirement record for every Digimon", () => {
   const { data } = loadApp();
   assert.ok(Array.isArray(data.requirements), "requirements should be an array");
